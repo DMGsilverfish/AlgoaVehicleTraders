@@ -1,0 +1,68 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6; /* Light background color */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-card {
+    background-color: #ffffff; /* White card background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+    .login-card h2 {
+        text-align: center;
+        color: #1a202c; /* Dark header color */
+        margin-bottom: 20px;
+    }
+
+    .login-card label {
+        display: block;
+        font-weight: bold;
+        color: #2d3748; /* Slightly darker text for labels */
+        margin-bottom: 5px;
+    }
+
+    .login-card input[type="text"],
+    .login-card input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: 1px solid #cbd5e0; /* Light gray border */
+        border-radius: 4px;
+        font-size: 14px;
+    }
+
+    .login-card input[type="checkbox"] {
+        margin-right: 5px;
+    }
+
+    .login-card button {
+        width: 100%;
+        padding: 10px;
+        background-color: #2b6cb0; /* Primary button color */
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .login-card button:hover {
+            background-color: #2c5282; /* Slightly darker on hover */
+        }
+
+.text-danger {
+    color: #e53e3e; /* Error message color */
+    font-size: 12px;
+}

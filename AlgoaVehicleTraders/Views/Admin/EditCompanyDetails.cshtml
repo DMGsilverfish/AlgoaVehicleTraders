@@ -1,0 +1,132 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+@model AlgoaVehicleTraders.Models.All.CompanyDetails
+
+@{
+    ViewData["Title"] = "Edit Company Details";
+}
+<head>
+    @* <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"> *@
+    <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        /* Ensure buttons inside .form-actions are aligned */
+        .form-actions {
+            display: flex;
+            gap: 10px; /* Adds space between buttons */
+            justify-content: flex-end;
+        }
+
+            /* Primary button (Save Changes) */
+            .form-actions #saveButton {
+                background-color: #007bff; /* btn-primary background color */
+                color: white; /* White text */
+                padding: 10px 20px; /* Button padding */
+                border-radius: 5px; /* Rounded corners */
+                border: none; /* No border */
+                cursor: pointer; /* Pointer cursor on hover */
+                display: inline-block; /* Make it behave like a block element */
+            }
+
+                /* Primary button hover effect */
+                .form-actions #saveButton:hover {
+                    background-color: #0056b3; /* Darken the blue on hover */
+                }
+
+            /* Cancel button (already styled, added here for completeness) */
+            .form-actions #cancelButton {
+                text-decoration: none; /* Remove the default underline */
+                color: white; /* White text */
+                background-color: #dc3545; /* btn-danger background color */
+                padding: 10px 20px; /* Button padding */
+                border-radius: 5px; /* Rounded corners */
+                display: inline-block; /* Make the link behave like a block element */
+            }
+
+                /* Cancel button hover effect */
+                .form-actions #cancelButton:hover {
+                    background-color: #c82333; /* Darken the red on hover */
+                    cursor: pointer; /* Show pointer cursor */
+                }
+
+
+    </style>
+</head>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">@TempData["SuccessMessage"]</div>
+}
+<div class="admin-page-container">
+    <div class="main-content">
+        <form asp-action="EditCompanyDetails" method="post">
+            <header>
+                <h1>Edit Company Details</h1>
+            </header>
+            
+
+            <div class="form-group">
+                <label asp-for="CompanyName">Company Name:</label>
+                <input asp-for="CompanyName" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompanyEmail">Company Email:</label>
+                <input asp-for="CompanyEmail" type="email" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="CompanyPhone">Company Phone:</label>
+                <input asp-for="CompanyPhone" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Address">Address:</label>
+                <input asp-for="Address" class="form-control" required />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="LocationLink">Location Link:</label>
+                <input asp-for="LocationLink" class="form-control" required
+                       data-bs-toggle="tooltip"
+                       data-bs-placement="top"
+                       title="Please enter a valid Embed Google Maps link." />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="VATNumber">VAT Number:</label>
+                <input asp-for="VATNumber" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AccountNumber">Account Number:</label>
+                <input asp-for="AccountNumber" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="FacebookLink">Facebook Link:</label>
+                <input asp-for="FacebookLink" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="InstagramLink">Instagram Link:</label>
+                <input asp-for="InstagramLink" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="DeveloperEmail">Developers Email:</label>
+                <input asp-for="DeveloperEmail" type="email" class="form-control" required />
+            </div>
+
+            <!-- Button Row -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="history.back()" id="cancelButton">Back</button>
+                <button type="submit" class="btn btn-primary" id="saveButton">Update Details</button>
+            </div>            
+        </form>
+    </div>
+</div>
+

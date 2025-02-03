@@ -1,0 +1,189 @@
+﻿@using AlgoaVehicleTraders.Models.Caravans
+@using AlgoaVehicleTraders.Models.All
+@model CaravanViewModel
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/ViewMore.css" asp-append-version="true" />
+</head>
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+<!-- Carousel Container -->
+<div class="container text-center page-center">
+    <h2>@Model.Brand @Model.Caravan.Model (@Model.Caravan.Year)</h2>
+</div>
+
+<!-- Main Carousel Section -->
+<div class="carousel-container">
+    <!-- Main Image Section -->
+    <div class="main-image-container">
+        <img id="mainImage" src="@($"data:image/png;base64,{Convert.ToBase64String(Model.Additional.Exterior1 ?? new byte[0])}")"
+             class="main-image img-fluid" alt="Main Caravan Image">
+        <!-- Left Arrow -->
+        <button class="carousel-btn prev" onclick="prevImage()">&#10094;</button>
+        <!-- Right Arrow -->
+        <button class="carousel-btn next" onclick="nextImage()">&#10095;</button>
+    </div>
+
+    <!-- Thumbnails Section -->
+    <div class="thumbnail-gallery">
+        @{
+            var allImages = new List<byte[]?>
+        {
+        Model.Additional?.Exterior1, Model.Additional?.Exterior2, Model.Additional?.Exterior3, Model.Additional?.Exterior4, Model.Additional?.Exterior5, Model.Additional?.Exterior6,
+        Model.Additional?.Interior1, Model.Additional?.Interior2, Model.Additional?.Interior3, Model.Additional?.Interior4, Model.Additional?.Other1, Model.Additional?.Other2
+        }.Where(img => img != null).ToList();
+        }
+
+        @for (int i = 0; i < allImages.Count; i++)
+        {
+            var imageSrc = $"data:image/png;base64,{Convert.ToBase64String(allImages[i]!)}";
+            <img class="thumbnail @(i == 0 ? "selected-thumbnail" : "")"
+                 src="@imageSrc" onclick="changeImage('@imageSrc', @i)">
+        }
+    </div>
+</div>
+
+<!-- Vehicle Details Table -->
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr><th colspan="2">Information</th></tr>
+        <tr><td><strong>Price:</strong></td><td>R @Model.Caravan.Price.ToString("N2")</td></tr>
+        <tr><td><strong>Year:</strong></td><td>@Model.Caravan.Year</td></tr>
+        <tr><td><strong>Type:</strong></td><td>@Model.Type</td></tr>
+        <tr><td><strong>Bed Type:</strong></td><td>@Model.Caravan.BedType</td></tr>
+        <tr><td><strong>Berth Amount:</strong></td><td>@Model.Caravan.Berth</td></tr>
+        <tr><td><strong>Colour:</strong></td><td>@Model.Caravan.Colour</td></tr>
+    </table>
+</div>
+<br />
+
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr>
+            <th colspan="4">Additional Options</th>
+        </tr>
+        <tr>
+            <td><strong>Awning</strong></td>
+            <td class="@(Model.Additional.Awning ? "yes-background" : "no-background")">@(Model.Additional.Awning ? "Yes" : "No")</td>
+            <td><strong>Add-A-Room</strong></td>
+            <td class="@(Model.Additional.Add_A_Room ? "yes-background" : "no-background")">@(Model.Additional.Add_A_Room ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Caravan Cover</strong></td>
+            <td class="@(Model.Additional.CaravanCover ? "yes-background" : "no-background")">@(Model.Additional.CaravanCover ? "Yes" : "No")</td>
+            <td><strong>Full Tent</strong></td>
+            <td class="@(Model.Additional.FullTent ? "yes-background" : "no-background")">@(Model.Additional.FullTent ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Geyser</strong></td>
+            <td class="@(Model.Additional.Geyser ? "yes-background" : "no-background")">@(Model.Additional.Geyser ? "Yes" : "No")</td>
+            <td><strong>Movers</strong></td>
+            <td class="@(Model.Additional.Movers ? "yes-background" : "no-background")">@(Model.Additional.Movers ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Multi-Room</strong></td>
+            <td class="@(Model.Additional.MultiRoom ? "yes-background" : "no-background")">@(Model.Additional.MultiRoom ? "Yes" : "No")</td>
+            <td><strong>Spare Key</strong></td>
+            <td class="@(Model.Additional.SpareKey ? "yes-background" : "no-background")">@(Model.Additional.SpareKey ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Spare Tyre</strong></td>
+            <td class="@(Model.Additional.SpareTyre ? "yes-background" : "no-background")">@(Model.Additional.SpareTyre ? "Yes" : "No")</td>
+            <td><strong>Spare Key</strong></td>
+            <td class="@(Model.Additional.WaterTank ? "yes-background" : "no-background")">@(Model.Additional.WaterTank ? "Yes" : "No")</td>
+        </tr>
+
+    </table>
+</div>
+<br />
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr><th colspan="2">Comments</th></tr>
+        <tr><td colspan="2">@Model.Caravan.Condition</td></tr>
+        <tr><td colspan="2"></td></tr>
+    </table>
+</div>
+
+<div style="text-align: center; margin-top: 20px;">
+    <button class="btn btn-primary" onclick="showModal()">I'm Interested in Buying</button>
+    <button class="btn btn-danger" onclick="window.history.back();">Back</button>
+</div>
+
+<!-- Modal Section -->
+<div id="interestModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Interested in Buying?</h2>
+        <form method="post" asp-controller="Home" asp-action="Emails">
+
+            <input type="hidden" name="ID" value="@Model.Caravan.ID" />
+            <input type="hidden" name="category" value="Caravan" />
+            <input type="hidden" name="VehicleName" value="@Model.Brand @Model.Caravan.Model (@Model.Caravan.Year)" />
+
+            <label for="userEmail">Your Email:</label>
+            <input type="email" id="userEmail" name="userEmail" required>
+
+            <label for="userMessage">Message:</label>
+            <textarea id="userMessage" name="userMessage" required style="resize: vertical;"></textarea>
+
+            <button type="submit" class="btn btn-success">Send Inquiry</button>
+        </form>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+<!-- JavaScript for Carousel Logic -->
+<script>
+    let currentImageIndex = 0;
+    const images = @Html.Raw(Json.Serialize(allImages.Select(img => $"data:image/png;base64,{Convert.ToBase64String(img!)}")));
+
+    function changeImage(src, index) {
+        document.getElementById("mainImage").src = src;
+        currentImageIndex = index;
+        updateThumbnails();
+    }
+
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        document.getElementById("mainImage").src = images[currentImageIndex];
+        updateThumbnails();
+    }
+
+    function prevImage() {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        document.getElementById("mainImage").src = images[currentImageIndex];
+        updateThumbnails();
+    }
+
+    function updateThumbnails() {
+        const thumbnails = document.getElementsByClassName("thumbnail");
+        Array.from(thumbnails).forEach((thumb, index) => {
+            thumb.classList.remove("selected-thumbnail");
+            if (index === currentImageIndex) {
+                thumb.classList.add("selected-thumbnail");
+            }
+        });
+    }
+
+
+    //email section
+    function showModal() {
+        document.getElementById('interestModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('interestModal').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+        var modal = document.getElementById('interestModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>

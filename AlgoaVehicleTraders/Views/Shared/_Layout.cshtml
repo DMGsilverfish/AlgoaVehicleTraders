@@ -1,0 +1,138 @@
+﻿@using AlgoaVehicleTraders.Models.All
+@using AlgoaVehicleTraders.Data
+@using System.Linq
+
+@inject AlgoaVehicleTraders.Data.ApplicationDbContext dbContext
+@{
+    var company = dbContext.CompanyDetails.FirstOrDefault();
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Vehicle Traders</title>
+    <link rel="stylesheet" href="~/css/Home.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/css/Footer.css" asp-append-version="true" />
+    
+</head>
+<body>
+    <header>
+        <div class="header">
+            <button class="toggle-btn">
+                <span>&#9776;</span>
+            </button>
+            <h1>@company.CompanyName</h1>
+        </div>
+    </header>
+
+
+
+
+    <!-- Your existing navbar HTML would go here -->
+
+
+
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    @if (!User.Identity?.IsAuthenticated == true)
+                    {
+                        <li><a href="@Url.Action("Index", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">Home</a></li>
+                        <li><a href="@Url.Action("About", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "About" ? "active" : "")">About Us</a></li>
+                        <li><a href="@Url.Action("Contact", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Contact" ? "active" : "")">Contact Us</a></li>
+                        <li><a href="@Url.Action("Services", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Services" ? "active" : "")">Other Services</a></li>
+                    }
+
+                    <!-- Show Sign In if not authenticated, otherwise show Admin options -->
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li><a href="@Url.Action("AdminDashboard", "Admin")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "AdminDashboard" ? "active" : "")">Admin Dashboard</a></li>
+                        <li><a href="@Url.Action("AddVehicle", "Admin")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "AddVehicle" ? "active" : "")">Add Vehicle</a></li>
+                        <li><a href="@Url.Action("VehicleDetailsList", "Admin")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "VehicleDetails" ? "active" : "")">Vehicle Details</a></li>
+                        <li><a href="@Url.Action("AddDropdowns", "Admin")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "AddDropdowns" ? "active" : "")">Update Dropdowns</a></li>
+                        <li><a href="@Url.Action("EditCompanyDetails", "Admin")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "EditCompanyDetails" ? "active" : "")">Company Details</a></li>
+                        <li><a href="@Url.Page("/Account/Register", new { area = "Identity"})" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Register" ? "active" : "")">Register</a></li>
+                        <li><a href="@Url.Action("LogOut", "Login")">Log Out</a></li>  <!-- LogOut action in LoginController -->
+                    }
+
+
+                    
+                    else
+                    {
+                        <li><a href="@Url.Page("/Account/Login", new { area = "Identity" })" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Login" ? "active" : "")">Sign In</a></li>
+                    }
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            @RenderBody()
+        </main>
+
+       
+
+    </div>
+    @if (!User.Identity?.IsAuthenticated == true)
+    {
+        
+             
+        
+        <footer>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap;">
+                <!-- Map Section -->
+                <div style="flex: 1; min-width: 40%; margin-left: 10%;">
+                    <iframe src="@company?.LocationLink"
+                            width="300"
+                            height="250"
+                            style="border: 2px solid #4CAF50; border-radius: 10px;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+
+                <!-- Contact Information Section -->
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>Contact Information</h3>
+                    <p><strong>Company Name:</strong> @company.CompanyName</p>
+                    <p><strong>Address:</strong> @company.Address</p>
+                    <p><strong>Email:</strong> <a href="mailto:@company.CompanyEmail">@company.CompanyEmail</a></p>
+                    <p><strong>Phone:</strong> <a href="tel:@company.CompanyPhone">@company.CompanyPhone</a></p>
+                    <div class="footer-social-links" style="display: flex; gap: 10px;">
+                        <div class="facebook-link">
+                            <a href="@company.FacebookLink" target="_blank">
+                                <img src="~/Pictures/facebook-logo.png" alt="Facebook" style="width: 20px; height: 20px; margin-right: 8px;" />
+                            </a>
+                        </div>
+                        <div class="instagram-link">
+                            <a href="@company.InstagramLink" target="_blank">
+                                <img src="~/Pictures/Instagram-Logo.png" alt="Instagram" style="width: 25px; height: 20px; margin-right: 8px;" />
+                            </a>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </footer>
+    }
+
+    @RenderSection("Scripts", required: false)
+
+
+    <script>
+        document.querySelector(".toggle-btn").addEventListener("click", function () {
+            const sidebar = document.querySelector(".sidebar");
+            if (sidebar.style.display === "none" || !sidebar.style.display) {
+                sidebar.style.display = "block";
+            } else {
+                sidebar.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,437 @@
+﻿@model AlgoaVehicleTraders.Models.All.AddVehicleViewModel
+
+@{
+    ViewData["Title"] = "Admin - Edit Vehicle";
+    Layout = "_Layout";
+}
+
+<head>
+    @* <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" /> *@
+
+    <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+    <style>
+        /* Ensure buttons inside .form-actions are aligned */
+        .form-actions {
+            display: flex;
+            gap: 10px; /* Adds space between buttons */
+            justify-content: flex-end;
+        }
+
+            /* Primary button (Save Changes) */
+            .form-actions #saveButton {
+                background-color: #007bff; /* btn-primary background color */
+                color: white; /* White text */
+                padding: 10px 20px; /* Button padding */
+                border-radius: 5px; /* Rounded corners */
+                border: none; /* No border */
+                cursor: pointer; /* Pointer cursor on hover */
+                display: inline-block; /* Make it behave like a block element */
+            }
+
+                /* Primary button hover effect */
+                .form-actions #saveButton:hover {
+                    background-color: #0056b3; /* Darken the blue on hover */
+                }
+
+            /* Cancel button (already styled, added here for completeness) */
+            .form-actions #cancelButton {
+                text-decoration: none; /* Remove the default underline */
+                color: white; /* White text */
+                background-color: #dc3545; /* btn-danger background color */
+                padding: 10px 20px; /* Button padding */
+                border-radius: 5px; /* Rounded corners */
+                display: inline-block; /* Make the link behave like a block element */
+            }
+
+                /* Cancel button hover effect */
+                .form-actions #cancelButton:hover {
+                    background-color: #c82333; /* Darken the red on hover */
+                    cursor: pointer; /* Show pointer cursor */
+                }
+
+
+    </style>
+</head>
+
+<div class="admin-page-container">
+    <div class="main-content">
+        <h2>Edit Car Details</h2>
+
+        <form asp-action="VehicleDetails" method="post" enctype="multipart/form-data">
+            <input type="hidden" asp-for="Id" />
+
+            <!-- Vehicle Details Section -->
+            <div class="form-grid" style="margin-bottom: 20px;">
+                <!-- Left Column -->
+                <div class="form-group">
+                    <label asp-for="Brand">Brand</label>
+                    <select asp-for="Brand" class="form-control select2" asp-items="Model.Brands" required>
+                        <option value="">Select Brand</option>
+                    </select>
+                    <span asp-validation-for="Brand" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Model">Model</label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Type">Type</label>
+                    <select asp-for="Type" class="form-control select2" asp-items="Model.Types">
+                        <option value="">Select Type</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Colour">Colour</label>
+                    <input asp-for="Colour" class="form-control" />
+                    <span asp-validation-for="Colour" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Mileage">Mileage</label>
+                    <input asp-for="Mileage" class="form-control" type="number" />
+                    <span asp-validation-for="Mileage" class="text-danger"></span>
+                </div>
+
+                <!-- Right Column -->
+                <div class="form-group">
+                    <label asp-for="Year">Year</label>
+                    <input asp-for="Year" class="form-control" type="number" min="1900" max="2099" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="EngineSize">Engine Size</label>
+                    <input asp-for="EngineSize" class="form-control" />
+                    <span asp-validation-for="EngineSize" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="FuelType">Fuel Type</label>
+                    <select asp-for="FuelType" class="form-control select2" asp-items="Model.FuelTypes">
+                        <option value="">Select Fuel Type</option>
+                    </select>
+                    <span asp-validation-for="FuelType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Transmission">Transmission</label>
+                    <select asp-for="Transmission" class="form-control select2" asp-items="Model.Transmissions">
+                        <option value="">Select Transmission</option>
+                    </select>
+                    <span asp-validation-for="Transmission" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Price">Price</label>
+                    <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <!-- Condition and DriveTrain -->
+
+                <div class="form-group">
+                    <label asp-for="DriveTrain">Drive Train</label>
+                    <select asp-for="DriveTrain" class="form-control select2" asp-items="Model.DriveTrains" required>
+                        <option value="">Select Drive Train</option>
+                    </select>
+                    <span asp-validation-for="DriveTrain" class="text-danger"></span>
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Condition">Comments</label>
+                    <textarea asp-for="Condition" class="form-control" rows="5" cols="50"></textarea>
+                    <span asp-validation-for="Condition" class="text-danger"></span>
+                </div>
+
+
+                
+
+                <div class="form-group">
+                    <label asp-for="Status">Status</label>
+                    <select asp-for="Status" class="form-control select2" asp-items="Model.Statuss" required>
+                        <option value="">Select Status</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <!-- Hidden input field for StatusChangeDate -->
+                <input type="hidden" name="OldStatus" id="OldStatus" value="@Model.Status" />
+
+
+            </div>
+
+
+            <!-- Seats, Doors, and Features Section -->
+            <div class="form-grid" style="margin-bottom: 20px;">
+                <div class="form-group">
+                    <label asp-for="NumberSeats">Number of Seats</label>
+                    <input asp-for="NumberSeats" class="form-control" type="number" />
+                    <span asp-validation-for="NumberSeats" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NumberDoors">Number of Doors</label>
+                    <input asp-for="NumberDoors" class="form-control" type="number" />
+                    <span asp-validation-for="NumberDoors" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="ElectricWindows">Electric Windows</label>
+                    <input type="number" asp-for="ElectricWindows" class="form-check-input" />
+                    @* <label class="form-check-label">Electric Windows</label> *@
+                    <span asp-validation-for="ElectricWindows" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Additional Features Section -->
+            <div class="form-group" style="background-color: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); margin-bottom: 20px;">
+                <h4>Additional Features</h4>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="AC" id="AC" class="toggle-switch-input" />
+                    <label for="AC" class="toggle-switch-label">AC</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="Alarm" id="Alarm" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="Alarm">Alarm</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="CentralLocking" id="CentralLocking" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="CentralLocking">Central Locking</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="ElectricMirrors" id="ElectricMirrors" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="ElectricMirrors">Electric Mirrors</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="FullServiceHistory" id="FullServiceHistory" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="FullServiceHistory">Full Service History</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="HeatedSeats" id="HeatedSeats" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="HeatedSeats">Heated Seats</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="LeatherSeats" id="LeatherSeats" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="LeatherSeats">Leather Seats</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="MultiFunctionSteerWheel" id="MultiFunctionSteerWheel" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="MultiFunctionSteerWheel">Multi-function Steering Wheel</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="ParkDistanceControl" id="ParkDistanceControl" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="ParkDistanceControl">Park Distance Control</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="PowerSteering" id="PowerSteering" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="PowerSteering">Power Steering</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="Radio" id="Radio" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="Radio">Radio</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="SpareKey" id="SpareKey" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="SpareKey">Spare Key</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="SpeedControl" id="SpeedControl" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="SpeedControl">Speed Control</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="Sunroof" id="Sunroof" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="Sunroof">Sun Roof</label>
+                </div>
+                <div class="toggle-switch">
+                    <input type="checkbox" asp-for="TowBar" id="TowBar" class="toggle-switch-input" />
+                    <label class="toggle-switch-label" for="TowBar">Tow Bar</label>
+                </div>
+            </div>
+
+
+            <!-- Image Upload Section -->
+            <div class="image-upload-section">
+                <!-- Exterior Images -->
+                <div class="image-upload-group">
+                    <h4>Exterior: <span>Max 6 pics</span></h4>
+                    <input type="file" name="ExteriorImages" multiple accept="image/*" id="exteriorImages"
+                           onchange="setImageUpdateFlag('ExteriorImagesUpdated'); previewImages(event, 'exteriorPreview')">
+                    <input type="hidden" name="ExteriorImagesUpdated" value="false" />
+                </div>
+
+                <!-- Interior Images -->
+                <div class="image-upload-group">
+                    <h4>Interior: <span>Max 4 pics</span></h4>
+                    <input type="file" name="InteriorImages" multiple accept="image/*" id="interiorImages"
+                           onchange="setImageUpdateFlag('InteriorImagesUpdated'); previewImages(event, 'interiorPreview')">
+                    <input type="hidden" name="InteriorImagesUpdated" value="false" />
+                </div>
+
+                <!-- Other Images -->
+                <div class="image-upload-group">
+                    <h4>Other: <span>Max 2 pics</span></h4>
+                    <input type="file" name="OtherImages" multiple accept="image/*" id="otherImages"
+                           onchange="setImageUpdateFlag('OtherImagesUpdated'); previewImages(event, 'otherPreview')">
+                    <input type="hidden" name="OtherImagesUpdated" value="false" />
+                </div>
+            </div>
+
+            <script>
+                function setImageUpdateFlag(flagName) {
+                    document.querySelector(`input[name='${flagName}']`).value = "true";
+                }
+            </script>
+
+            @for (int i = 0; i < Model.ExteriorImageBase64.Length; i++)
+            {
+                <input type="hidden" name="ExistingExteriorImages[@i]" value="@Model.ExteriorImageBase64[i]" />
+            }
+            @for (int i = 0; i < Model.InteriorImageBase64.Length; i++)
+            {
+                <input type="hidden" name="ExistingInteriorImages[@i]" value="@Model.InteriorImageBase64[i]" />
+            }
+            @for (int i = 0; i < Model.OtherImageBase64.Length; i++)
+            {
+                <input type="hidden" name="ExistingOtherImages[@i]" value="@Model.OtherImageBase64[i]" />
+            }
+
+
+
+            <!-- Submit Button Section -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg" id="saveButton">Save Changes</button>
+                <a asp-action="VehicleDetailsList" asp-controller="Admin" class="btn btn-danger btn-lg" id="cancelButton">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Temporary storage for uploaded images
+    let exteriorImages = [];
+    let interiorImages = [];
+    let otherImages = [];
+
+    // Function to handle image uploads and previews incrementally
+    function previewImages(event, previewId) {
+        const fileInput = event.target;
+        const previewContainer = document.getElementById(previewId);
+
+        // Determine category and max limits
+        const maxFiles = {
+            exteriorPreview: 6,
+            interiorPreview: 4,
+            otherPreview: 2
+        };
+
+        const category = previewId.toLowerCase().replace('preview', '');
+        const maxCount = maxFiles[previewId] || 0;
+
+        // Update temporary storage for images
+        const files = Array.from(fileInput.files);
+
+        if (category === 'exterior') {
+            exteriorImages = updateFileList(exteriorImages, files, maxCount);
+            updateImagePreview(previewContainer, exteriorImages, (index) => {
+                exteriorImages.splice(index, 1);
+                updateImagePreview(previewContainer, exteriorImages, arguments.callee);
+            });
+        } else if (category === 'interior') {
+            interiorImages = updateFileList(interiorImages, files, maxCount);
+            updateImagePreview(previewContainer, interiorImages, (index) => {
+                interiorImages.splice(index, 1);
+                updateImagePreview(previewContainer, interiorImages, arguments.callee);
+            });
+        } else if (category === 'other') {
+            otherImages = updateFileList(otherImages, files, maxCount);
+            updateImagePreview(previewContainer, otherImages, (index) => {
+                otherImages.splice(index, 1);
+                updateImagePreview(previewContainer, otherImages, arguments.callee);
+            });
+        }
+    }
+
+    // Helper function to merge and limit file lists
+    function updateFileList(existingFiles, newFiles, maxCount) {
+        return [...existingFiles, ...newFiles].slice(0, maxCount);
+    }
+
+    // Function to update the preview container with images and attach close button logic
+    function updateImagePreview(previewContainer, images, removeCallback) {
+        // Clear any previous previews
+        previewContainer.innerHTML = '';
+
+        // Display selected images as thumbnails
+        images.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imageWrapper = document.createElement('div');
+                imageWrapper.classList.add('image-wrapper');
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('preview-image');
+                img.alt = `Image ${index + 1}`;
+
+                const closeButton = document.createElement('span');
+                closeButton.textContent = '×';
+                closeButton.classList.add('close-button');
+                closeButton.onclick = function () {
+                    removeCallback(index);
+                };
+
+                imageWrapper.appendChild(img);
+                imageWrapper.appendChild(closeButton);
+                previewContainer.appendChild(imageWrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Function to handle removing existing images
+    function removeImage(element) {
+        const parentWrapper = element.closest('.image-wrapper');
+        parentWrapper.remove();
+    }
+
+    // Validation for the year input (reuse if necessary)
+    document.getElementById('year')?.addEventListener('input', function (e) {
+        const input = e.target;
+        const value = input.value;
+
+        // Remove non-numeric characters
+        input.value = value.replace(/\D/g, '');
+
+        // Ensure the value is within the valid range
+        if (input.value < 1900) input.value = 1900;
+        if (input.value > new Date().getFullYear()) input.value = new Date().getFullYear();
+    });
+
+    // Function to submit all selected images with the form
+    function submitForm() {
+        const exteriorInput = document.getElementById('exteriorImagesHidden');
+        const interiorInput = document.getElementById('interiorImagesHidden');
+        const otherInput = document.getElementById('otherImagesHidden');
+
+        exteriorInput.value = JSON.stringify(exteriorImages.map(file => file.name));
+        interiorInput.value = JSON.stringify(interiorImages.map(file => file.name));
+        otherInput.value = JSON.stringify(otherImages.map(file => file.name));
+    }
+
+    // Attach the form submission logic
+    document.querySelector('form').addEventListener('submit', submitForm);
+
+</script>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

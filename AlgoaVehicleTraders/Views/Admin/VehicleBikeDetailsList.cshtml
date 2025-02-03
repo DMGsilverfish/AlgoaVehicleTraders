@@ -1,0 +1,135 @@
+﻿@model IEnumerable<AlgoaVehicleTraders.Models.Cars.EditCarListViewModel>
+@{
+    ViewData["Title"] = "Admin - Edit Vehicle";
+    Layout = "_Layout";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true"> 
+
+    <style>
+        .vehicle-table-container {
+            margin: 20px auto;
+            background-color: #d9d9d9;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+            table th, table td {
+                padding: 12px;
+                text-align: left;
+                border-bottom: 1px solid #ddd;
+            }
+
+            table th {
+                background-color: #e6e6e6;
+                font-weight: bold;
+                color: #333;
+            }
+
+            table td img {
+                width: 50px;
+                height: 50px;
+                object-fit: cover;
+                border-radius: 5px;
+            }
+
+        .details-btn {
+            background-color: #0d6efd;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .details-btn:hover {
+                background-color: #084298;
+            }
+    </style>
+</head>
+<body>
+    <div class="admin-page-container">
+        <div class="main-content">
+
+            <div class="vehicle-table-container">
+                <header>
+                    <h1>Your Bike Inventory</h1>
+
+                    <!-- Pagination for Vehicle Types -->
+                    <ul class="pagination justify-content-center" style="margin-top: 20px; margin-bottom: 20px;">
+                        <li class="page-item">
+                            <a asp-action="VehicleDetailsList" asp-controller="Admin" class="page-link">Car</a>
+                        </li>
+                        <li class="page-item-active">
+                            <a asp-action="VehicleBikeDetailsList" asp-controller="Admin" class="page-link">Bike</a>
+                        </li>
+                        <li class="page-item">
+                            <a asp-action="VehicleBoatDetailsList" asp-controller="Admin" class="page-link">Boat</a>
+                        </li>
+                        <li class="page-item">
+                            <a asp-action="VehicleCaravanDetailsList" asp-controller="Admin" class="page-link">Caravan</a>
+                        </li>
+                        <li class="page-item">
+                            <a asp-action="VehicleTrailerDetailsList" asp-controller="Admin" class="page-link">Trailer</a>
+                        </li>
+                    </ul>
+                </header>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Brand Name</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Exterior Image</th>
+                            <th>Price</th>
+                            <th>Mileage</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vehicle in Model)
+                        {
+                            <tr>
+                                <td>@vehicle.BrandName</td>
+                                <td>@vehicle.Model</td>
+                                <td>@vehicle.Year</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(vehicle.ExteriorImage1Base64))
+                                    {
+                                        <img src="@vehicle.ExteriorImage1Base64" alt="Exterior Image" />
+                                    }
+                                    else
+                                    {
+                                        <span>No Image</span>
+                                    }
+                                </td>
+                                <td>@vehicle.Price.ToString("C")</td>
+                                <td>@vehicle.Mileage KM</td>
+                                <td>
+                                    <a asp-action="VehicleDetailsBike" asp-controller="Admin" asp-route-id="@vehicle.ID" class="details-btn">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

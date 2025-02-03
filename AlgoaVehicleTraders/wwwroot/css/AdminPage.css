@@ -1,0 +1,695 @@
+﻿.alert-success {
+    color: #155724;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-warning {
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.alert-success p {
+    margin-bottom: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-page-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.main-content {
+    background-color: #d9d9d9; /* Light gray background */
+    border-radius: 10px;
+    padding: 20px;
+    width: 80%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+}
+
+.add-vehicle-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two equal-width columns */
+    gap: 15px;
+    padding: 10px;
+    background-color: #e6e6e6;
+    border-radius: 10px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+    .form-group label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group input,
+    .form-group select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        width: 95%;
+        max-width: 95%;
+    }
+
+        .form-group input[type="date"] {
+            cursor: pointer;
+        }
+
+.image-upload-section {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    gap: 15px;
+}
+
+.image-upload-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    padding: 10px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background-color: #fdfdfd;
+    text-align: center;
+}
+
+    .image-upload-group h4 {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 10px;
+    }
+
+    .image-upload-group input {
+        margin-top: 10px;
+        font-size: 12px;
+        cursor: pointer;
+    }
+
+/* Styling for image previews */
+.image-preview-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.preview-image {
+    width: 50px; /* Small thumbnail size */
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.image-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(255, 0, 0, 0.8);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+}
+
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    padding: 10px 0;
+}
+
+.cancel-btn,
+.add-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.cancel-btn {
+    background-color: #e74c3c; /* Red */
+    transition: background-color 0.3s ease;
+}
+
+    .cancel-btn:hover {
+        background-color: #c0392b;
+    }
+
+.add-btn {
+    background-color: #2ecc71; /* Green */
+    transition: background-color 0.3s ease;
+}
+
+    .add-btn:hover {
+        background-color: #27ae60;
+    }
+
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1.5fr; /* Increase the column width */
+    gap: 10px; /* Gap between items */
+    column-gap: 40px; /* Increase the gap between columns */
+}
+
+.form-group {
+    margin: 5px 0; /* Margin for each form group */
+}
+
+.toggle-switch label {
+    margin-left: 8px; /* Space between checkbox and label */
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+
+.toggle-switch {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.toggle-switch input[type="checkbox"] {
+    appearance: none;
+    width: 40px;
+    height: 20px;
+    background-color: #ccc;
+    border-radius: 20px;
+    position: relative;
+    outline: none;
+    transition: background-color 0.3s ease-in-out;
+}
+
+    .toggle-switch input[type="checkbox"]:checked {
+        background-color: #0d6efd;
+    }
+
+    .toggle-switch input[type="checkbox"]::before {
+        content: "";
+        position: absolute;
+        width: 18px;
+        height: 18px;
+        background-color: white;
+        border-radius: 50%;
+        top: 1px;
+        left: 1px;
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .toggle-switch input[type="checkbox"]:checked::before {
+        transform: translateX(20px);
+    }
+
+.toggle-switch label {
+    margin-left: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+textarea {
+    resize: none; /* Prevent resizing */
+    width: 100%;
+    height: 100px; /* Set a fixed height */
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box; /* Ensure padding is included in the total width and height */
+    position: relative;
+}
+    textarea::after {
+        content: attr(title); /* Display the tooltip text */
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #333;
+        color: #fff;
+        padding: 5px;
+        border-radius: 3px;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s;
+    }
+
+    textarea:hover::after {
+        opacity: 1;
+        
+    }
+        /* Responsive Design */
+        /* Responsive Design */
+        @media screen and (max-width: 390px) {
+    /* Adjust the layout and font sizes for very small screens */
+    .admin-page-container {
+        padding: 1rem;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.25rem; /* 20px equivalent */
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr; /* Single column layout */
+    }
+
+    .form-group label,
+    .form-group input,
+    .form-group select {
+        font-size: 0.875rem; /* 14px equivalent */
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%; /* Adjusted width */
+        max-width: 100%;
+    }
+
+    .image-upload-section {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .image-preview-container {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .preview-image {
+        width: 2.5rem; /* 40px equivalent */
+        height: 2.5rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .cancel-btn,
+    .add-btn {
+        font-size: 0.875rem; /* 14px equivalent */
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 90%;
+        gap: 10px; /* Gap between items */
+        max-width: 100%;
+        margin: auto;
+    }
+}
+
+@media screen and (min-width: 391px) and (max-width: 480px) {
+    /* Adjust the layout and font sizes for small screens */
+    .admin-page-container {
+        padding: 2rem;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 1.5rem;
+    }
+
+    header h1 {
+        font-size: 1.375rem; /* 22px equivalent */
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr; /* Single column layout */
+    }
+
+    .form-group label,
+    .form-group input,
+    .form-group select {
+        font-size: 0.7rem;
+        width: 90%;
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 90%;
+        max-width: 100%;
+    }
+
+    .image-upload-section {
+        flex-direction: column;
+        gap: 0.625rem; /* 10px equivalent */
+    }
+
+    .image-preview-container {
+        flex-direction: row;
+        gap: 0.5rem; /* 8px equivalent */
+    }
+
+    .preview-image {
+        width: 2.8125rem; /* 45px equivalent */
+        height: 2.8125rem;
+    }
+
+    .form-actions {
+        flex-direction: row;
+        gap: 0.625rem; /* 10px equivalent */
+    }
+
+    .cancel-btn,
+    .add-btn {
+        font-size: 0.9375rem; /* 15px equivalent */
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 90%;
+        gap: 10px; /* Gap between items */
+        max-width: 100%;
+        margin: auto;
+    }
+}
+
+
+@media screen and (min-width: 481px) and (max-width: 767px) {
+    .form-grid {
+        grid-template-columns: 1fr; /* Single column layout */
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 90%; /* Adjusted width */
+        max-width: 90%;
+    }
+
+    .admin-page-container {
+        padding: 0.5rem;
+    }
+
+    .main-content {
+        width: 90%;
+        padding: 1rem;
+    }
+
+    .feature-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        width: 90%;
+        gap: 10px;
+        max-width: 100%;
+        margin: auto;
+    }
+
+    .image-upload-section {
+        display: flex;
+        flex-wrap: wrap; /* Allow wrapping to the next row */
+        justify-content: space-between;
+        padding: 15px;
+        gap: 15px;
+    }
+
+    .image-upload-group {
+        flex: 0 1 calc(50% - 15px); /* Make each group take half width */
+        box-sizing: border-box;
+    }
+
+        /* Ensure the third block occupies the full width on the next row */
+        .image-upload-group:nth-child(3) {
+            flex: 0 1 calc(50% - 15px);
+        }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+    /* Adjust the layout and font sizes for tablets */
+    .admin-page-container {
+        padding: 2rem;
+    }
+
+    .main-content {
+        width: 90%;
+        padding: 2rem;
+    }
+
+    header h1 {
+        font-size: 1.5rem; /* 24px equivalent */
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr); /* Two columns */
+        gap: 1rem; /* 16px equivalent */
+    }
+
+    .form-group label,
+    .form-group input,
+    .form-group select {
+        font-size: 1rem; /* 16px equivalent */
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 95%; /* Adjusted width */
+        max-width: 95%;
+    }
+
+    .image-upload-section {
+        flex-direction: row;
+        gap: 1rem; /* 16px equivalent */
+    }
+
+    .image-preview-container {
+        flex-direction: row;
+        gap: 0.625rem; /* 10px equivalent */
+    }
+
+    .preview-image {
+        width: 3.125rem; /* 50px equivalent */
+        height: 3.125rem;
+    }
+
+    .form-actions {
+        flex-direction: row;
+        gap: 0.9375rem; /* 15px equivalent */
+    }
+
+    .cancel-btn,
+    .add-btn {
+        font-size: 1rem; /* 16px equivalent */
+    }
+
+    .footer-social-links {
+        flex-direction: column; /* Adjust social links for tablet */
+        margin-top: 20px;
+    }
+
+    .footer .facebook-link img,
+    .footer .instagram-link img {
+        width: 20px; /* Adjust width for consistency */
+        height: 20px; /* Adjust height for consistency */
+        margin-right: 8px;
+    }
+}
+
+/* Media query for screens 1080px and below */
+@media screen and (max-width: 1080px) {
+    .admin-page-container {
+        padding: 1rem;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.25rem; /* 20px equivalent */
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr; /* Single column */
+        gap: 0.5rem; /* 8px equivalent */
+    }
+
+    .form-group label,
+    .form-group input,
+    .form-group select {
+        font-size: 0.875rem; /* 14px equivalent */
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%; /* Full width */
+        max-width: 100%;
+    }
+
+    .image-upload-section {
+        flex-direction: column;
+        gap: 0.5rem; /* 8px equivalent */
+    }
+
+    .image-preview-container {
+        flex-direction: column;
+        gap: 0.3125rem; /* 5px equivalent */
+    }
+
+    .preview-image {
+        width: 3.125rem; /* 50px equivalent */
+        height: 3.125rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 0.9375rem; /* 15px equivalent */
+    }
+
+    .cancel-btn,
+    .add-btn {
+        font-size: 1rem; /* 16px equivalent */
+    }
+
+    .footer-social-links {
+        flex-direction: row; /* Adjust social links for mobile */
+        margin-top: 10px;
+    }
+
+    .footer .facebook-link img,
+    .footer .instagram-link img {
+        width: 20px; /* Adjust width for consistency */
+        height: 20px; /* Adjust height for consistency */
+        margin-right: 8px;
+    }
+}
+
+/* Media query for screens 1080px and below */
+@media screen and (max-width: 1080px) {
+    .admin-page-container {
+        padding: 2rem;
+    }
+
+    .main-content {
+        width: 100%;
+        padding: 1rem;
+    }
+
+    header h1 {
+        font-size: 1.25rem; /* 20px equivalent */
+    }
+
+    .form-grid {
+        display: grid;
+        grid-template-columns: 1fr; /* Single column */
+        gap: 1rem; /* 16px equivalent */
+    }
+
+    .form-group label,
+    .form-group input,
+    .form-group select {
+        font-size: 1rem; /* 16px equivalent */
+    }
+
+    .form-group input,
+    .form-group select {
+        width: 100%; /* Full width */
+        max-width: 100%;
+    }
+
+    .image-upload-section {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem; /* 16px equivalent */
+    }
+
+    .image-preview-container {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem; /* 10px equivalent */
+    }
+
+    .preview-image {
+        width: 3.125rem; /* 50px equivalent */
+        height: 3.125rem;
+    }
+
+    .form-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 0.9375rem; /* 15px equivalent */
+    }
+
+    .cancel-btn,
+    .add-btn {
+        font-size: 1rem; /* 16px equivalent */
+    }
+
+    .footer-social-links {
+        display: flex;
+        flex-direction: row; /* Adjust social links for mobile */
+        margin-top: 10px;
+    }
+
+    .footer .facebook-link img,
+    .footer .instagram-link img {
+        width: 20px; /* Adjust width for consistency */
+        height: 20px; /* Adjust height for consistency */
+        margin-right: 8px;
+    }
+}
+
+
+

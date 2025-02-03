@@ -1,0 +1,431 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Styling for the header */
+.header {
+    background: linear-gradient( 45deg, #4CAF50 0%, #4CAF50 8%, /* Green covers the button */
+    black 8%, black 12%, /* Thin black separator */
+    white 12%, white 38%, /* White for title area */
+    black 38%, black 42%, /* Thin black separator */
+    #4CAF50 42%, #4CAF50 100% /* Rest is green */
+    );
+    background-size: 200% 200%;
+    color: white;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid black;
+}
+
+/* Styling for the button */
+.toggle-btn {
+    background-color: black;
+    border: none;
+    color: white;
+    font-size: 30px;
+    padding: 10px;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 10px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Styling for the header text */
+h1 {
+    margin: 0;
+    font-size: 24px;
+    position: relative;
+    z-index: 1;
+    flex-grow: 1;
+    text-align: center;
+    color: black;
+}
+
+
+
+/* Pseudo-element to create the arrow-like pattern */
+/*.header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient( 45deg, #4CAF50 0%, #4CAF50 25%, black 25%, black 50%, white 50%, white 75%, #4CAF50 75%, #4CAF50 100% );
+    background-size: 200% 200%;*/ /* Increase the size to allow for the gradient pattern */
+    /*animation: movePattern 10s linear infinite;*/ /* Animation to move the pattern */
+    /*z-index: 0;*/ /* Ensure the pattern is behind the content */
+/*}*/
+
+/* Keyframes for the moving pattern */
+/*@keyframes movePattern {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}*/
+
+/* Container for content and sidebar */
+.container {
+    display: flex;
+    align-items: flex-start; /* Ensure the sidebar aligns with the top of the content */
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 200px;
+    background-color: #a6a6a6; /* Background color for the navbar */
+    padding: 10px;
+    min-height: 100vh; /* Ensure it spans at least the height of the viewport */
+    height: auto; /* Allow it to grow based on content */
+    box-sizing: border-box; /* Include padding in the height calculation */
+    position: sticky; /* Make it stick to the top of the page when scrolling */
+    top: 0; /* Align to the top when sticky */
+}
+
+    /* Sidebar navigation styling */
+    .sidebar nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+        .sidebar nav ul li {
+            margin: 10px 0;
+        }
+
+            .sidebar nav ul li a {
+                display: block;
+                padding: 8px 10px; /* Smaller padding for smaller rectangles */
+                border-radius: 10px; /* Rounded corners */
+                text-align: center; /* Center the text */
+                text-decoration: none;
+                color: #333; /* Default text color */
+                background-color: white; /* Default background color for links */
+                transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+            }
+
+                .sidebar nav ul li a:hover {
+                    background-color: #d2e0ae; /* Hover effect color */
+                    color: #000;
+                }
+
+                /* Highlight current page */
+                .sidebar nav ul li a.active {
+                    background-color: #d2e0ae; /* Current page background color */
+                    color: #000; /* Current page text color */
+                }
+
+/* Content area styling */
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* Search bar styling */
+.search-bar {
+    margin-bottom: 20px;
+}
+
+    .search-bar input {
+        width: 60%;
+        padding: 10px;
+        margin-right: 10px;
+    }
+
+    .search-bar button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+@media screen and (max-width: 390px) {
+    .container {
+        flex-direction: column; /* Stack the sidebar and content vertically */
+    }
+
+    /* Sidebar adjustments for smaller screens */
+    .sidebar {
+        width: 100%; /* Ensure it spans the full width */
+        height: auto; /* Allow it to grow based on content */
+        background-color: grey; /* Grey background for testing */
+        visibility: visible; /* Ensure the navbar is visible */
+    }
+
+        .sidebar nav ul {
+            padding: 5px;
+        }
+
+            .sidebar nav ul li {
+                margin: 5px 0;
+            }
+
+                .sidebar nav ul li a {
+                    padding: 6px 8px; /* Reduce padding for smaller screens */
+                    font-size: 14px; /* Reduce font size */
+                }
+
+    .container .content {
+        margin-left: 0; /* Ensure content doesn't shift with sidebar */
+        padding: 20px;
+    }
+
+    .search-bar input {
+        width: calc(100% - 20px); /* Full width input minus padding */
+        margin-right: 0; /* Remove margin on input */
+    }
+
+    .search-bar button {
+        width: 100%; /* Full width button */
+        margin-top: 10px; /* Add margin on top */
+    }
+
+    /* Menu icon adjustments for small screens */
+    .toggle-btn {
+        font-size: 25px;
+        margin-right: 0;
+    }
+
+    /* Header adjustments for small screens */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 16px; /* Smaller font size for the header on small screens */
+    }
+
+    /* Footer social links for smaller screens */
+    .footer-social-links {
+        flex-direction: column; /* Stack social links vertically */
+        align-items: center;
+    }
+
+    .footer .facebook-link img,
+    .footer .instagram-link img {
+        width: 20px; /* Adjust width for consistency */
+        height: 20px; /* Adjust height for consistency */
+        margin-right: 8px;
+    }
+
+    /* Additional small screen adjustments for ul and li */
+    .sidebar nav ul {
+        padding: 5px;
+        margin: 0;
+    }
+
+        .sidebar nav ul li {
+            margin: 5px 0;
+        }
+
+            .sidebar nav ul li a {
+                padding: 6px 8px; /* Reduce padding for smaller screens */
+                font-size: 14px; /* Reduce font size */
+            }
+}
+
+
+
+/* Mobile adjustments for screens 391 to 480px */
+@media screen and (min-width: 391px) and (max-width: 480px) {
+    .container {
+        flex-direction: column; /* Stack the sidebar and content vertically */
+    }
+
+    /* Header and button styling */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+    }
+
+    .toggle-btn {
+        font-size: 25px;
+        margin-right: 0;
+    }
+
+    h1 {
+        font-size: 18px; /* Smaller font size for the header on mobile */
+    }
+
+    /* Sidebar adjustments for mobile */
+    .sidebar {
+        width: 100%; /* Make the sidebar take up the full width */
+        height: 300px; /* Use the adjusted height of 300px */
+        position: static; /* Normal flow */
+        background-color: grey; /* Set the background color for testing */
+        visibility: visible; /* Ensure the navbar is visible */
+    }
+
+        .sidebar nav ul {
+            list-style: none;
+            padding: 5px;
+            margin: 0;
+        }
+
+            .sidebar nav ul li {
+                margin: 5px 0;
+            }
+
+                .sidebar nav ul li a {
+                    display: block;
+                    padding: 6px 8px; /* Reduce padding for smaller screens */
+                    border-radius: 10px; /* Rounded corners */
+                    text-align: center; /* Center the text */
+                    text-decoration: none;
+                    color: #333; /* Default text color */
+                    background-color: white; /* Default background color for links */
+                    transition: background-color 0.3s, color 0.3s; /* Smooth transitions */
+                    font-size: 14px; /* Reduce font size */
+                }
+
+                    .sidebar nav ul li a:hover {
+                        background-color: #d2e0ae; /* Hover effect color */
+                        color: #000;
+                    }
+
+                    .sidebar nav ul li a.active {
+                        background-color: #d2e0ae; /* Current page background color */
+                        color: #000; /* Current page text color */
+                    }
+
+    .container .content {
+        margin-left: 0; /* Ensure content doesn't shift with sidebar */
+        padding: 20px;
+    }
+
+    .search-bar input {
+        width: calc(100% - 20px); /* Full width input minus padding */
+        margin-right: 0; /* Remove margin on input */
+    }
+
+    .search-bar button {
+        width: 100%; /* Full width button */
+        margin-top: 10px; /* Add margin on top */
+    }
+
+    /* Adjustments for footer links */
+    .footer-social-links {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .footer .facebook-link img,
+    .footer .instagram-link img {
+        width: 20px; /* Adjust width for consistency */
+        height: 20px; /* Adjust height for consistency */
+        margin-right: 8px;
+    }
+}
+
+
+
+/* Tablet adjustments for screens 481px - 768px */
+
+@media screen and (min-width: 481px) and (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack the sidebar and content vertically */
+    }
+    /* Header and button styling */
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+    }
+
+    .toggle-btn {
+        font-size: 25px;
+        margin-right: 0;
+    }
+
+    h1 {
+        font-size: 20px; /* Adjusted font size for headers on tablet */
+    }
+    /* Sidebar adjustments for tablet */
+
+    .sidebar {
+        width: 100%; /* Make sidebar full width */
+        height: auto; /* Allow it to grow based on content */
+        position: static; /* Normal flow */
+    }
+
+    .container .content {
+        margin-left: 0; /* Ensure content doesn't shift with sidebar */
+        padding: 20px;
+    }
+
+    .search-bar input {
+        width: calc(100% - 20px); /* Full width input minus padding */
+        margin-right: 0;
+    }
+
+    .search-bar button {
+        width: 100%; /* Full width button */
+        margin-top: 10px; /* Add margin on top */
+    }
+}
+
+/* Styles for screens with 1080p width */
+@media screen and (max-width: 1080px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .vehicle-card {
+        flex: 1 1 100%; /* Ensure single card per row on mobile and 1080px */
+        margin-bottom: 20px;
+    }
+
+    /* Additional styling for 1080px screens */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        padding: 15px;
+    }
+
+    .toggle-btn {
+        font-size: 25px;
+        margin-right: 0;
+    }
+
+    h1 {
+        font-size: 20px; /* Adjusted font size for headers */
+    }
+
+    .sidebar {
+        width: 100%; /* Make sidebar full width */
+        height: auto; /* Allow it to grow based on content */
+        position: static; /* Normal flow */
+        display: none;
+    }
+
+    .container .content {
+        margin-left: 0; /* Ensure content doesn't shift with sidebar */
+        padding: 20px;
+    }
+
+    .search-bar input {
+        width: calc(100% - 20px); /* Full width input minus padding */
+        margin-right: 0;
+    }
+
+    .search-bar button {
+        width: 100%; /* Full width button */
+        margin-top: 10px; /* Add margin on top */
+    }
+}

@@ -1,0 +1,189 @@
+﻿@using AlgoaVehicleTraders.Models.Boats
+@using AlgoaVehicleTraders.Models.All
+@model BoatViewModel
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/ViewMore.css" asp-append-version="true" />
+</head>
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+<!-- Carousel Container -->
+<div class="container text-center page-center">
+    <h2>@Model.Brand @Model.Boat.Model (@Model.Boat.Year)</h2>
+</div>
+
+<!-- Main Carousel Section -->
+<div class="carousel-container">
+    <!-- Main Image Section -->
+    <div class="main-image-container">
+        <img id="mainImage" src="@($"data:image/png;base64,{Convert.ToBase64String(Model.Additional.Exterior1 ?? new byte[0])}")"
+             class="main-image img-fluid" alt="Main Car Image">
+        <!-- Left Arrow -->
+        <button class="carousel-btn prev" onclick="prevImage()">&#10094;</button>
+        <!-- Right Arrow -->
+        <button class="carousel-btn next" onclick="nextImage()">&#10095;</button>
+    </div>
+
+    <!-- Thumbnails Section -->
+    <div class="thumbnail-gallery">
+        @{
+            var allImages = new List<byte[]?>
+        {
+        Model.Additional?.Exterior1, Model.Additional?.Exterior2, Model.Additional?.Exterior3, Model.Additional?.Exterior4, Model.Additional?.Exterior5, Model.Additional?.Exterior6,
+        Model.Additional?.Interior1, Model.Additional?.Interior2, Model.Additional?.Interior3, Model.Additional?.Interior4, Model.Additional?.Other1, Model.Additional?.Other2
+        }.Where(img => img != null).ToList();
+        }
+
+        @for (int i = 0; i < allImages.Count; i++)
+        {
+            var imageSrc = $"data:image/png;base64,{Convert.ToBase64String(allImages[i]!)}";
+            <img class="thumbnail @(i == 0 ? "selected-thumbnail" : "")"
+                 src="@imageSrc" onclick="changeImage('@imageSrc', @i)">
+        }
+    </div>
+</div>
+
+<!-- Vehicle Details Table -->
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr><th colspan="2">Information</th></tr>
+        <tr><td><strong>Price:</strong></td><td>R @Model.Boat.Price.ToString("N2")</td></tr>
+        <tr><td><strong>Mileage:</strong></td><td>@Model.Boat.Mileage KM</td></tr>
+        <tr><td><strong>Year:</strong></td><td>@Model.Boat.Year</td></tr>
+        <tr><td><strong>Fuel Type:</strong></td><td>@Model.FuelType</td></tr>
+        <tr><td><strong>Boat Type:</strong></td><td>@Model.BoatType</td></tr>
+        <tr><td><strong>Boat Use:</strong></td><td>@Model.WaterDepth</td></tr>
+    </table>
+</div>
+
+<br />
+
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr>
+            <th colspan="4">Additional Options</th>
+        </tr>
+        <tr>
+            <td><strong>Buoyancy Certificate</strong></td>
+            <td class="@(Model.Additional.BuoyancyCertificate ? "yes-background" : "no-background")">@(Model.Additional.BuoyancyCertificate ? "Yes" : "No")</td>
+            <td><strong>COF</strong></td>
+            <td class="@(Model.Additional.COF ? "yes-background" : "no-background")">@(Model.Additional.COF ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Fish Finder</strong></td>
+            <td class="@(Model.Additional.FishFinder ? "yes-background" : "no-background")">@(Model.Additional.FishFinder ? "Yes" : "No")</td>
+            <td><strong>Life Jackets</strong></td>
+            <td class="@(Model.Additional.LifeJackets ? "yes-background" : "no-background")">@(Model.Additional.LifeJackets ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Live Well</strong></td>
+            <td class="@(Model.Additional.LiveWell ? "yes-background" : "no-background")">@(Model.Additional.LiveWell ? "Yes" : "No")</td>
+            <td><strong>Registered Trailer</strong></td>
+            <td class="@(Model.Additional.RegisteredTrailer ? "yes-background" : "no-background")">@(Model.Additional.RegisteredTrailer ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Safety Equipment</strong></td>
+            <td class="@(Model.Additional.SafetyEquipment ? "yes-background" : "no-background")">@(Model.Additional.SafetyEquipment ? "Yes" : "No")</td>
+            <td><strong>Ski Tower</strong></td>
+            <td class="@(Model.Additional.SkiTower ? "yes-background" : "no-background")">@(Model.Additional.SkiTower ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>VHF Radio</strong></td>
+            <td class="@(Model.Additional.VhfRadio ? "yes-background" : "no-background")">@(Model.Additional.VhfRadio ? "Yes" : "No")</td>
+        </tr>
+    </table>
+</div>
+<br />
+
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr><th colspan="2">Comments</th></tr>
+        <tr><td colspan="2">@Model.Boat.Condition</td></tr>
+        <tr><td colspan="2"></td></tr>
+    </table>
+</div>
+
+<!-- Centered Button Section -->
+<div style="text-align: center; margin-top: 20px;">
+    <button class="btn btn-primary" onclick="showModal()">I'm Interested in Buying</button>
+    <button class="btn btn-danger" onclick="window.history.back();">Back</button>
+</div>
+
+<!-- Modal Section -->
+<div id="interestModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Interested in Buying?</h2>
+        <form method="post" asp-controller="Home" asp-action="Emails">
+
+            <input type="hidden" name="ID" value="@Model.Boat.ID" />
+            <input type="hidden" name="category" value="Boat" />
+            <input type="hidden" name="VehicleName" value="@Model.Brand @Model.Boat.Model (@Model.Boat.Year)" />
+
+            <label for="userEmail">Your Email:</label>
+            <input type="email" id="userEmail" name="userEmail" required>
+
+            <label for="userMessage">Message:</label>
+            <textarea id="userMessage" name="userMessage" required style="resize: vertical;"></textarea>
+
+            <button type="submit" class="btn btn-success">Send Inquiry</button>
+        </form>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+<!-- JavaScript for Carousel Logic -->
+<script>
+    let currentImageIndex = 0;
+    const images = @Html.Raw(Json.Serialize(allImages.Select(img => $"data:image/png;base64,{Convert.ToBase64String(img!)}")));
+
+    function changeImage(src, index) {
+        document.getElementById("mainImage").src = src;
+        currentImageIndex = index;
+        updateThumbnails();
+    }
+
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        document.getElementById("mainImage").src = images[currentImageIndex];
+        updateThumbnails();
+    }
+
+    function prevImage() {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        document.getElementById("mainImage").src = images[currentImageIndex];
+        updateThumbnails();
+    }
+
+    function updateThumbnails() {
+        const thumbnails = document.getElementsByClassName("thumbnail");
+        Array.from(thumbnails).forEach((thumb, index) => {
+            thumb.classList.remove("selected-thumbnail");
+            if (index === currentImageIndex) {
+                thumb.classList.add("selected-thumbnail");
+            }
+        });
+    }
+
+
+    //email section
+    function showModal() {
+        document.getElementById('interestModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('interestModal').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+        var modal = document.getElementById('interestModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>

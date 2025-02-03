@@ -1,0 +1,290 @@
+﻿@using AlgoaVehicleTraders.Models.Cars
+@using AlgoaVehicleTraders.Models.All
+@model IEnumerable<CarViewModel>
+@{
+    ViewData["Title"] = "Home";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/CarCards.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true" />
+    <style>
+        /* Modal Styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5); /* Black background with opacity */
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .modal-header {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+        }
+
+        .close-btn {
+            color: white;
+            background-color: #74b62c;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+            .close-btn:hover {
+                background-color: #5e9e24;
+            }
+
+        .sort-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.sort-option select {
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+.sort-icon {
+    font-size: 18px;
+    margin-left: 10px;
+    color: #4CAF50; /* Match the theme color */
+}
+
+
+        /* Aligning the search bar and pagination in a row */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+         
+ 
+
+
+    </style>
+</head>
+
+<body>
+    <div class="search-bar">
+        <input type="text" placeholder="Search Car Brand, Model, Year..." />
+        @* <button type="button" style="background-color: #74b62c">Search</button> *@
+        <button type="button" style="background-color: #74b62c" id="sort-btn">Sort</button>
+        <ul class="pagination">
+            <li class="page-item-active"><a class="page-link" href="#">Car</a></li>
+            <li class="page-item"><a asp-action="BikeIndex" asp-controller="Home" class="page-link">Bike</a></li>
+            <li class="page-item"><a asp-action="CaravanIndex" asp-controller="Home" class="page-link">Caravan</a></li>
+            <li class="page-item"><a asp-action="BoatIndex" asp-controller="Home" class="page-link">Boat</a></li>
+            <li class="page-item"><a class="page-link" href="#">Trailor</a></li>
+            <li class="page-item"><a class="page-link" href="#">Other</a></li>
+        </ul>
+    </div>
+
+    <div class="vehicle-list">
+        @foreach (var item in Model)
+        {
+            var car = item.Car;
+            var additional = item.Additional;
+            var brand = item.Brand;
+            var fuelType = item.FuelType;
+            var transmission = item.Transmission;
+            var drivetrain = item.DriveTrain;
+
+            <div class="vehicle-card" onclick="flipCard(this)">
+                <div class="vehicle-card-inner">
+                    <!-- Front of the card -->
+                    <div class="vehicle-card-front">
+                        <img src="@(additional?.Exterior1 != null ? "data:image/png;base64," + Convert.ToBase64String(additional.Exterior1) : "~/Images/default-image.png")" alt="@car.Model" />
+                        @* <h3>@car.Brand @car.Model (@car.Year.Year)</h3> *@
+                        <h3>@brand @car.Model (@car.Year)</h3> <!-- Display Brand -->
+
+                        <div class="footer">
+                            <div class="price-footer">
+                                <strong>R @car.Price.ToString("N2")</strong>
+                            </div>
+                            <div class="mileage">
+                                <strong>@car.Mileage KM</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Back of the card -->
+                    <div class="vehicle-card-back">
+                        <h3>@brand @car.Model (@car.Year) </h3><!-- Display Brand -->
+                        <p>Transmission: @transmission</p>  <!-- Display Transmission -->
+                        <p>Fuel: @fuelType</p>             <!-- Display FuelType -->
+                        <p>Engine: @(car.EngineSize)</p>
+                        <p>Drive: @drivetrain</p>
+
+                        <form asp-controller="Home" asp-action="ViewMore" method="get" class="view-more-form">
+                            <input type="hidden" name="id" value="@car.ID" />
+                            <button type="submit" class="view-more-btn" style="background: #74b62c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                                View More
+                            </button>
+                        </form>
+
+                        <div class="footer">
+                            <div class="price-footer">
+                                <strong>R @car.Price.ToString("N2")</strong>
+                            </div>
+                            <div class="mileage">
+                                <strong>@car.Mileage KM</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+    <!-- Modal Structure -->
+    <div class="modal" id="sortModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Sort Options</h3>
+            </div>
+            <div class="modal-body">
+                <!-- Each sort option with dropdown for direction -->
+                <div class="sort-option">
+                    <span>Price</span>
+                    <select onchange="updateSortIcon(this, 'price')">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <span class="sort-icon" id="price-sort-icon">↑</span>
+                </div>
+                <div class="sort-option">
+                    <span>Brand</span>
+                    <select onchange="updateSortIcon(this, 'brand')">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <span class="sort-icon" id="brand-sort-icon">↑</span>
+                </div>
+                <div class="sort-option">
+                    <span>Model</span>
+                    <select onchange="updateSortIcon(this, 'model')">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <span class="sort-icon" id="model-sort-icon">↑</span>
+                </div>
+                <div class="sort-option">
+                    <span>Year</span>
+                    <select onchange="updateSortIcon(this, 'year')">
+                        <option value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <span class="sort-icon" id="year-sort-icon">↑</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="close-btn" id="closeModal">Close</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        // Open modal
+        document.getElementById("sort-btn").addEventListener("click", function () {
+            document.getElementById("sortModal").style.display = "block";
+        });
+
+        // Close modal
+        document.getElementById("closeModal").addEventListener("click", function () {
+            document.getElementById("sortModal").style.display = "none";
+        });
+
+        // Close modal when clicking outside the modal content
+        window.addEventListener("click", function (event) {
+            const modal = document.getElementById("sortModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+
+        function flipCard(card) {
+            card.addEventListener("click", function (event) {
+                // Prevent flipping if the clicked element is a button or within a form
+                if (event.target.classList.contains("view-more-btn") || event.target.closest("form")) {
+                    return;
+                }
+                const innerCard = card.querySelector('.vehicle-card-inner');
+                innerCard.classList.toggle('flipped');
+            });
+        }
+
+        // Attach the flipCard function to each card
+        document.querySelectorAll(".vehicle-card").forEach(card => {
+            flipCard(card);
+        });
+
+        // Function to filter cars dynamically based on search input
+        const searchInput = document.querySelector(".search-bar input");
+
+        // Event listener for search input
+        searchInput.addEventListener("input", function () {
+            const searchTerm = searchInput.value.toLowerCase();
+            const cars = document.querySelectorAll(".vehicle-card");
+
+            cars.forEach(car => {
+                const brand = car.querySelector("h3").textContent.toLowerCase();  // Assuming the brand and model are in <h3>
+                const model = car.querySelector("h3").textContent.toLowerCase();
+                const year = car.querySelector("h3").textContent.toLowerCase();
+
+                // Check if search term matches the brand, model, or year (modify this condition as needed)
+                if (brand.includes(searchTerm) || model.includes(searchTerm) || year.includes(searchTerm)) {
+                    car.style.display = "block";  // Show car card
+                } else {
+                    car.style.display = "none";  // Hide car card
+                }
+            });
+        });
+
+        // Sorting functions (currently a placeholder)
+        function updateSortIcon(selectElement, sortKey) {
+            const iconElement = document.getElementById(`${sortKey}-sort-icon`);
+            if (selectElement.value === "asc") {
+                iconElement.textContent = "↑"; // Ascending arrow
+            } else if (selectElement.value === "desc") {
+                iconElement.textContent = "↓"; // Descending arrow
+            }
+            // Call the sort function (optional, depending on when sorting should trigger)
+            sortCards(sortKey, selectElement.value);
+        }
+
+        function sortCards(sortKey, direction) {
+            console.log(`Sorting by ${sortKey} in ${direction} order`);
+            // Add your sorting logic here
+        }
+    </script>
+
+</body>

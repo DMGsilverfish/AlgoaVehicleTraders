@@ -1,0 +1,55 @@
+﻿@model AlgoaVehicleTraders.Models.All.AddVehicleViewModel
+
+@{
+    ViewData["Title"] = "Admin - Add Car";
+    Layout = "_Layout";
+}
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-w1QoyYJ8qFqP1TaqAMuI0ZpiEqblh3p39UqMZON5NqF5zH5VVv9+dp03GMRxR9S" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+    @Html.Raw("<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\" integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js\" integrity=\"sha384-eMnRxK2zzKbz5Uv8KwxLjtg32SLaWk/5ZCnjBQLpib++nttI65dgy84iYLKVPqu1\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\" integrity=\"sha384-B4gt1jrGC7Jh4AgEPuydfBBY4cBYa3F1PiUkTfvw1GUzzTtmI3Q7fR9Kn5wYlull\" crossorigin=\"anonymous\"></script>")
+
+</head>
+
+
+
+<body>
+
+
+    <div class="admin-page-container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h1>Add Trailer Comming soon!</h1>
+
+
+
+                <!-- Pagination for Vehicle Types -->
+                <ul class="pagination justify-content-center" style="margin-top: 20px; margin-bottom: 20px;">
+                    <li class="page-item">
+                        <a asp-action="AddVehicle" asp-controller="Admin" class="page-link">Car</a>
+                    </li>
+                    <li class="page-item">
+                        <a asp-action="AddVehicleBike" asp-controller="Admin" class="page-link">Bike</a>
+                    </li>
+                    <li class="page-item">
+                        <a asp-action="AddVehicleBoat" asp-controller="Admin" class="page-link">Boat</a>
+                    </li>
+                    <li class="page-item">
+                        <a asp-action="AddVehicleCaravan" asp-controller="Admin" class="page-link">Caravan</a>
+                    </li>
+                    <li class="page-item-active">
+                        <a asp-action="AddVehicleTrailer" asp-controller="Admin" class="page-link">Trailer</a>
+                    </li>
+                </ul>
+
+            </header>
+        </div>
+   </div>
+</body>
+

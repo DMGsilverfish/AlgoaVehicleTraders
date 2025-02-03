@@ -1,0 +1,36 @@
+﻿/* Styling the pagination container to align next to the sort button */
+.pagination {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+}
+
+/* Adjusted spacing for pagination items */
+.page-item {
+    margin: 0 1px;
+}
+
+/* Styling pagination links for better appearance */
+.page-link {
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid #74b62c;
+    border-radius: 5px;
+    color: #333;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+    /* Hover effect for links */
+    .page-link:hover {
+        background-color: #74b62c;
+        color: white;
+    }
+
+/* Active state for the pagination */
+.page-item-active .page-link {
+    background-color: #74b62c;
+    color: white;
+    border-color: #74b62c;
+}

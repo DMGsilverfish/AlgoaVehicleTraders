@@ -1,0 +1,181 @@
+﻿@model AlgoaVehicleTraders.Models.All.DropdownsViewModel
+
+@{
+    ViewData["Title"] = "Admin - Add Dropdowns";
+    Layout = "_Layout";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+
+    <style>
+        .alert-success {
+        color: #155724;
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        }
+
+        .alert-warning {
+        color: #856404;
+        background-color: #fff3cd;
+        border-color: #ffeeba;
+        padding: 15px;
+        margin-bottom: 20px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        }
+
+        .alert-success h4 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 18px;
+        font-weight: bold;
+        }
+
+        .alert-success p {
+        margin-bottom: 0;
+        }
+
+    </style>
+</head>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["SuccessMessage"]
+    </div>
+}
+
+@if (TempData["WarningMessage"] != null)
+{
+    <div class="alert alert-warning" role="alert">
+        @TempData["WarningMessage"]
+    </div>
+}
+@{
+    string tips = "Use this page to add new items to dropdowns. Please note that all fields with a typed in value will be added. If the textbox is left empty it will be ignored. These added items can be removed later.";
+}
+
+<div class="admin-page-container">
+    <div class="main-content">
+        <header>
+            <h1>Add Dropdown Items</h1>
+
+            <!-- Pagination for Vehicle Types -->
+            <ul class="pagination justify-content-center" style="margin-top: 20px; margin-bottom: 20px;">
+                <li class="page-item-active">
+                    <a asp-action="AddDropdowns" asp-controller="Admin" class="page-link">Add</a>
+                </li>
+                <li class="page-item">
+                    <a asp-action="EditDropdowns" asp-controller="Admin" class="page-link">Edit</a>
+                </li>
+                <li class="page-item">
+                    <a asp-action="DeleteDropdowns" asp-controller="Admin" class="page-link">Delete</a>
+                </li>
+                <li class="page-item">
+                    <a href="#" class="page-link" data-bs-toggle="tooltip" title="@tips">
+                        <i class="fas fa-info-circle"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </header>
+
+        <form asp-action="AddDropdowns" method="post" class="add-dropdown-form">
+            <!-- All -->
+            <h2>All</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="FuelTypeName">Fuel Type</label>
+                    <input asp-for="FuelTypeName" class="form-control" />
+                    <span asp-validation-for="FuelTypeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TransmissionName">Transmission</label>
+                    <input asp-for="TransmissionName" class="form-control" />
+                    <span asp-validation-for="TransmissionName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Car -->
+            <h2>Car</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="CarTypeName">Type</label>
+                    <input asp-for="CarTypeName" class="form-control" />
+                    <span asp-validation-for="CarTypeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CarBrandName">Brand</label>
+                    <input asp-for="CarBrandName" class="form-control" />
+                    <span asp-validation-for="CarBrandName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DriveTrainName">Drive Train</label>
+                    <input asp-for="DriveTrainName" class="form-control" />
+                    <span asp-validation-for="DriveTrainName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Bike -->
+            <h2>Bike</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="BikeTypeName">Type</label>
+                    <input asp-for="BikeTypeName" class="form-control" />
+                    <span asp-validation-for="BikeTypeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BikeBrandName">Brand</label>
+                    <input asp-for="BikeBrandName" class="form-control" />
+                    <span asp-validation-for="BikeBrandName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Boat -->
+            <h2>Boat</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="BoatTypeName">Type</label>
+                    <input asp-for="BoatTypeName" class="form-control" />
+                    <span asp-validation-for="BoatTypeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BoatBrandName">Brand</label>
+                    <input asp-for="BoatBrandName" class="form-control" />
+                    <span asp-validation-for="BoatBrandName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="WaterDepthName">Water Depth</label>
+                    <input asp-for="WaterDepthName" class="form-control" />
+                    <span asp-validation-for="WaterDepthName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- Caravan -->
+            <h2>Caravan</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="CaravanTypeName">Type</label>
+                    <input asp-for="CaravanTypeName" class="form-control" />
+                    <span asp-validation-for="CaravanTypeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CaravanBrandName">Brand</label>
+                    <input asp-for="CaravanBrandName" class="form-control" />
+                    <span asp-validation-for="CaravanBrandName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="add-btn">Add</button>
+            </div>
+        </form>
+    </div>
+</div>

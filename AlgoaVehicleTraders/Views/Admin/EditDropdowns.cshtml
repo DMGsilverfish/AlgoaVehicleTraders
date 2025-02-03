@@ -1,0 +1,168 @@
+﻿@model AlgoaVehicleTraders.Models.All.DropdownsEditViewModel
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-w1QoyYJ8qFqP1TaqAMuI0ZpiEqblh3p39UqMZON5NqF5zH5VVv9+dp03GMRxR9S" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+    @Html.Raw("<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\" integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js\" integrity=\"sha384-eMnRxK2zzKbz5Uv8KwxLjtg32SLaWk/5ZCnjBQLpib++nttI65dgy84iYLKVPqu1\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\" integrity=\"sha384-B4gt1jrGC7Jh4AgEPuydfBBY4cBYa3F1PiUkTfvw1GUzzTtmI3Q7fR9Kn5wYlull\" crossorigin=\"anonymous\"></script>")
+</head>
+
+<body>
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (TempData["WarningMessage"] != null)
+    {
+        <div class="alert alert-warning" role="alert">
+            @TempData["WarningMessage"]
+        </div>
+    }
+    @{
+        string tips = "Use this page to edit items in dropdowns. In order to update a item name, simply select it in the dropdown, once selected type in the new name in the textbox below it. Note all textboxes with a typed in field will be updated, should you not want a field updated, leave the textbox empty.";
+    }
+
+    <div class="admin-page-container">
+        <!-- Main Content -->
+        <div class="main-content">
+            <header>
+                <h1>Edit Dropdown Items</h1>
+
+                <!-- Pagination for Vehicle Types -->
+                <ul class="pagination justify-content-center" style="margin-top: 20px; margin-bottom: 20px;">
+                    <li class="page-item">
+                        <a asp-action="AddDropdowns" asp-controller="Admin" class="page-link">Add</a>
+                    </li>
+                    <li class="page-item-active">
+                        <a asp-action="EditDropdowns" asp-controller="Admin" class="page-link">Edit</a>
+                    </li>
+                    <li class="page-item">
+                        <a asp-action="DeleteDropdowns" asp-controller="Admin" class="page-link">Delete</a>
+                    </li>
+                    <li class="page-item">
+                        <a href="#" class="page-link" data-bs-toggle="tooltip" title="@tips">
+                            <i class="fas fa-info-circle"></i>
+                        </a>
+                    </li>
+                </ul>
+            </header>
+
+            <form asp-action="EditDropdowns" method="post" class="edit-dropdown-form">
+                <h2>All</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SelectedFuelTypeId">Select Fuel Type to Edit</label>
+                        <select asp-for="SelectedFuelTypeId" asp-items="@(new SelectList(Model.FuelTypes, "ID", "FuelTypeName"))" class="form-control"></select>
+                        <label asp-for="FuelTypeName">New Fuel Type Name</label>
+                        <input asp-for="FuelTypeName" class="form-control" />
+                        <span asp-validation-for="FuelTypeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedTransmissionId">Select Transmission to Edit</label>
+                        <select asp-for="SelectedTransmissionId" asp-items="@(new SelectList(Model.Transmissions, "ID", "TransmissionName"))" class="form-control"></select>
+                        <label asp-for="TransmissionName">New Transmission Name</label>
+                        <input asp-for="TransmissionName" class="form-control" />
+                        <span asp-validation-for="TransmissionName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <h2>Car</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SelectedCarTypeId">Select Type to Edit</label>
+                        <select asp-for="SelectedCarTypeId" asp-items="@(new SelectList(Model.CarTypes, "ID", "TypeName"))" class="form-control"></select>
+                        <label asp-for="CarTypeName">New Type Name</label>
+                        <input asp-for="CarTypeName" class="form-control" />
+                        <span asp-validation-for="CarTypeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedCarBrandId">Select Brand to Edit</label>
+                        <select asp-for="SelectedCarBrandId" asp-items="@(new SelectList(Model.CarBrands, "ID", "BrandName"))" class="form-control"></select>
+                        <label asp-for="CarBrandName">New Brand Name</label>
+                        <input asp-for="CarBrandName" class="form-control" />
+                        <span asp-validation-for="CarBrandName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedDriveTrainId">Select Drive Train to Edit</label>
+                        <select asp-for="SelectedDriveTrainId" asp-items="@(new SelectList(Model.DriveTrains, "ID", "DriveTrainName"))" class="form-control"></select>
+                        <label asp-for="DriveTrainName">New Drive Train Name</label>
+                        <input asp-for="DriveTrainName" class="form-control" />
+                        <span asp-validation-for="DriveTrainName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <h2>Bike</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SelectedBikeTypeId">Select Type to Edit</label>
+                        <select asp-for="SelectedBikeTypeId" asp-items="@(new SelectList(Model.BikeTypes, "ID", "BikeTypeName"))" class="form-control"></select>
+                        <label asp-for="BikeTypeName">New Bike Type Name</label>
+                        <input asp-for="BikeTypeName" class="form-control" />
+                        <span asp-validation-for="BikeTypeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedBikeBrandId">Select Brand to Edit</label>
+                        <select asp-for="SelectedBikeBrandId" asp-items="@(new SelectList(Model.BikeBrands, "ID", "BrandName"))" class="form-control"></select>
+                        <label asp-for="BikeBrandName">New Brand Name</label>
+                        <input asp-for="BikeBrandName" class="form-control" />
+                        <span asp-validation-for="BikeBrandName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <h2>Boat</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SelectedBoatTypeId">Select Type to Edit</label>
+                        <select asp-for="SelectedBoatTypeId" asp-items="@(new SelectList(Model.BoatTypes, "ID", "BoatTypeName"))" class="form-control"></select>
+                        <label asp-for="BoatTypeName">New Boat Type Name</label>
+                        <input asp-for="BoatTypeName" class="form-control" />
+                        <span asp-validation-for="BoatTypeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedBoatBrandId">Select Brand to Edit</label>
+                        <select asp-for="SelectedBoatBrandId" asp-items="@(new SelectList(Model.BoatBrands, "ID", "BrandName"))" class="form-control"></select>
+                        <label asp-for="BoatBrandName">New Brand Name</label>
+                        <input asp-for="BoatBrandName" class="form-control" />
+                        <span asp-validation-for="BoatBrandName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedWaterDepthId">Select Water Depth to Edit</label>
+                        <select asp-for="SelectedWaterDepthId" asp-items="@(new SelectList(Model.WaterDepths, "ID", "WaterDepthName"))" class="form-control"></select>
+                        <label asp-for="WaterDepthName">New Water Depth Name</label>
+                        <input asp-for="WaterDepthName" class="form-control" />
+                        <span asp-validation-for="WaterDepthName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <h2>Caravan</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SelectedCaravanBrandId">Select Brand to Edit</label>
+                        <select asp-for="SelectedCaravanBrandId" asp-items="@(new SelectList(Model.CaravanBrands, "ID", "BrandName"))" class="form-control"></select>
+                        <label asp-for="CaravanBrandName">New Brand Name</label>
+                        <input asp-for="CaravanBrandName" class="form-control" />
+                        <span asp-validation-for="CaravanBrandName" class="text-danger"></span>
+                    </div>
+                </div>
+
+            <div class="form-actions">
+                <button type="submit" class="add-btn">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+</script>
+</body>
+

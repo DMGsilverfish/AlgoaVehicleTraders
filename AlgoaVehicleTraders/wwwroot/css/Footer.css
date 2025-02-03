@@ -1,0 +1,64 @@
+﻿/* wwwroot/css/Footer.css */
+
+footer {
+    padding: 20px;
+    background-color: #f4f4f4;
+    border: 2px solid #4CAF50;
+}
+
+    footer .footer-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    footer .map-section {
+        flex: 1;
+        min-width: 40%;
+        margin-left: 10%;
+    }
+
+    footer iframe {
+        width: 300px;
+        height: 250px;
+        border: 2px solid #4CAF50;
+        border-radius: 10px;
+    }
+
+    footer .contact-info {
+        flex: 1;
+        min-width: 300px;
+    }
+
+        /* Additional styles for contact section */
+        footer .contact-info h3 {
+            margin-bottom: 10px;
+        }
+
+        footer .contact-info p {
+            margin: 5px 0;
+        }
+
+        footer .contact-info strong {
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        footer .contact-info a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+
+.footer .facebook-link {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+    .footer .facebook-link img {
+        width: 2px; /* Adjust width as needed */
+        height: 2px; /* Adjust height as needed */
+        margin-right: 8px;
+    }
