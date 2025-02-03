@@ -75,12 +75,12 @@
     margin: auto;
     border-radius: 15px;
     overflow: hidden;
-    border: 1px solid black;
+    border: 0.5px solid black;
 }
 
     /* Table cells */
     .bordered-table td, .bordered-table th {
-        border: 1px solid black; /* Ensure all sides have a border */
+        border: 0.5px solid black; /* Ensure all sides have a border */
         padding: 8px;
         text-align: center;
     }
