@@ -91,7 +91,6 @@
     <table class="bordered-table">
         <tr><th colspan="2">Comments</th></tr>
         <tr><td colspan="2">@Model.Bike.Condition</td></tr>
-        <tr><td colspan="2"></td></tr>
     </table>
 </div>
 
@@ -129,6 +128,10 @@
     let currentImageIndex = 0;
     const images = @Html.Raw(Json.Serialize(allImages.Select(img => $"data:image/png;base64,{Convert.ToBase64String(img!)}")));
 
+    document.addEventListener("DOMContentLoaded", () => {
+        updateThumbnails(); // Ensure the first thumbnail is selected on page load
+    });
+
     function changeImage(src, index) {
         document.getElementById("mainImage").src = src;
         currentImageIndex = index;
@@ -150,9 +153,10 @@
     function updateThumbnails() {
         const thumbnails = document.getElementsByClassName("thumbnail");
         Array.from(thumbnails).forEach((thumb, index) => {
-            thumb.classList.remove("selected-thumbnail");
             if (index === currentImageIndex) {
-                thumb.classList.add("selected-thumbnail");
+                thumb.style.border = "3px solid #4CAF50";
+            } else {
+                thumb.style.border = "none";
             }
         });
     }

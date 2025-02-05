@@ -96,27 +96,37 @@
                 </div>
 
                 <!-- Contact Information Section -->
-                <div style="flex: 1; min-width: 300px;">
-                    <h3>Contact Information</h3>
-                    <p><strong>Company Name:</strong> @company.CompanyName</p>
-                    <p><strong>Address:</strong> @company.Address</p>
-                    <p><strong>Email:</strong> <a href="mailto:@company.CompanyEmail">@company.CompanyEmail</a></p>
-                    <p><strong>Phone:</strong> <a href="tel:@company.CompanyPhone">@company.CompanyPhone</a></p>
-                    <div class="footer-social-links" style="display: flex; gap: 10px;">
-                        <div class="facebook-link">
-                            <a href="@company.FacebookLink" target="_blank">
-                                <img src="~/Pictures/facebook-logo.png" alt="Facebook" style="width: 20px; height: 20px; margin-right: 8px;" />
-                            </a>
+                
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>Contact Information</h3>
+                        <p><strong>Company Name:</strong> @company.CompanyName</p>
+                        <p><strong>Address:</strong> @company.Address</p>
+                        <p><strong>Email:</strong> <a href="mailto:@company.CompanyEmail">@company.CompanyEmail</a></p>
+                        <p><strong>Phone:</strong> <a href="tel:@company.CompanyPhone">@company.CompanyPhone</a></p>
+                        <div class="footer-social-links" style="display: flex; gap: 10px;">
+                            <div class="facebook-link">
+                                <a href="@company.FacebookLink" target="_blank">
+                                    <img src="~/Pictures/facebook-logo.png" alt="Facebook" style="width: 20px; height: 20px; margin-right: 8px;" />
+                                </a>
+                            </div>
+                            <div class="instagram-link">
+                                <a href="@company.InstagramLink" target="_blank">
+                                    <img src="~/Pictures/Instagram-Logo.png" alt="Instagram" style="width: 25px; height: 20px; margin-right: 8px;" />
+                                </a>
+                            </div>
                         </div>
-                        <div class="instagram-link">
-                            <a href="@company.InstagramLink" target="_blank">
-                                <img src="~/Pictures/Instagram-Logo.png" alt="Instagram" style="width: 25px; height: 20px; margin-right: 8px;" />
-                            </a>
-                        </div>
+
+
                     </div>
-
-
-                </div>
+                    <div style="flex: 1; min-width: 300px;">
+                        <h3>Operating Hours</h3>
+                        <p><strong>Monday - Thursday: </strong></p>
+                        <p>08:00 - 17:00</p>
+                        <p><strong>Friday: </strong>08:00 - 16:00</p>
+                        <p><strong>Saturday: </strong>CLOSED</p>
+                        <p><strong>Sunday: </strong>CLOSED</p>
+                    </div>
+                
             </div>
         </footer>
     }
