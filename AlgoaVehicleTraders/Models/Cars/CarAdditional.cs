@@ -33,7 +33,7 @@ namespace AlgoaVehicleTraders.Models.Cars
 
         public int NumberSeats { get; set; } //number
         public int NumberDoors { get; set; } //number
-        //add full service history
+        
       
         // Exterior images
         public byte[]? Exterior1 { get; set; }

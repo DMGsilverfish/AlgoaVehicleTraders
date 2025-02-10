@@ -6,6 +6,7 @@ using AlgoaVehicleTraders.Models.All;
 using AlgoaVehicleTraders.Models.Bikes;
 using AlgoaVehicleTraders.Models.Boats;
 using AlgoaVehicleTraders.Models.Caravans;
+using AlgoaVehicleTraders.Models.Trailers;
 
 namespace AlgoaVehicleTraders.Data
 {
@@ -28,12 +29,16 @@ namespace AlgoaVehicleTraders.Data
         public DbSet<Caravan> Caravan { get; set; }
         public DbSet<CaravanAdditional> CaravanAdditional { get; set; }
 
+        public DbSet<Trailer> Trailer { get; set; }
+        public DbSet<CampTrailer> CampTrailer { get; set; }
+
 
 
         public DbSet<Brand> Brand { get; set; }
         public DbSet<BikeBrand> BikeBrand { get; set; }
         public DbSet<BoatBrand> BoatBrand { get; set; }
         public DbSet<CaravanBrand> CaravanBrand { get; set; }
+        public DbSet<TrailerBrand> TrailerBrand { get; set; }
 
         public DbSet<DriveTrain> DriveTrain { get; set; }
         public DbSet<FuelType> FuelType { get; set; }
@@ -41,6 +46,10 @@ namespace AlgoaVehicleTraders.Data
         public DbSet<AlgoaVehicleTraders.Models.All.Type> Type { get; set; }
         public DbSet<BikeType> BikeType { get; set; }
         public DbSet<CaravanType> CaravanType { get; set; }
+        public DbSet<TrailerType> TrailerType {  get; set; }
+        public DbSet<AxleType> AxleType { get; set; }
+        public DbSet<BrakedAxle> BrakedAxle { get; set; }
+
 
 
         public DbSet<Status> Status { get; set; }
@@ -48,6 +57,8 @@ namespace AlgoaVehicleTraders.Data
         public DbSet<BoatType> BoatType { get; set; }
         public DbSet<WaterDepth> WaterDepth { get; set; }
         public DbSet<BedType> BedType { get; set; }
+
+
 
 
 

@@ -1,7 +1,7 @@
-﻿@model AlgoaVehicleTraders.Models.All.AddVehicleViewModel
+﻿@model AlgoaVehicleTraders.Models.All.AddVehicleTrailerViewModel
 
 @{
-    ViewData["Title"] = "Admin - Add Car";
+    ViewData["Title"] = "Admin - Add Trailer";
     Layout = "_Layout";
 }
 
@@ -25,7 +25,7 @@
         <!-- Main Content -->
         <div class="main-content">
             <header>
-                <h1>Add Trailer Comming soon!</h1>
+                <h1>Add Trailer</h1>
 
 
 
@@ -49,7 +49,258 @@
                 </ul>
 
             </header>
+
+            <form asp-controller="Admin" asp-action="AddVehicleTrailer" method="post" enctype="multipart/form-data" class="add-vehicle-form">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="brand">Brand:</label>
+                        <select id="brand" name="Brand" class="select2" asp-items="Model.Brands" required>
+                            <option value="">Select Brand</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Model:</label>
+                        <input type="text" id="model" name="Model" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="type"><b>Type:</b></label>
+                        <select id="type" name="Type" class="select2" asp-items="Model.Types" required onchange="loadPartialView()">
+                            <option value="">Select Type</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="axleType">Axle Type:</label>
+                        <select id="axleType" name="AxleType" class="select2" asp-items="Model.AxleTypes" required>
+                            <option value="">Select Axle Type</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="axleType">Braked Axle Type:</label>
+                        <select id="brakedAxle" name="BrakedAxle" class="select2" asp-items="Model.BrakedAxles" required>
+                            <option value="">Select Axle Type</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="mileage">Number of Axles:</label>
+                        <input type="number" id="numberAxles" name="NumberAxle" min="1" value="1" max="10" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="price">Price:</label>
+                        <input type="number" id="price" name="Price" step="1" min="0" value="0" required>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="year">Year:</label>
+                        <input type="number"
+                               id="year"
+                               name="Year"
+                               min="1900"
+                               max="@DateTime.Now.AddYears(1).Year"
+                               placeholder="YYYY"
+                               required
+                               class="form-control">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="colour">Tyre Size:</label>
+                        <input type="text" id="tyreSize" name="TyreSize" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="colour">Length:</label>
+                        <input type="text" id="length" name="Length" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="condition">Comments:</label>
+                        <textarea id="comments" name="Comments" required rows="5" cols="50"></textarea>
+                    </div>
+
+
+                </div>
+
+                
+
+                <!-- Image Upload -->
+                <div class="image-upload-section">
+                    <div class="image-upload-group">
+                        <h4>Exterior: <span>Max 6 pics</span></h4>
+                        <input type="file" name="exteriorImages" multiple accept="image/*">
+                    </div>
+                    <div class="image-upload-group">
+                        <h4>Interior: <span>Max 6 pics</span></h4>
+                        <input type="file" name="interiorImages" multiple accept="image/*">
+                    </div>
+                    <div class="image-upload-group">
+                        <h4>Other: <span>Max 2 pics</span></h4>
+                        <input type="file" name="otherImages" multiple accept="image/*">
+                    </div>
+                </div>
+
+                <!-- Partial View Container -->
+                <div id="trailerOptionsContainer">
+                    @if (Model.ShowCampTrailerFields)
+                    {
+                        <partial name="_CampTrailerFields" model="Model.CampTrailer" />
+                    }
+                </div>
+
+                <input type="hidden" name="Status" value="1" />
+                <input type="hidden" name="StatusChangeDate" value="@DateTime.Now" />
+
+                <div class="form-actions">
+                    <button type="reset" class="cancel-btn">Cancel</button>
+                    <button type="submit" class="add-btn">Add</button>
+                </div>
+            </form>
         </div>
+
+        <script>
+            function loadPartialView() {
+                var type = document.getElementById("type").value;
+                var container = document.getElementById("trailerOptionsContainer");
+
+                if (type == "1") {
+                    fetch("/Admin/LoadCampTrailerPartial")
+                        .then(response => response.text())
+                        .then(html => {
+                            container.innerHTML = html;
+                        });
+                } else {
+                    container.innerHTML = "";
+                }
+            }
+
+            // Trigger loadPartialView when the page initially loads
+            window.onload = function() {
+                loadPartialView();
+            };
+        </script>
+
    </div>
 </body>
+<script>
+     // Temporary storage for images
+    let exteriorImages = [];
+    let interiorImages = [];
+    let otherImages = [];
+
+    // Function to handle image uploads and previews incrementally
+    function previewImages(event, previewId) {
+        const fileInput = event.target;
+        const previewContainer = document.getElementById(previewId);
+
+        // Determine category and max limits
+        const maxFiles = {
+            exteriorImages: 6,
+            interiorImages: 4,
+            otherImages: 2
+        };
+
+        const category = fileInput.name.toLowerCase().replace('images', 'Images');
+        const maxCount = maxFiles[category] || 0;
+
+        // Update temporary storage for images
+        const files = Array.from(fileInput.files);
+
+        if (category === 'exteriorImages') {
+            exteriorImages = updateFileList(exteriorImages, files, maxCount);
+            updateImagePreview(previewContainer, exteriorImages, (index) => {
+                exteriorImages.splice(index, 1);
+                updateImagePreview(previewContainer, exteriorImages, arguments.callee);
+            });
+        } else if (category === 'interiorImages') {
+            interiorImages = updateFileList(interiorImages, files, maxCount);
+            updateImagePreview(previewContainer, interiorImages, (index) => {
+                interiorImages.splice(index, 1);
+                updateImagePreview(previewContainer, interiorImages, arguments.callee);
+            });
+        } else if (category === 'otherImages') {
+            otherImages = updateFileList(otherImages, files, maxCount);
+            updateImagePreview(previewContainer, otherImages, (index) => {
+                otherImages.splice(index, 1);
+                updateImagePreview(previewContainer, otherImages, arguments.callee);
+            });
+        }
+    }
+
+    // Helper function to merge and limit file lists
+    function updateFileList(existingFiles, newFiles, maxCount) {
+        return [...existingFiles, ...newFiles].slice(0, maxCount);
+    }
+
+    // Function to update the preview container with images and attach close button logic
+    function updateImagePreview(previewContainer, images, removeCallback) {
+        // Clear any previous previews
+        previewContainer.innerHTML = '';
+
+        // Display selected images as thumbnails
+        images.forEach((file, index) => {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imageWrapper = document.createElement('div');
+                imageWrapper.classList.add('image-wrapper');
+
+                const img = document.createElement('img');
+                img.src = e.target.result;
+                img.classList.add('preview-image');
+                img.alt = `Image ${index + 1}`;
+
+                const closeButton = document.createElement('span');
+                closeButton.textContent = '×';
+                closeButton.classList.add('close-button');
+                closeButton.onclick = function () {
+                    removeCallback(index);
+                };
+
+                imageWrapper.appendChild(img);
+                imageWrapper.appendChild(closeButton);
+                previewContainer.appendChild(imageWrapper);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    // Search functionality for dropdowns using Select2
+    $(document).ready(function () {
+        $('.select2').select2({
+            placeholder: "Select an option",
+            allowClear: true
+        });
+    });
+
+    // Validation for the year input
+    document.getElementById('year').addEventListener('input', function (e) {
+        const input = e.target;
+        const value = input.value;
+
+        // Remove non-numeric characters
+        input.value = value.replace(/\D/g, '');
+
+        // Ensure the value is within the valid range
+        if (input.value < 1900) input.value = 1900;
+        if (input.value > new Date().getFullYear()) input.value = new Date().getFullYear();
+    });
+
+    // Function to submit all selected images with the form
+    function submitForm() {
+        const exteriorInput = document.getElementById('exteriorImagesHidden');
+        const interiorInput = document.getElementById('interiorImagesHidden');
+        const otherInput = document.getElementById('otherImagesHidden');
+
+        exteriorInput.value = JSON.stringify(exteriorImages.map(file => file.name));
+        interiorInput.value = JSON.stringify(interiorImages.map(file => file.name));
+        otherInput.value = JSON.stringify(otherImages.map(file => file.name));
+    }
+
+    // Attach the form submission logic
+    document.querySelector('form').addEventListener('submit', submitForm);
+</script>
 

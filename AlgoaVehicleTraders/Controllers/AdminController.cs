@@ -9,6 +9,7 @@ using AlgoaVehicleTraders.Models.Cars;
 using AlgoaVehicleTraders.Models.Bikes;
 using AlgoaVehicleTraders.Models.Boats;
 using AlgoaVehicleTraders.Models.Caravans;
+using AlgoaVehicleTraders.Models.Trailers;
 
 
 using Microsoft.AspNetCore.Authentication;
@@ -811,6 +812,86 @@ namespace AlgoaVehicleTraders.Controllers
                             if (otherProperty != null && imageBytes != null)
                             {
                                 otherProperty.SetValue(caravanAdditional, imageBytes);
+                            }
+                        }
+                        break;
+                }
+            }
+        }
+
+        private void UpdateImagesTrailer(Trailer trailer, string category, IFormFile[]? uploadedImages)
+        {
+            if (uploadedImages == null || uploadedImages.Length == 0)
+                return; // If no new images are uploaded, skip updating
+
+
+            switch (category)
+            {
+                case "Exterior":
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        var exteriorProperty = trailer.GetType().GetProperty($"Exterior{i}");
+                        exteriorProperty?.SetValue(trailer, null);
+                    }
+                    break;
+
+                case "Interior":
+                    for (int i = 1; i <= 6; i++)
+                    {
+                        var interiorProperty = trailer.GetType().GetProperty($"Interior{i}");
+                        interiorProperty?.SetValue(trailer, null);
+                    }
+                    break;
+
+                case "Other":
+                    for (int i = 1; i <= 2; i++)
+                    {
+                        var otherProperty = trailer.GetType().GetProperty($"Other{i}");
+                        otherProperty?.SetValue(trailer, null);
+                    }
+                    break;
+            }
+
+            for (int i = 0; i < uploadedImages.Length; i++)
+            {
+                using var memoryStream = new MemoryStream();
+                uploadedImages[i].CopyTo(memoryStream);
+                var imageBytes = memoryStream.ToArray();
+
+
+
+                switch (category)
+                {
+                    case "Exterior":
+                        if (i < 6) // Ensure we don't exceed the max fields
+                        {
+                            // Only update if the image is not null (i.e., a new image is uploaded)
+                            var exteriorProperty = trailer.GetType().GetProperty($"Exterior{i + 1}");
+                            if (exteriorProperty != null && imageBytes != null)
+                            {
+                                exteriorProperty.SetValue(trailer, imageBytes);
+                            }
+                        }
+                        break;
+
+                    case "Interior":
+                        if (i < 6) // Ensure we don't exceed the max fields
+                        {
+                            var interiorProperty = trailer.GetType().GetProperty($"Interior{i + 1}");
+                            if (interiorProperty != null && imageBytes != null)
+                            {
+                                interiorProperty.SetValue(trailer, imageBytes);
+                            }
+                        }
+                        break;
+
+                    case "Other":
+                        if (i < 2) // Ensure we don't exceed the max fields
+                        {
+                            var otherProperty = trailer.GetType().GetProperty($"Other{i + 1}");
+                            if (otherProperty != null && imageBytes != null)
+                            {
+                                otherProperty.SetValue(trailer, imageBytes);
                             }
                         }
                         break;
@@ -2617,14 +2698,344 @@ namespace AlgoaVehicleTraders.Controllers
         }
 
         //trailer section
+        [HttpGet]
         public IActionResult AddVehicleTrailer()
         {
-            return View();
+            var viewModel = new AddVehicleTrailerViewModel
+            {
+                Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName"),
+                Types = new SelectList(_context.TrailerType, "ID", "TypeName"),
+                AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName"),
+                BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName"),
+                CampTrailer = new CampTrailerViewModel()
+            };
+
+            return View(viewModel);
         }
+
+        public IActionResult LoadCampTrailerPartial()
+        {
+            return PartialView("_CampTrailerFields", new CampTrailerViewModel());
+        }
+
+        public IActionResult LoadCampTrailerDetailsPartial(int? trailerId)
+        {
+            var model = _context.CampTrailer.FirstOrDefault(t => t.TrailerID == trailerId);
+            return PartialView("_CampTrailerDetails", model);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddVehicleTrailer(AddVehicleTrailerViewModel viewModel, CampTrailerViewModel campViewModel, IFormFile[] exteriorImages, IFormFile[] interiorImages, IFormFile[] otherImages)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    // Insert into Trailer table
+                    var trailer = new Trailer
+                    {
+                        Model = viewModel.Model!,
+                        Brand = viewModel.Brand,
+                        Type = viewModel.Type,
+                        Price = viewModel.Price,
+                        AxleType = viewModel.AxleType,
+                        Year = viewModel.Year,
+                        BrakedAxle = viewModel.BrakedAxle,
+                        NumberAxle = viewModel.NumberAxle,
+                        TyreSize = viewModel.TyreSize!,
+                        Length = viewModel.Length!,
+                        Status = viewModel.Status,
+                        StatusChangeDate = viewModel.StatusChangeDate,
+                        Comments = viewModel.Comments
+                    };
+
+                    _context.Trailer.Add(trailer);
+                    await _context.SaveChangesAsync();
+
+                    // If trailer type is "Camp" (Type = 1), create and save CampTrailer data
+                    if (trailer.Type == 1)
+                    {
+                        var campTrailer = new CampTrailer
+                        {
+                            TrailerID = trailer.ID, // Link to the Trailer table
+                            KitchenHas = campViewModel.KitchenHas!,
+                            Sleeper = campViewModel.Sleeper!,
+                            SpareTyre = campViewModel.SpareTyre,
+                            Awning = campViewModel.Awning,
+                            Tent = campViewModel.Tent,
+                            Geyser = campViewModel.Geyser,
+                            WaterTank = campViewModel.WaterTank,
+                            WaterPump = campViewModel.WaterPump,
+                            VoltPowerSupply_12 = campViewModel.VoltPowerSupply_12,
+                            VoltPowerSupplt_220 = campViewModel.VoltPowerSupply_220,
+                            Battery = campViewModel.Battery,
+                            ChargeSystem = campViewModel.ChargeSystem,
+                            Add_A_Room = campViewModel.Add_A_Room,
+                            GasBottles = campViewModel.GasBottles
+                        };
+
+                        _context.CampTrailer.Add(campTrailer);
+                        await _context.SaveChangesAsync();
+                    }
+
+                    // Handle image updates using UpdateImagesTrailer method
+                    if (exteriorImages != null && exteriorImages.Length > 0)
+                    {
+                        UpdateImagesTrailer(trailer, "Exterior", exteriorImages);
+                    }
+
+                    if (interiorImages != null && interiorImages.Length > 0)
+                    {
+                        UpdateImagesTrailer(trailer, "Interior", interiorImages);
+                    }
+
+                    if (otherImages != null && otherImages.Length > 0)
+                    {
+                        UpdateImagesTrailer(trailer, "Other", otherImages);
+                    }
+
+                    // Save the trailer updates again to reflect image changes
+                    _context.Trailer.Update(trailer);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    // Handle any exceptions
+                    ModelState.AddModelError("", "An error occurred while saving the trailer.");
+                    // Log the exception (you can add logging here if necessary)
+                }
+            }
+
+            viewModel.Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName", viewModel.Brand);
+            viewModel.Types = new SelectList(_context.TrailerType, "ID", "TypeName", viewModel.Type);
+            viewModel.AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName", viewModel.AxleType);
+            viewModel.BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName", viewModel.BrakedAxle);
+            viewModel.Statuss = new SelectList(_context.Status, "ID", "StatusName", viewModel.Status);
+
+            // If the model is invalid, return the same view
+            return View(viewModel);
+        }
+
+
+
 
         public IActionResult VehicleTrailerDetailsList()
         {
-            return View();
+            var vehicles = (from trailer in _context.Trailer
+                            join brand in _context.TrailerBrand on trailer.Brand equals brand.ID
+                            select new EditCaravanListViewModel
+                            {
+                                ID = trailer.ID,
+                                BrandName = brand.BrandName, // Retrieve the brand name
+                                Model = trailer.Model,
+                                Year = trailer.Year,
+                                Price = trailer.Price,
+                                ExteriorImage1Base64 = trailer.Exterior1 != null
+                                    ? "data:image/jpeg;base64," + Convert.ToBase64String(trailer.Exterior1)
+                                    : null!
+                            }).ToList();
+
+            return View(vehicles);
+        }
+
+        [HttpGet]
+        public IActionResult VehicleDetailsTrailer(int ID)
+        {
+            // Fetch the trailer and its camp trailer details
+            var vehicle = (from trailer in _context.Trailer
+                           where trailer.ID == ID
+                           select new
+                           {
+                               trailer,
+                               campTrailer = _context.CampTrailer.FirstOrDefault(c => c.TrailerID == trailer.ID)
+                           }).FirstOrDefault();
+
+            if (vehicle == null)
+            {
+                return NotFound(); // Return a 404 if the trailer is not found
+            }
+
+            // Convert byte arrays to base64 strings
+            Func<byte[]?, string> toBase64 = bytes => bytes != null ? $"data:image/jpeg;base64,{Convert.ToBase64String(bytes)}" : null!;
+
+            // Populate the view model
+            var viewModel = new AddVehicleTrailerViewModel
+            {
+                // Trailer details
+                Id = vehicle.trailer.ID,
+                Brand = vehicle.trailer.Brand,
+                Model = vehicle.trailer.Model,
+                Type = vehicle.trailer.Type,
+                Year = vehicle.trailer.Year,
+                Price = vehicle.trailer.Price,
+                AxleType = vehicle.trailer.AxleType,
+                BrakedAxle = vehicle.trailer.BrakedAxle,
+                NumberAxle = vehicle.trailer.NumberAxle,
+                TyreSize = vehicle.trailer.TyreSize,
+                Length = vehicle.trailer.Length,
+                Comments = vehicle.trailer.Comments,
+                Status = vehicle.trailer.Status,
+                StatusChangeDate = vehicle.trailer.StatusChangeDate,
+
+                // Existing images as base64 strings
+                ExteriorImageBase64 = new[]
+                {
+                    vehicle.trailer.Exterior1, vehicle.trailer.Exterior2,
+                    vehicle.trailer.Exterior3, vehicle.trailer.Exterior4,
+                    vehicle.trailer.Exterior5, vehicle.trailer.Exterior6
+                }.Where(img => img != null).Select(toBase64).ToArray(),
+
+                InteriorImageBase64 = new[]
+                {
+                    vehicle.trailer.Interior1, vehicle.trailer.Interior2,
+                    vehicle.trailer.Interior3, vehicle.trailer.Interior4,
+                    vehicle.trailer.Interior5, vehicle.trailer.Interior6
+                }.Where(img => img != null).Select(toBase64).ToArray(),
+
+                OtherImageBase64 = new[]
+                {
+                    vehicle.trailer.Other1, vehicle.trailer.Other2
+                }.Where(img => img != null).Select(toBase64).ToArray(),
+
+                // Camp Trailer details (if applicable)
+                CampTrailer = vehicle.campTrailer != null ? new CampTrailerViewModel
+                {
+                    TrailerID = vehicle.campTrailer.TrailerID,
+                    KitchenHas = vehicle.campTrailer.KitchenHas,
+                    Sleeper = vehicle.campTrailer.Sleeper,
+                    SpareTyre = vehicle.campTrailer.SpareTyre,
+                    Awning = vehicle.campTrailer.Awning,
+                    Tent = vehicle.campTrailer.Tent,
+                    Geyser = vehicle.campTrailer.Geyser,
+                    WaterTank = vehicle.campTrailer.WaterTank,
+                    WaterPump = vehicle.campTrailer.WaterPump,
+                    VoltPowerSupply_12 = vehicle.campTrailer.VoltPowerSupply_12,
+                    VoltPowerSupply_220 = vehicle.campTrailer.VoltPowerSupplt_220,
+                    Battery = vehicle.campTrailer.Battery,
+                    ChargeSystem = vehicle.campTrailer.ChargeSystem,
+                    Add_A_Room = vehicle.campTrailer.Add_A_Room,
+                    GasBottles = vehicle.campTrailer.GasBottles
+                } : new CampTrailerViewModel(),
+
+                // Dropdowns
+                Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName"),
+                Types = new SelectList(_context.TrailerType, "ID", "TypeName"),
+                AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName"),
+                BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName"),
+                Statuss = new SelectList(_context.Status, "ID", "StatusName")
+            };
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult VehicleDetailsTrailer(int ID,
+          [Bind("ID,Model,Brand,Type,Price,AxleType,BrakedAxle,NumberAxle,Year,TyreSize,Length,Comments,Status,StatusChangeDate")] Trailer trailer,
+          [Bind("ID,TrailerID,KitchenHas,Sleeper,SpareTyre,Awning,Tent,Geyser,WaterTank,WaterPump,VoltPowerSupply_12,VoltPowerSupplt_220,Battery,ChargeSystem,Add_A_Room,GasBottles")] CampTrailer? campTrailer,
+          int OldStatus,
+          IFormFile[]? ExteriorImages, string ExteriorImagesUpdated,
+          IFormFile[]? InteriorImages, string InteriorImagesUpdated,
+          IFormFile[]? OtherImages, string OtherImagesUpdated)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(trailer); // Return with validation errors
+            }
+
+            try
+            {
+                var existingTrailer = _context.Trailer.FirstOrDefault(t => t.ID == ID);
+                if (existingTrailer == null)
+                {
+                    return NotFound();
+                }
+
+                // If status changed, update status change date
+                if (trailer.Status != OldStatus)
+                {
+                    existingTrailer.StatusChangeDate = DateTime.Now;
+                }
+
+                // Update trailer details
+                existingTrailer.Brand = trailer.Brand;
+                existingTrailer.Model = trailer.Model;
+                existingTrailer.Year = trailer.Year;
+                existingTrailer.Price = trailer.Price;
+                existingTrailer.AxleType = trailer.AxleType;
+                existingTrailer.BrakedAxle = trailer.BrakedAxle;
+                existingTrailer.NumberAxle = trailer.NumberAxle;
+                existingTrailer.TyreSize = trailer.TyreSize;
+                existingTrailer.Length = trailer.Length;
+                existingTrailer.Comments = trailer.Comments;
+                existingTrailer.Status = trailer.Status;
+
+                // Update images if new ones were uploaded
+                if (ExteriorImagesUpdated == "true" && ExteriorImages?.Any() == true)
+                {
+                    UpdateImagesTrailer(existingTrailer, "Exterior", ExteriorImages);
+                }
+                if (InteriorImagesUpdated == "true" && InteriorImages?.Any() == true)
+                {
+                    UpdateImagesTrailer(existingTrailer, "Interior", InteriorImages);
+                }
+                if (OtherImagesUpdated == "true" && OtherImages?.Any() == true)
+                {
+                    UpdateImagesTrailer(existingTrailer, "Other", OtherImages);
+                }
+
+                _context.Update(existingTrailer);
+                _context.SaveChanges();
+
+                // Handle Camp Trailer (only if Type matches Camp)
+                const int CAMP_TRAILER_TYPE = 0; // Adjust this value if needed
+                var existingCampTrailer = _context.CampTrailer.FirstOrDefault(ct => ct.TrailerID == existingTrailer.ID);
+
+                if (existingTrailer.Type == CAMP_TRAILER_TYPE)
+                {
+                    if (existingCampTrailer == null)
+                    {
+                        existingCampTrailer = new CampTrailer
+                        {
+                            TrailerID = existingTrailer.ID,
+                            KitchenHas = campTrailer?.KitchenHas ?? "", // Ensure it's set
+                            Sleeper = campTrailer?.Sleeper ?? "",
+                            SpareTyre = campTrailer?.SpareTyre ?? false,
+                            Awning = campTrailer?.Awning ?? false,
+                            Tent = campTrailer?.Tent ?? false,
+                            Geyser = campTrailer?.Geyser ?? false,
+                            WaterTank = campTrailer?.WaterTank ?? false,
+                            WaterPump = campTrailer?.WaterPump ?? false,
+                            VoltPowerSupply_12 = campTrailer?.VoltPowerSupply_12 ?? false,
+                            VoltPowerSupplt_220 = campTrailer?.VoltPowerSupplt_220 ?? false,
+                            Battery = campTrailer?.Battery ?? false,
+                            ChargeSystem = campTrailer?.ChargeSystem ?? false,
+                            Add_A_Room = campTrailer?.Add_A_Room ?? false,
+                            GasBottles = campTrailer?.GasBottles ?? false
+                        };
+                        _context.CampTrailer.Add(existingCampTrailer);
+                    }
+
+                }
+                else
+                {
+                    // If it's no longer a Camp Trailer, remove the CampTrailer entry if it exists
+                    if (existingCampTrailer != null)
+                    {
+                        _context.CampTrailer.Remove(existingCampTrailer);
+                        _context.SaveChanges();
+                    }
+                }
+
+                return RedirectToAction("VehicleDetailsList");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                return View(trailer);
+            }
         }
 
     }

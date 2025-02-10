@@ -1,4 +1,4 @@
-﻿@model IEnumerable<AlgoaVehicleTraders.Models.Cars.EditCarListViewModel>
+﻿@model IEnumerable<AlgoaVehicleTraders.Models.Caravans.EditCaravanListViewModel>
 @{
     ViewData["Title"] = "Admin - Edit Vehicle";
     Layout = "_Layout";
@@ -67,7 +67,7 @@
 
             <div class="vehicle-table-container">
                 <header>
-                    <h1>Your Trailer Inventory Coming soon!</h1>
+                    <h1>Your Trailer Inventory</h1>
 
                     <!-- Pagination for Vehicle Types -->
                     <ul class="pagination justify-content-center" style="margin-top: 20px; margin-bottom: 20px;">
@@ -88,9 +88,47 @@
                         </li>
                     </ul>
                 </header>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Brand Name</th>
+                            <th>Model</th>
+                            <th>Year</th>
+                            <th>Exterior Image</th>
+                            <th>Price</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vehicle in Model)
+                        {
+                            <tr>
+                                <td>@vehicle.BrandName</td>
+                                <td>@vehicle.Model</td>
+                                <td>@vehicle.Year</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(vehicle.ExteriorImage1Base64))
+                                    {
+                                        <img src="@vehicle.ExteriorImage1Base64" alt="Exterior Image" />
+                                    }
+                                    else
+                                    {
+                                        <span>No Image</span>
+                                    }
+                                </td>
+                                <td>@vehicle.Price.ToString("C")</td>
+                                <td>
+                                    <a asp-action="VehicleDetailsTrailer" asp-controller="Admin" asp-route-id="@vehicle.ID" class="details-btn">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
              </div>
          </div>
      </div>
 </body>
-
+</html>
 

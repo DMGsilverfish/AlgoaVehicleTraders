@@ -1,0 +1,114 @@
+﻿@model AlgoaVehicleTraders.Models.All.CampTrailerViewModel
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-w1QoyYJ8qFqP1TaqAMuI0ZpiEqblh3p39UqMZON5NqF5zH5VVv9+dp03GMRxR9S" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+    @Html.Raw("<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\" integrity=\"sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js\" integrity=\"sha384-eMnRxK2zzKbz5Uv8KwxLjtg32SLaWk/5ZCnjBQLpib++nttI65dgy84iYLKVPqu1\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\" integrity=\"sha384-B4gt1jrGC7Jh4AgEPuydfBBY4cBYa3F1PiUkTfvw1GUzzTtmI3Q7fR9Kn5wYlull\" crossorigin=\"anonymous\"></script>")
+
+</head>
+<h3 class="section-title">Camp Trailer Options</h3>
+
+
+<div class="form-grid">
+    
+
+    <div class="form-group">
+        <label for="condition">Kitchen Has:</label>
+        <textarea id="kitchenHas" name="KitchenHas" required rows="5" cols="50"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="condition">Sleeper:</label>
+        <textarea id="sleeper" name="Sleeper" required rows="5" cols="50"></textarea>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="SpareTyre" />
+            <label asp-for="SpareTyre">Spare Tyre</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="Awning" />
+            <label asp-for="Awning">Awning</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="Tent" />
+            <label asp-for="Tent">Tent</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="Geyser" />
+            <label asp-for="Geyser">Geyser</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="WaterTank" />
+            <label asp-for="WaterTank">Water Tank</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="WaterPump" />
+            <label asp-for="WaterPump">Water Pump</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="VoltPowerSupply_12" />
+            <label asp-for="VoltPowerSupply_12">12V Power Supply</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="VoltPowerSupply_220" />
+            <label asp-for="VoltPowerSupply_220">220V Power Supply</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="Battery" />
+            <label asp-for="Battery">Battery</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="ChargeSystem" />
+            <label asp-for="ChargeSystem">Charge System</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="Add_A_Room" />
+            <label asp-for="Add_A_Room">Add-a-Room</label>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="toggle-switch">
+            <input type="checkbox" asp-for="GasBottles" />
+            <label asp-for="GasBottles">Gas Bottles</label>
+        </div>
+    </div>
+</div>

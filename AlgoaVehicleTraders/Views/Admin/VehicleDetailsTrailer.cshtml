@@ -1,0 +1,167 @@
+﻿@model AlgoaVehicleTraders.Models.All.AddVehicleTrailerViewModel
+
+
+@{
+    ViewData["Title"] = "Admin - Edit Trailer";
+    Layout = "_Layout";
+}
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
+    @Html.Raw("<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js\" crossorigin=\"anonymous\"></script>")
+    @Html.Raw("<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\" crossorigin=\"anonymous\"></script>")
+
+
+    <style>
+        /* Ensure buttons inside .form-actions are aligned */
+        .form-actions {
+            display: flex;
+            gap: 10px; /* Adds space between buttons */
+            justify-content: flex-end;
+        }
+
+            /* Primary button (Save Changes) */
+            .form-actions #saveButton {
+                background-color: #007bff; /* btn-primary background color */
+                color: white; /* White text */
+                padding: 10px 20px; /* Button padding */
+                border-radius: 5px; /* Rounded corners */
+                border: none; /* No border */
+                cursor: pointer; /* Pointer cursor on hover */
+                display: inline-block; /* Make it behave like a block element */
+            }
+
+                /* Primary button hover effect */
+                .form-actions #saveButton:hover {
+                    background-color: #0056b3; /* Darken the blue on hover */
+                }
+
+            /* Cancel button (already styled, added here for completeness) */
+            .form-actions #cancelButton {
+                text-decoration: none; /* Remove the default underline */
+                color: white; /* White text */
+                background-color: #dc3545; /* btn-danger background color */
+                padding: 10px 20px; /* Button padding */
+                border-radius: 5px; /* Rounded corners */
+                display: inline-block; /* Make the link behave like a block element */
+            }
+
+                /* Cancel button hover effect */
+                .form-actions #cancelButton:hover {
+                    background-color: #c82333; /* Darken the red on hover */
+                    cursor: pointer; /* Show pointer cursor */
+                }
+
+    </style>
+</head>
+
+<div class="admin-page-container">
+    <div class="main-content">
+        <h2>Edit Trailer Details</h2>
+
+        <form asp-action="VehicleDetailsTrailer" method="post" enctype="multipart/form-data">
+            <div class="form-grid" style="margin-bottom: 20px;">
+
+                <div class="form-group">
+                    <label asp-for="Brand">Brand</label>
+                    <select asp-for="Brand" class="form-control select2" asp-items="Model.Brands" required>
+                        <option value="">Select Brand</option>
+                    </select>
+                    <span asp-validation-for="Brand" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Model">Model</label>
+                    <input asp-for="Model" class="form-control" />
+                    <span asp-validation-for="Model" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Type">Type</label>
+                    <select asp-for="Type" class="form-control select2" asp-items="Model.Types" disabled>
+                        <option value="">Select Type</option>
+                    </select>
+                    <span asp-validation-for="Type" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Year">Year</label>
+                    <input asp-for="Year" class="form-control" type="number" min="1900" max="2099" />
+                    <span asp-validation-for="Year" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Price">Price</label>
+                    <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                    <span asp-validation-for="Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Status">Status</label>
+                    <select asp-for="Status" class="form-control select2" asp-items="Model.Statuss" required>
+                        <option value="">Select Status</option>
+                    </select>
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Comments">Comments</label>
+                    <textarea asp-for="Comments" class="form-control" rows="5"></textarea>
+                    <span asp-validation-for="Comments" class="text-danger"></span>
+                </div>
+
+                
+
+                <input type="hidden" name="OldStatus" value="@Model.Status" />
+
+            </div>
+
+            <!-- Partial View Container -->
+            <div id="trailerOptionsContainer">
+                @if (Model.ShowCampTrailerFields)
+                {
+                    <partial name="_CampTrailerDetails" model="Model.CampTrailer" />
+                }
+            </div>
+
+            <!-- Submit and Cancel Buttons -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-lg" id="saveButton">Save Changes</button>
+                <a asp-action="VehicleTrailerDetailsList" asp-controller="Admin" class="btn btn-danger btn-lg" id="cancelButton">Cancel</a>
+            </div>
+
+        </form>
+    </div>
+
+    <script>
+        function loadPartialView() {
+            var type = @Model.Type; // Inject Razor variable
+            var trailerId = @Model.CampTrailer?.TrailerID ?? 0; // Ensure trailerId is set
+            var container = document.getElementById("trailerOptionsContainer");
+
+            if (type === 0) { // Type 0 is Camp Trailer
+                console.log('@Url.Action("LoadCampTrailerDetailsPartial", "Admin")' + '?trailerId=' + trailerId);
+                fetch('@Url.Action("LoadCampTrailerDetailsPartial", "Admin")' + '?trailerId=' + trailerId)
+
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                    })
+                    .catch(error => console.error('Error loading partial view:', error));
+            } else {
+                container.innerHTML = "";
+            }
+        }
+
+        // Load the partial view on page load
+        window.onload = function () {
+            loadPartialView();
+        };
+    </script>
+
+
+</div>
