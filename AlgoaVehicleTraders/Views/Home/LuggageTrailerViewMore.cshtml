@@ -1,0 +1,182 @@
+﻿@using AlgoaVehicleTraders.Models.Trailers
+@using AlgoaVehicleTraders.Models.All
+@model TrailerViewModel
+@{
+    ViewData["Title"] = "Home";
+    Layout = "_Layout";
+}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/ViewMore.css" asp-append-version="true" />
+</head>
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+<!-- Carousel Container -->
+<div class="container text-center page-center">
+    <h2>@Model.Brand @Model.Trailer.Model (@Model.Trailer.Year)</h2>
+</div>
+
+<!-- Main Carousel Section -->
+<div class="carousel-container">
+    <!-- Main Image Section -->
+    <div class="main-image-container">
+        <img id="mainImage" src="@($"data:image/png;base64,{Convert.ToBase64String(Model.Trailer.Exterior1 ?? new byte[0])}")"
+             class="main-image img-fluid" alt="Main Car Image">
+        <!-- Left Arrow -->
+        <button class="carousel-btn prev" onclick="prevImage()">&#10094;</button>
+        <!-- Right Arrow -->
+        <button class="carousel-btn next" onclick="nextImage()">&#10095;</button>
+    </div>
+
+    <!-- Thumbnails Section -->
+    <div class="thumbnail-gallery">
+        @{
+            var allImages = new List<byte[]?>
+        {
+        Model.Trailer?.Exterior1, Model.Trailer?.Exterior2, Model.Trailer?.Exterior3, Model.Trailer?.Exterior4, Model.Trailer?.Exterior5, Model.Trailer?.Exterior6,
+        Model.Trailer?.Interior1, Model.Trailer?.Interior2, Model.Trailer?.Interior3, Model.Trailer?.Interior4, Model.Trailer?.Exterior5, Model.Trailer?.Interior6,
+        Model.Trailer?.Other1, Model.Trailer?.Other2
+        }.Where(img => img != null).ToList();
+        }
+
+        @for (int i = 0; i < allImages.Count; i++)
+        {
+            var imageSrc = $"data:image/png;base64,{Convert.ToBase64String(allImages[i]!)}";
+            <img class="thumbnail @(i == 0 ? "selected-thumbnail" : "")"
+                 src="@imageSrc" onclick="changeImage('@imageSrc', @i)">
+        }
+    </div>
+</div>
+
+<!-- Vehicle Details Table -->
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr><th colspan="2">Information</th></tr>
+        <tr><td><strong>Price:</strong></td><td>R @Model.Trailer.Price.ToString("N2")</td></tr>
+        <tr><td><strong>Year:</strong></td><td>@Model.Trailer.Year</td></tr>
+        <tr><td><strong>Type:</strong></td><td>@Model.Type</td></tr>
+        <tr><td><strong>Axle Type:</strong></td><td>@Model.AxleType</td></tr>
+
+    </table>
+</div>
+
+<br />
+
+<div class="container mt-5">
+    <table class="bordered-table">
+        @* <tr>
+            <th colspan="4">Additional Options</th>
+        </tr>
+        <tr>
+            <td><strong>Braked Axle</strong></td>
+            <td class="@(Model.Trailer.BrakedAxle ? "yes-background" : "no-background")">@(Model.Additional.HeatedGrips ? "Yes" : "No")</td>
+            <td><strong>Panniers</strong></td>
+            <td class="@(Model.Additional.Panniers ? "yes-background" : "no-background")">@(Model.Additional.Panniers ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Center Stand</strong></td>
+            <td class="@(Model.Additional.CenterStand ? "yes-background" : "no-background")">@(Model.Additional.CenterStand ? "Yes" : "No")</td>
+            <td><strong>Raised Screen</strong></td>
+            <td class="@(Model.Additional.RaisedScreen ? "yes-background" : "no-background")">@(Model.Additional.RaisedScreen ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Top box</strong></td>
+            <td class="@(Model.Additional.TopBox ? "yes-background" : "no-background")">@(Model.Additional.TopBox ? "Yes" : "No")</td>
+        </tr> *@
+    </table>
+</div>
+<br />
+
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr><th colspan="2">Comments</th></tr>
+        <tr><td colspan="2">@Model.Trailer.Comments</td></tr>
+    </table>
+</div>
+
+<!-- Centered Button Section -->
+<div style="text-align: center; margin-top: 20px;">
+    <button class="btn btn-primary" onclick="showModal()">I'm Interested in Buying</button>
+    <button class="btn btn-danger" onclick="window.history.back();">Back</button>
+</div>
+
+<!-- Modal Section -->
+<div id="interestModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h2>Interested in Buying?</h2>
+        <form method="post" asp-controller="Home" asp-action="Emails">
+
+            <input type="hidden" name="ID" value="@Model.Bike.ID" />
+            <input type="hidden" name="category" value="Bike" />
+            <input type="hidden" name="VehicleName" value="@Model.Brand @Model.Bike.Model (@Model.Bike.Year)" />
+
+            <label for="userEmail">Your Email:</label>
+            <input type="email" id="userEmail" name="userEmail" required>
+
+            <label for="userMessage">Message:</label>
+            <textarea id="userMessage" name="userMessage" required style="resize: vertical;"></textarea>
+
+            <button type="submit" class="btn btn-success">Send Inquiry</button>
+        </form>
+    </div>
+</div>
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------>
+<!-- JavaScript for Carousel Logic -->
+<script>
+    let currentImageIndex = 0;
+    const images = @Html.Raw(Json.Serialize(allImages.Select(img => $"data:image/png;base64,{Convert.ToBase64String(img!)}")));
+
+    document.addEventListener("DOMContentLoaded", () => {
+        updateThumbnails(); // Ensure the first thumbnail is selected on page load
+    });
+
+    function changeImage(src, index) {
+        document.getElementById("mainImage").src = src;
+        currentImageIndex = index;
+        updateThumbnails();
+    }
+
+    function nextImage() {
+        currentImageIndex = (currentImageIndex + 1) % images.length;
+        document.getElementById("mainImage").src = images[currentImageIndex];
+        updateThumbnails();
+    }
+
+    function prevImage() {
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        document.getElementById("mainImage").src = images[currentImageIndex];
+        updateThumbnails();
+    }
+
+    function updateThumbnails() {
+        const thumbnails = document.getElementsByClassName("thumbnail");
+        Array.from(thumbnails).forEach((thumb, index) => {
+            if (index === currentImageIndex) {
+                thumb.style.border = "3px solid #4CAF50";
+            } else {
+                thumb.style.border = "none";
+            }
+        });
+    }
+
+
+    //email section
+    function showModal() {
+        document.getElementById('interestModal').style.display = 'block';
+    }
+
+    function closeModal() {
+        document.getElementById('interestModal').style.display = 'none';
+    }
+
+    window.onclick = function (event) {
+        var modal = document.getElementById('interestModal');
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
+</script>
+

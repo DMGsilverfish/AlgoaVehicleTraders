@@ -1,6 +1,6 @@
-﻿@using AlgoaVehicleTraders.Models.Cars
+﻿@using AlgoaVehicleTraders.Models.Trailers
 @using AlgoaVehicleTraders.Models.All
-@model IEnumerable<CarViewModel>
+@model IEnumerable<TrailerViewModel>
 @{
     ViewData["Title"] = "Home";
 }
@@ -59,24 +59,24 @@
             }
 
         .sort-option {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
 
-.sort-option select {
-    padding: 5px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
+            .sort-option select {
+                padding: 5px;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+                cursor: pointer;
+            }
 
-.sort-icon {
-    font-size: 18px;
-    margin-left: 10px;
-    color: #4CAF50; /* Match the theme color */
-}
+        .sort-icon {
+            font-size: 18px;
+            margin-left: 10px;
+            color: #4CAF50; /* Match the theme color */
+        }
 
 
         /* Aligning the search bar and pagination in a row */
@@ -87,24 +87,20 @@
             gap: 10px;
         }
 
-         
- 
-
-
     </style>
 </head>
 
 <body>
     <div class="search-bar">
-        <input type="text" placeholder="Search Car Brand, Model, Year..." />
+        <input type="text" placeholder="Search Trailer Brand, Model, Year..." />
         @* <button type="button" style="background-color: #74b62c">Search</button> *@
         <button type="button" style="background-color: #74b62c" id="sort-btn">Sort</button>
         <ul class="pagination">
-            <li class="page-item-active"><a class="page-link" href="#">Car</a></li>
+            <li class="page-item"><a class="page-link" href="#">Car</a></li>
             <li class="page-item"><a asp-action="BikeIndex" asp-controller="Home" class="page-link">Bike</a></li>
             <li class="page-item"><a asp-action="CaravanIndex" asp-controller="Home" class="page-link">Caravan</a></li>
             <li class="page-item"><a asp-action="BoatIndex" asp-controller="Home" class="page-link">Boat</a></li>
-            <li class="page-item"><a asp-action="TrailerIndex" asp-controller="Home" class="page-link">Trailer</a></li>
+            <li class="page-item-active"><a asp-action="TrailerIndex" asp-controller="Home" class="page-link">Trailer</a></li>
             <li class="page-item"><a class="page-link" href="#">Other</a></li>
         </ul>
     </div>
@@ -112,41 +108,34 @@
     <div class="vehicle-list">
         @foreach (var item in Model)
         {
-            var car = item.Car;
-            var additional = item.Additional;
+            var trailer = item.Trailer;
+            var camptrailer = item.CampTrailer;
             var brand = item.Brand;
-            var fuelType = item.FuelType;
-            var transmission = item.Transmission;
-            var drivetrain = item.DriveTrain;
+            var type = item.Type;
 
             <div class="vehicle-card" onclick="flipCard(this)">
                 <div class="vehicle-card-inner">
                     <!-- Front of the card -->
                     <div class="vehicle-card-front">
-                        <img src="@(additional?.Exterior1 != null ? "data:image/png;base64," + Convert.ToBase64String(additional.Exterior1) : "~/Images/default-image.png")" alt="@car.Model" />
+                        <img src="@(trailer?.Exterior1 != null ? "data:image/png;base64," + Convert.ToBase64String(trailer.Exterior1) : "~/Images/default-image.png")" alt="@trailer.Model" />
                         @* <h3>@car.Brand @car.Model (@car.Year.Year)</h3> *@
-                        <h3>@brand @car.Model (@car.Year)</h3> <!-- Display Brand -->
+                        <h3>@brand @trailer.Model (@trailer.Year)</h3> <!-- Display Brand -->
 
                         <div class="footer">
                             <div class="price-footer">
-                                <strong>R @car.Price.ToString("N2")</strong>
-                            </div>
-                            <div class="mileage">
-                                <strong>@car.Mileage KM</strong>
+                                <strong>R @trailer.Price.ToString("N2")</strong>
                             </div>
                         </div>
                     </div>
 
                     <!-- Back of the card -->
                     <div class="vehicle-card-back">
-                        <h3>@brand @car.Model (@car.Year) </h3><!-- Display Brand -->
-                        <p>Transmission: @transmission</p>  <!-- Display Transmission -->
-                        <p>Fuel: @fuelType</p>             <!-- Display FuelType -->
-                        <p>Engine: @(car.EngineSize)</p>
-                        <p>Drive: @drivetrain</p>
+                        <h3>@brand @trailer.Model (@trailer.Year) </h3><!-- Display Brand -->
+                        <p>Type: @type</p>  <!-- Display Transmission -->
 
-                        <form asp-controller="Home" asp-action="ViewMore" method="get" class="view-more-form">
-                            <input type="hidden" name="id" value="@car.ID" />
+                        <form asp-controller="Home" asp-action="TrailerViewMoreSelect" method="get" class="view-more-form">
+                            <input type="hidden" name="id" value="@trailer.ID" />
+                            <input type="hidden" name="type" value="@trailer.Type" />
                             <button type="submit" class="view-more-btn" style="background: #74b62c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
                                 View More
                             </button>
@@ -154,10 +143,7 @@
 
                         <div class="footer">
                             <div class="price-footer">
-                                <strong>R @car.Price.ToString("N2")</strong>
-                            </div>
-                            <div class="mileage">
-                                <strong>@car.Mileage KM</strong>
+                                <strong>R @trailer.Price.ToString("N2")</strong>
                             </div>
                         </div>
                     </div>

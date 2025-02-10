@@ -12,6 +12,7 @@ using System.Net.Mail;
 using AlgoaVehicleTraders.Models.Bikes;
 using AlgoaVehicleTraders.Models.Boats;
 using AlgoaVehicleTraders.Models.Caravans;
+using AlgoaVehicleTraders.Models.Trailers;
 
 namespace AlgoaVehicleTraders.Controllers
 {
@@ -250,6 +251,110 @@ namespace AlgoaVehicleTraders.Controllers
             }
 
             return View(caravanViewModel);
+        }
+
+        public IActionResult TrailerIndex()
+        {
+
+            var currentDate = DateTime.Now;
+            var trailers = from trailer in _context.Trailer
+                           where trailer.Status == 1 ||
+                                    (trailer.Status == 3 && trailer.StatusChangeDate.HasValue &&
+                                    EF.Functions.DateDiffDay(trailer.StatusChangeDate.Value, currentDate) <= 7)
+
+                           join brand in _context.TrailerBrand on trailer.Brand equals brand.ID
+                           join type in _context.TrailerType on trailer.Type equals type.ID
+                           join axle in _context.AxleType on trailer.AxleType equals axle.ID
+
+                           join camptrailer in _context.CampTrailer on trailer.ID equals camptrailer.TrailerID into camptrailerGroup
+                           from camptrailer in camptrailerGroup.DefaultIfEmpty()
+                           select new TrailerViewModel
+                           {
+                               Trailer = trailer,
+                               CampTrailer = camptrailer,
+                               Brand = brand.BrandName,
+                               Type = type.TypeName,
+                               AxleType = axle.AxleName
+                           };
+
+            return View(trailers.ToList());
+        }
+
+        [HttpGet]
+        public IActionResult TrailerViewMoreSelect(int id, int type)
+        {
+            if (type == 1)
+            {
+                return RedirectToAction("CampTrailerViewMore", new {id});
+            }
+            else if (type == 2)
+            {
+                return RedirectToAction("LuggageTrailerViewMore", new {id});
+            }
+            else
+
+            return RedirectToAction("TrailerIndex");
+        }
+
+        public IActionResult LuggageTrailerViewMore(int id)
+        {
+            // Fetch the car and related data using the provided ID
+            var trailerViewModel = (from trailer in _context.Trailer
+                                    join brand in _context.TrailerBrand on trailer.Brand equals brand.ID
+                                    join type in _context.TrailerType on trailer.Type equals type.ID
+                                    join axle in _context.AxleType on trailer.AxleType equals axle.ID
+                                    join braked in _context.BrakedAxle on trailer.BrakedAxle equals braked.ID
+
+                                    join camptrailer in _context.CampTrailer on trailer.ID equals camptrailer.TrailerID into trailerGroup
+                                    from camptrailer in trailerGroup.DefaultIfEmpty()
+                                    where trailer.ID == id
+                                    select new TrailerViewModel
+                                    {
+                                        Trailer = trailer,
+                                        CampTrailer = camptrailer,
+                                        Brand = brand.BrandName,
+                                        Type = type.TypeName,
+                                        AxleType = axle.AxleName,
+                                        BrakedAxle = braked.BrakedAxleName
+                                    }).FirstOrDefault();
+
+            if (trailerViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(trailerViewModel);
+        }
+
+        public IActionResult CampTrailerViewMore(int id)
+        {
+            // Fetch the car and related data using the provided ID
+            var trailerViewModel = (from trailer in _context.Trailer
+                                    join brand in _context.TrailerBrand on trailer.Brand equals brand.ID
+                                    join type in _context.TrailerType on trailer.Type equals type.ID
+                                    join braked in _context.BrakedAxle on trailer.BrakedAxle equals braked.ID
+                                    join axle in _context.AxleType on trailer.AxleType equals axle.ID
+
+
+                                    join camptrailer in _context.CampTrailer on trailer.ID equals camptrailer.TrailerID into trailerGroup
+                                    from camptrailer in trailerGroup.DefaultIfEmpty()
+                                    where trailer.ID == id
+                                    select new TrailerViewModel
+                                    {
+                                        Trailer = trailer,
+                                        CampTrailer = camptrailer,
+                                        Brand = brand.BrandName,
+                                        Type = type.TypeName,
+                                        AxleType = axle.AxleName,
+                                        BrakedAxle = braked.BrakedAxleName
+                                    }).FirstOrDefault();
+
+            if (trailerViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(trailerViewModel);
         }
 
 
