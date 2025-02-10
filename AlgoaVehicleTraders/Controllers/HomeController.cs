@@ -265,6 +265,7 @@ namespace AlgoaVehicleTraders.Controllers
                            join brand in _context.TrailerBrand on trailer.Brand equals brand.ID
                            join type in _context.TrailerType on trailer.Type equals type.ID
                            join axle in _context.AxleType on trailer.AxleType equals axle.ID
+                           join braked in _context.BrakedAxle on trailer.BrakedAxle equals braked.ID
 
                            join camptrailer in _context.CampTrailer on trailer.ID equals camptrailer.TrailerID into camptrailerGroup
                            from camptrailer in camptrailerGroup.DefaultIfEmpty()
@@ -274,7 +275,8 @@ namespace AlgoaVehicleTraders.Controllers
                                CampTrailer = camptrailer,
                                Brand = brand.BrandName,
                                Type = type.TypeName,
-                               AxleType = axle.AxleName
+                               AxleType = axle.AxleName,
+                               BrakedAxle = braked.BrakedAxleName
                            };
 
             return View(trailers.ToList());
@@ -432,9 +434,13 @@ namespace AlgoaVehicleTraders.Controllers
             else if (category == "Bike")
                 return RedirectToAction("BikeViewMore", new { id = ID });
             else if (category == "Boat")
-                return RedirectToAction("BoatViewMore", new {id =  ID});
+                return RedirectToAction("BoatViewMore", new { id = ID });
             else if (category == "Caravan")
-                return RedirectToAction("CaravanViewMore", new {id =ID});
+                return RedirectToAction("CaravanViewMore", new { id = ID });
+            else if (category == "Luggage Trailer")
+                return RedirectToAction("LuggageTrailerViewMore", new { id = ID });
+            else if (category == "Luggage Trailer")
+                return RedirectToAction("CampTrailerViewMore", new { id = ID });
             else
                 return RedirectToAction("ViewMore", new { id = ID });
         }

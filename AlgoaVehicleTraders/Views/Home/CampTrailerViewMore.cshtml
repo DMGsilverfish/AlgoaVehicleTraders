@@ -62,11 +62,57 @@
         <tr><td><strong>Tyre Size:</strong></td><td>@Model.Trailer.TyreSize</td></tr>
         <tr><td><strong>Number of Axles:</strong></td><td>@Model.Trailer.NumberAxle</td></tr>
 
+
     </table>
 </div>
 
 <br />
 
+<div class="container mt-5">
+    <table class="bordered-table">
+        <tr>
+            <th colspan="4">Camp Trailer Features</th>
+        </tr>
+        <tr>
+            <td><strong>Add-A-Room</strong></td>
+            <td class="@(Model.CampTrailer.Add_A_Room ? "yes-background" : "no-background")">@(Model.CampTrailer.Add_A_Room ? "Yes" : "No")</td>
+            <td><strong>Awning</strong></td>
+            <td class="@(Model.CampTrailer.Awning ? "yes-background" : "no-background")">@(Model.CampTrailer.Awning ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Battery</strong></td>
+            <td class="@(Model.CampTrailer.Battery ? "yes-background" : "no-background")">@(Model.CampTrailer.Battery ? "Yes" : "No")</td>
+            <td><strong>Charge System</strong></td>
+            <td class="@(Model.CampTrailer.ChargeSystem ? "yes-background" : "no-background")">@(Model.CampTrailer.ChargeSystem ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Gas Bottles</strong></td>
+            <td class="@(Model.CampTrailer.GasBottles ? "yes-background" : "no-background")">@(Model.CampTrailer.GasBottles ? "Yes" : "No")</td>
+            <td><strong>Geyser</strong></td>
+            <td class="@(Model.CampTrailer.Geyser ? "yes-background" : "no-background")">@(Model.CampTrailer.Geyser ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Spare Tyre</strong></td>
+            <td class="@(Model.CampTrailer.SpareTyre ? "yes-background" : "no-background")">@(Model.CampTrailer.SpareTyre ? "Yes" : "No")</td>
+            <td><strong>Tent</strong></td>
+            <td class="@(Model.CampTrailer.Tent ? "yes-background" : "no-background")">@(Model.CampTrailer.Tent ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>12V Power Supply</strong></td>
+            <td class="@(Model.CampTrailer.VoltPowerSupply_12 ? "yes-background" : "no-background")">@(Model.CampTrailer.VoltPowerSupply_12 ? "Yes" : "No")</td>
+            <td><strong>220V Power Supply</strong></td>
+            <td class="@(Model.CampTrailer.VoltPowerSupplt_220 ? "yes-background" : "no-background")">@(Model.CampTrailer.VoltPowerSupplt_220 ? "Yes" : "No")</td>
+        </tr>
+        <tr>
+            <td><strong>Water Pump</strong></td>
+            <td class="@(Model.CampTrailer.WaterPump ? "yes-background" : "no-background")">@(Model.CampTrailer.WaterPump ? "Yes" : "No")</td>
+            <td><strong>Water Tank</strong></td>
+            <td class="@(Model.CampTrailer.WaterTank ? "yes-background" : "no-background")">@(Model.CampTrailer.WaterTank ? "Yes" : "No")</td>
+        </tr>
+    </table>
+
+</div>
+<br />
 
 <div class="container mt-5">
     <table class="bordered-table">
@@ -89,7 +135,7 @@
         <form method="post" asp-controller="Home" asp-action="Emails">
 
             <input type="hidden" name="ID" value="@Model.Trailer.ID" />
-            <input type="hidden" name="category" value="Luggage Trailer" />
+            <input type="hidden" name="category" value="Camp Trailer" />
             <input type="hidden" name="VehicleName" value="@Model.Brand @Model.Trailer.Model (@Model.Trailer.Year)" />
 
             <label for="userEmail">Your Email:</label>
