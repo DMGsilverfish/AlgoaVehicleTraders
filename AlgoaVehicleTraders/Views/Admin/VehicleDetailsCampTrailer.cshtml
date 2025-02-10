@@ -1,20 +1,14 @@
 ﻿@model AlgoaVehicleTraders.Models.All.AddVehicleTrailerViewModel
 
-
 @{
     ViewData["Title"] = "Admin - Edit Trailer";
     Layout = "_Layout";
 }
 
 <head>
-    @* <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" crossorigin="anonymous"> *@
     <link rel="stylesheet" href="~/css/AdminPage.css" asp-append-version="true">
     <link rel="stylesheet" href="~/css/Pagination.css" asp-append-version="true" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js" crossorigin="anonymous"></script>
-    @Html.Raw("<script src=\"https://code.jquery.com/jquery-3.5.1.slim.min.js\" crossorigin=\"anonymous\"></script>")
-    @Html.Raw("<script src=\"https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js\" crossorigin=\"anonymous\"></script>")
-    @Html.Raw("<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js\" crossorigin=\"anonymous\"></script>")
-
 
     <style>
         /* Ensure buttons inside .form-actions are aligned */
@@ -63,9 +57,8 @@
     <div class="main-content">
         <h2>Edit Trailer Details</h2>
 
-        <form asp-action="VehicleDetailsTrailer" method="post" enctype="multipart/form-data">
+        <form asp-action="VehicleDetailsCampTrailer" method="post" enctype="multipart/form-data">
             <div class="form-grid" style="margin-bottom: 20px;">
-
                 <div class="form-group">
                     <label asp-for="Brand">Brand</label>
                     <select asp-for="Brand" class="form-control select2" asp-items="Model.Brands" required>
@@ -73,13 +66,11 @@
                     </select>
                     <span asp-validation-for="Brand" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Model">Model</label>
                     <input asp-for="Model" class="form-control" />
                     <span asp-validation-for="Model" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Type">Type</label>
                     <select asp-for="Type" class="form-control select2" asp-items="Model.Types" disabled>
@@ -87,19 +78,16 @@
                     </select>
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Year">Year</label>
                     <input asp-for="Year" class="form-control" type="number" min="1900" max="2099" />
                     <span asp-validation-for="Year" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Price">Price</label>
                     <input asp-for="Price" class="form-control" type="number" step="0.01" />
                     <span asp-validation-for="Price" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Length">Length</label>
                     <input asp-for="Length" class="form-control" />
@@ -111,7 +99,6 @@
                     <input asp-for="TyreSize" class="form-control" />
                     <span asp-validation-for="TyreSize" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Status">Status</label>
                     <select asp-for="Status" class="form-control select2" asp-items="Model.Statuss" required>
@@ -119,16 +106,101 @@
                     </select>
                     <span asp-validation-for="Status" class="text-danger"></span>
                 </div>
-
                 <div class="form-group">
                     <label asp-for="Comments">Comments</label>
                     <textarea asp-for="Comments" class="form-control" rows="5"></textarea>
                     <span asp-validation-for="Comments" class="text-danger"></span>
                 </div>
-
-                
-
                 <input type="hidden" name="OldStatus" value="@Model.Status" />
+            </div>
+
+            <h2>Camp Trailer Features</h2>
+            <!-- Camp Trailer Section -->
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label asp-for="CampTrailer.KitchenHas">Kitchen Has</label>
+                    <textarea asp-for="CampTrailer.KitchenHas" class="form-control" required></textarea>
+                    <span asp-validation-for="CampTrailer.KitchenHas" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="CampTrailer.Sleeper">Sleeper</label>
+                    <textarea asp-for="CampTrailer.Sleeper" class="form-control" required></textarea>
+                    <span asp-validation-for="CampTrailer.Sleeper" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.SpareTyre" id="SpareTyre" />
+                        <label for="SpareTyre">Spare Tyre</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.Awning" id="Awning" />
+                        <label for="Awning">Awning</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.Tent" id="Tent" />
+                        <label for="Tent">Tent</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.Geyser" id="Geyser" />
+                        <label for="Geyser">Geyser</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.WaterTank" id="WaterTank" />
+                        <label for="WaterTank">Water Tank</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.WaterPump" id="WaterPump" />
+                        <label for="WaterPump">Water Pump</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.VoltPowerSupply_12" id="VoltPowerSupply_12" />
+                        <label for="VoltPowerSupply_12">12V Power Supply</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.VoltPowerSupply_220" id="VoltPowerSupply_220" />
+                        <label for="VoltPowerSupply_220">220V Power Supply</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.Battery" id="Battery" />
+                        <label for="Battery">Battery</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.ChargeSystem" id="ChargeSystem" />
+                        <label for="ChargeSystem">Charge System</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.Add_A_Room" id="Add_A_Room" />
+                        <label for="Add_A_Room">Add-A-Room</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="CampTrailer.GasBottles" id="GasBottles" />
+                        <label for="GasBottles">Gas Bottles</label>
+                    </div>
+                </div>
 
             </div>
 
@@ -178,14 +250,12 @@
                 <input type="hidden" name="ExistingOtherImages[@i]" value="@Model.OtherImageBase64[i]" />
             }
 
+
             <!-- Submit and Cancel Buttons -->
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary btn-lg" id="saveButton">Save Changes</button>
                 <a asp-action="VehicleTrailerDetailsList" asp-controller="Admin" class="btn btn-danger btn-lg" id="cancelButton">Cancel</a>
             </div>
-
         </form>
     </div>
-
-
 </div>

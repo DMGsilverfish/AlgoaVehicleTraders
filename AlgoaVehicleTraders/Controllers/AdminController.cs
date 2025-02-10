@@ -2718,11 +2718,6 @@ namespace AlgoaVehicleTraders.Controllers
             return PartialView("_CampTrailerFields", new CampTrailerViewModel());
         }
 
-        public IActionResult LoadCampTrailerDetailsPartial(int? trailerId)
-        {
-            var model = _context.CampTrailer.FirstOrDefault(t => t.TrailerID == trailerId);
-            return PartialView("_CampTrailerDetails", model);
-        }
 
 
         [HttpPost]
@@ -2841,7 +2836,162 @@ namespace AlgoaVehicleTraders.Controllers
         }
 
         [HttpGet]
+        public IActionResult TrailerType(int ID)
+        {
+            var trailer = _context.Trailer.FirstOrDefault(t => t.ID == ID);
+            var trailerType = trailer.Type;
+
+            if (trailer == null)
+            {
+                return NotFound(); // Return a 404 if the trailer is not found
+            }
+
+            // Check the Type of the trailer (assuming 0 is Camp, adjust if needed)
+            if (trailerType == 1)
+            {
+                return RedirectToAction("VehicleDetailsCampTrailer", new { ID });
+            }
+            else
+            {
+                return RedirectToAction("VehicleDetailsTrailer", new { ID });
+            }
+        }
+
+        [HttpGet]
         public IActionResult VehicleDetailsTrailer(int ID)
+        {
+            // Fetch the trailer and its camp trailer details
+            var vehicle = _context.Trailer
+                .Where(trailer => trailer.ID == ID)
+                .FirstOrDefault();
+
+            if (vehicle == null)
+            {
+                return NotFound(); // Return a 404 if the trailer is not found
+            }
+
+            // Convert byte arrays to base64 strings
+            Func<byte[]?, string> toBase64 = bytes => bytes != null ? $"data:image/jpeg;base64,{Convert.ToBase64String(bytes)}" : null!;
+
+            // Populate the view model
+            var viewModel = new AddVehicleTrailerViewModel
+            {
+                // Trailer details
+                Id = vehicle.ID,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Type = vehicle.Type,
+                Year = vehicle.Year,
+                Price = vehicle.Price,
+                AxleType = vehicle.AxleType,
+                BrakedAxle = vehicle.BrakedAxle,
+                NumberAxle = vehicle.NumberAxle,
+                TyreSize = vehicle.TyreSize,
+                Length = vehicle.Length,
+                Comments = vehicle.Comments,
+                Status = vehicle.Status,
+                StatusChangeDate = vehicle.StatusChangeDate,
+
+                // Existing images as base64 strings
+                ExteriorImageBase64 = new[]
+                {
+                    vehicle.Exterior1, vehicle.Exterior2,
+                    vehicle.Exterior3, vehicle.Exterior4,
+                    vehicle.Exterior5, vehicle.Exterior6
+                }.Where(img => img != null).Select(toBase64).ToArray(),
+
+                InteriorImageBase64 = new[]
+                {
+                    vehicle.Interior1, vehicle.Interior2,
+                    vehicle.Interior3, vehicle.Interior4,
+                    vehicle.Interior5, vehicle.Interior6
+                }.Where(img => img != null).Select(toBase64).ToArray(),
+
+                OtherImageBase64 = new[]
+                {
+                    vehicle.Other1, vehicle.Other2
+                }.Where(img => img != null).Select(toBase64).ToArray(),
+
+                // Dropdowns
+                Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName"),
+                Types = new SelectList(_context.TrailerType, "ID", "TypeName"),
+                AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName"),
+                BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName"),
+                Statuss = new SelectList(_context.Status, "ID", "StatusName")
+            };
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult VehicleDetailsTrailer(int ID,
+          [Bind("ID,Model,Brand,Type,Price,AxleType,BrakedAxle,NumberAxle,Year,TyreSize,Length,Comments,Status,StatusChangeDate")] Trailer trailer,
+          int OldStatus,
+          IFormFile[]? ExteriorImages, string ExteriorImagesUpdated,
+          IFormFile[]? InteriorImages, string InteriorImagesUpdated,
+          IFormFile[]? OtherImages, string OtherImagesUpdated)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(trailer); // Return with validation errors
+            }
+
+            try
+            {
+                var existingTrailer = _context.Trailer.FirstOrDefault(t => t.ID == ID);
+                if (existingTrailer == null)
+                {
+                    return NotFound();
+                }
+
+                // If status changed, update status change date
+                if (trailer.Status != OldStatus)
+                {
+                    existingTrailer.StatusChangeDate = DateTime.Now;
+                }
+
+                // Update trailer details
+                existingTrailer.Brand = trailer.Brand;
+                existingTrailer.Model = trailer.Model;
+                existingTrailer.Year = trailer.Year;
+                existingTrailer.Price = trailer.Price;
+                existingTrailer.AxleType = trailer.AxleType;
+                existingTrailer.BrakedAxle = trailer.BrakedAxle;
+                existingTrailer.NumberAxle = trailer.NumberAxle;
+                existingTrailer.TyreSize = trailer.TyreSize;
+                existingTrailer.Length = trailer.Length;
+                existingTrailer.Comments = trailer.Comments;
+                existingTrailer.Status = trailer.Status;
+
+                // Update images if new ones were uploaded
+                if (ExteriorImagesUpdated == "true" && ExteriorImages?.Any() == true)
+                {
+                    UpdateImagesTrailer(existingTrailer, "Exterior", ExteriorImages);
+                }
+                if (InteriorImagesUpdated == "true" && InteriorImages?.Any() == true)
+                {
+                    UpdateImagesTrailer(existingTrailer, "Interior", InteriorImages);
+                }
+                if (OtherImagesUpdated == "true" && OtherImages?.Any() == true)
+                {
+                    UpdateImagesTrailer(existingTrailer, "Other", OtherImages);
+                }
+
+                _context.Update(existingTrailer);
+                _context.SaveChanges();              
+
+                return RedirectToAction("VehicleDetailsList");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                return View(trailer);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult VehicleDetailsCampTrailer(int ID)
         {
             // Fetch the trailer and its camp trailer details
             var vehicle = (from trailer in _context.Trailer
@@ -2932,13 +3082,14 @@ namespace AlgoaVehicleTraders.Controllers
 
 
         [HttpPost]
-        public IActionResult VehicleDetailsTrailer(int ID,
-          [Bind("ID,Model,Brand,Type,Price,AxleType,BrakedAxle,NumberAxle,Year,TyreSize,Length,Comments,Status,StatusChangeDate")] Trailer trailer,
-          [Bind("ID,TrailerID,KitchenHas,Sleeper,SpareTyre,Awning,Tent,Geyser,WaterTank,WaterPump,VoltPowerSupply_12,VoltPowerSupplt_220,Battery,ChargeSystem,Add_A_Room,GasBottles")] CampTrailer? campTrailer,
-          int OldStatus,
-          IFormFile[]? ExteriorImages, string ExteriorImagesUpdated,
-          IFormFile[]? InteriorImages, string InteriorImagesUpdated,
-          IFormFile[]? OtherImages, string OtherImagesUpdated)
+        public IActionResult VehicleDetailsCampTrailer(
+            int ID,
+            [Bind("ID,Model,Brand,Type,Price,AxleType,BrakedAxle,NumberAxle,Year,TyreSize,Length,Comments,Status,StatusChangeDate")] Trailer trailer,
+            [Bind("ID,TrailerID,KitchenHas,Sleeper,SpareTyre,Awning,Tent,Geyser,WaterTank,WaterPump,VoltPowerSupply_12,VoltPowerSupplt_220,Battery,ChargeSystem,Add_A_Room,GasBottles")] CampTrailer campTrailer,
+            int OldStatus,
+            IFormFile[]? ExteriorImages, string ExteriorImagesUpdated,
+            IFormFile[]? InteriorImages, string InteriorImagesUpdated,
+            IFormFile[]? OtherImages, string OtherImagesUpdated)
         {
             if (!ModelState.IsValid)
             {
@@ -2989,45 +3140,31 @@ namespace AlgoaVehicleTraders.Controllers
                 _context.Update(existingTrailer);
                 _context.SaveChanges();
 
-                // Handle Camp Trailer (only if Type matches Camp)
-                const int CAMP_TRAILER_TYPE = 0; // Adjust this value if needed
+                // Fetch existing CampTrailer entry
                 var existingCampTrailer = _context.CampTrailer.FirstOrDefault(ct => ct.TrailerID == existingTrailer.ID);
-
-                if (existingTrailer.Type == CAMP_TRAILER_TYPE)
+                if (existingCampTrailer == null)
                 {
-                    if (existingCampTrailer == null)
-                    {
-                        existingCampTrailer = new CampTrailer
-                        {
-                            TrailerID = existingTrailer.ID,
-                            KitchenHas = campTrailer?.KitchenHas ?? "", // Ensure it's set
-                            Sleeper = campTrailer?.Sleeper ?? "",
-                            SpareTyre = campTrailer?.SpareTyre ?? false,
-                            Awning = campTrailer?.Awning ?? false,
-                            Tent = campTrailer?.Tent ?? false,
-                            Geyser = campTrailer?.Geyser ?? false,
-                            WaterTank = campTrailer?.WaterTank ?? false,
-                            WaterPump = campTrailer?.WaterPump ?? false,
-                            VoltPowerSupply_12 = campTrailer?.VoltPowerSupply_12 ?? false,
-                            VoltPowerSupplt_220 = campTrailer?.VoltPowerSupplt_220 ?? false,
-                            Battery = campTrailer?.Battery ?? false,
-                            ChargeSystem = campTrailer?.ChargeSystem ?? false,
-                            Add_A_Room = campTrailer?.Add_A_Room ?? false,
-                            GasBottles = campTrailer?.GasBottles ?? false
-                        };
-                        _context.CampTrailer.Add(existingCampTrailer);
-                    }
+                    return NotFound("CampTrailer entry not found for this Trailer.");
+                }
 
-                }
-                else
-                {
-                    // If it's no longer a Camp Trailer, remove the CampTrailer entry if it exists
-                    if (existingCampTrailer != null)
-                    {
-                        _context.CampTrailer.Remove(existingCampTrailer);
-                        _context.SaveChanges();
-                    }
-                }
+                // Update CampTrailer details
+                existingCampTrailer.KitchenHas = campTrailer.KitchenHas;
+                existingCampTrailer.Sleeper = campTrailer.Sleeper;
+                existingCampTrailer.SpareTyre = campTrailer.SpareTyre;
+                existingCampTrailer.Awning = campTrailer.Awning;
+                existingCampTrailer.Tent = campTrailer.Tent;
+                existingCampTrailer.Geyser = campTrailer.Geyser;
+                existingCampTrailer.WaterTank = campTrailer.WaterTank;
+                existingCampTrailer.WaterPump = campTrailer.WaterPump;
+                existingCampTrailer.VoltPowerSupply_12 = campTrailer.VoltPowerSupply_12;
+                existingCampTrailer.VoltPowerSupplt_220 = campTrailer.VoltPowerSupplt_220;
+                existingCampTrailer.Battery = campTrailer.Battery;
+                existingCampTrailer.ChargeSystem = campTrailer.ChargeSystem;
+                existingCampTrailer.Add_A_Room = campTrailer.Add_A_Room;
+                existingCampTrailer.GasBottles = campTrailer.GasBottles;
+
+                _context.Update(existingCampTrailer);
+                _context.SaveChanges();
 
                 return RedirectToAction("VehicleDetailsList");
             }
@@ -3037,6 +3174,7 @@ namespace AlgoaVehicleTraders.Controllers
                 return View(trailer);
             }
         }
+
 
     }
 }
