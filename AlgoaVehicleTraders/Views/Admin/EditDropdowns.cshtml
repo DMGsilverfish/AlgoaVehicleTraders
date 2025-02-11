@@ -142,11 +142,43 @@
                 <h2>Caravan</h2>
                 <div class="form-grid">
                     <div class="form-group">
+                        <label for="SelectedCaravanTypeId">Select Type to Edit</label>
+                        <select asp-for="SelectedCaravanTypeId" asp-items="@(new SelectList(Model.CaravanTypes, "ID", "CaravanTypeName"))" class="form-control"></select>
+                        <label asp-for="CaravanTypeName">New Brand Name</label>
+                        <input asp-for="CaravanTypeName" class="form-control" />
+                        <span asp-validation-for="CaravanTypeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
                         <label for="SelectedCaravanBrandId">Select Brand to Edit</label>
                         <select asp-for="SelectedCaravanBrandId" asp-items="@(new SelectList(Model.CaravanBrands, "ID", "BrandName"))" class="form-control"></select>
                         <label asp-for="CaravanBrandName">New Brand Name</label>
                         <input asp-for="CaravanBrandName" class="form-control" />
                         <span asp-validation-for="CaravanBrandName" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <h2>Trailer</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SelectedTrailerBrandId">Select Brand to Edit</label>
+                        <select asp-for="SelectedTrailerBrandId" asp-items="@(new SelectList(Model.TrailerBrands, "ID", "BrandName"))" class="form-control"></select>
+                        <label asp-for="TrailerBrandName">New Brand Name</label>
+                        <input asp-for="TrailerBrandName" class="form-control" />
+                        <span asp-validation-for="TrailerBrandName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedAxleTypeId">Select Axle Type to Edit</label>
+                        <select asp-for="SelectedAxleTypeId" asp-items="@(new SelectList(Model.AxleTypes, "ID", "AxleName"))" class="form-control"></select>
+                        <label asp-for="AxleTypeName">New Axle Type Name</label>
+                        <input asp-for="AxleTypeName" class="form-control" />
+                        <span asp-validation-for="AxleTypeName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedBrakedAxleTypeId">Select Braked Axle Type to Edit</label>
+                        <select asp-for="SelectedBrakedAxleTypeId" asp-items="@(new SelectList(Model.BrakedAxleTypes, "ID", "BrakedAxleName"))" class="form-control"></select>
+                        <label asp-for="BrakedAxleTypeName">New Axle Type Name</label>
+                        <input asp-for="BrakedAxleTypeName" class="form-control" />
+                        <span asp-validation-for="BrakedAxleTypeName" class="text-danger"></span>
                     </div>
                 </div>
 

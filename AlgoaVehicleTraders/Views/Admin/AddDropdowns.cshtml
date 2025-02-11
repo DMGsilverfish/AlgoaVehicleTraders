@@ -173,6 +173,26 @@
                 </div>
             </div>
 
+            <!--Trailer-->
+            <h2>Trailer</h2>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="TrailerBrandName">Brand</label>
+                    <input asp-for="TrailerBrandName" class="form-control" />
+                    <span asp-validation-for="TransmissionName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AxleTypeName">Axle Type</label>
+                    <input asp-for="AxleTypeName" class="form-control" />
+                    <span asp-validation-for="AxleTypeName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="BrakedAxleTypeName">Braked Axle Type</label>
+                    <input asp-for="BrakedAxleTypeName" class="form-control" />
+                    <span asp-validation-for="BrakedAxleTypeName" class="text-danger"></span>
+                </div>
+            </div>
+
             <div class="form-actions">
                 <button type="submit" class="add-btn">Add</button>
             </div>

@@ -2029,6 +2029,7 @@ namespace AlgoaVehicleTraders.Controllers
             if (ModelState.IsValid)
             {
                 bool itemAdded = false;
+
                 // All category
                 if (!string.IsNullOrEmpty(model.FuelTypeName) && !_context.FuelType.Any(f => f.FuelTypeName == model.FuelTypeName))
                 {
@@ -2166,16 +2167,52 @@ namespace AlgoaVehicleTraders.Controllers
                     TempData["WarningMessage"] = $"Caravan Brand '{model.CaravanBrandName}' already exists.";
                 }
 
+                // Trailer category
+                if (!string.IsNullOrEmpty(model.TrailerBrandName) && !_context.TrailerBrand.Any(tb => tb.BrandName == model.TrailerBrandName))
+                {
+                    var trailerBrand = new TrailerBrand { BrandName = model.TrailerBrandName };
+                    _context.TrailerBrand.Add(trailerBrand);
+                    itemAdded = true;
+                }
+                else if (!string.IsNullOrEmpty(model.TrailerBrandName))
+                {
+                    TempData["WarningMessage"] = $"Trailer Brand '{model.TrailerBrandName}' already exists.";
+                }
+
+                if (!string.IsNullOrEmpty(model.AxleTypeName) && !_context.AxleType.Any(at => at.AxleName == model.AxleTypeName))
+                {
+                    var axleType = new AxleType { AxleName = model.AxleTypeName };
+                    _context.AxleType.Add(axleType);
+                    itemAdded = true;
+                }
+                else if (!string.IsNullOrEmpty(model.AxleTypeName))
+                {
+                    TempData["WarningMessage"] = $"Axle Type '{model.AxleTypeName}' already exists.";
+                }
+
+                if (!string.IsNullOrEmpty(model.BrakedAxleTypeName) && !_context.BrakedAxle.Any(ba => ba.BrakedAxleName == model.BrakedAxleTypeName))
+                {
+                    var brakedAxle = new BrakedAxle { BrakedAxleName = model.BrakedAxleTypeName };
+                    _context.BrakedAxle.Add(brakedAxle);
+                    itemAdded = true;
+                }
+                else if (!string.IsNullOrEmpty(model.BrakedAxleTypeName))
+                {
+                    TempData["WarningMessage"] = $"Braked Axle Type '{model.BrakedAxleTypeName}' already exists.";
+                }
+
                 if (itemAdded)
                 {
                     _context.SaveChanges();
                     TempData["SuccessMessage"] = "Items added successfully!";
                 }
+
                 return RedirectToAction("AddDropdowns");
             }
 
             return View(model);
         }
+
 
         //Editing of items --> Brands, Drive Trains, FuelTypes, Transmissions, WaterDepths, BedTypes, VehicleTypes //
         [HttpGet]
@@ -2194,7 +2231,10 @@ namespace AlgoaVehicleTraders.Controllers
                 BoatBrands = _context.BoatBrand.ToList(),
                 WaterDepths = _context.WaterDepth.ToList(),
                 CaravanTypes = _context.CaravanType.ToList(),
-                CaravanBrands = _context.CaravanBrand.ToList()
+                CaravanBrands = _context.CaravanBrand.ToList(),
+                TrailerBrands = _context.TrailerBrand.ToList(),
+                AxleTypes = _context.AxleType.ToList(),
+                BrakedAxleTypes = _context.BrakedAxle.ToList()
             };
 
             return View(model);
@@ -2427,6 +2467,61 @@ namespace AlgoaVehicleTraders.Controllers
                 }
             }
 
+            // Trailer category
+            if (model.SelectedAxleTypeId.HasValue && !string.IsNullOrEmpty(model.AxleTypeName))
+            {
+                if (_context.AxleType.Any(a => a.AxleName == model.AxleTypeName))
+                {
+                    TempData["WarningMessage"] = $"Axle Type '{model.AxleTypeName}' already exists.";
+                    duplicateName = true;
+                }
+                else
+                {
+                    var axleType = _context.AxleType.Find(model.SelectedAxleTypeId.Value);
+                    if (axleType != null)
+                    {
+                        axleType.AxleName = model.AxleTypeName;
+                        itemUpdated = true;
+                    }
+                }
+            }
+
+            if (model.SelectedBrakedAxleTypeId.HasValue && !string.IsNullOrEmpty(model.BrakedAxleTypeName))
+            {
+                if (_context.BrakedAxle.Any(b => b.BrakedAxleName == model.BrakedAxleTypeName))
+                {
+                    TempData["WarningMessage"] = $"Braked Axle Type '{model.BrakedAxleTypeName}' already exists.";
+                    duplicateName = true;
+                }
+                else
+                {
+                    var brakedAxle = _context.BrakedAxle.Find(model.SelectedBrakedAxleTypeId.Value);
+                    if (brakedAxle != null)
+                    {
+                        brakedAxle.BrakedAxleName = model.BrakedAxleTypeName;
+                        itemUpdated = true;
+                    }
+                }
+            }
+
+            if (model.SelectedTrailerBrandId.HasValue && !string.IsNullOrEmpty(model.TrailerBrandName))
+            {
+                if (_context.TrailerBrand.Any(tb => tb.BrandName == model.TrailerBrandName))
+                {
+                    TempData["WarningMessage"] = $"Trailer Brand '{model.TrailerBrandName}' already exists.";
+                    duplicateName = true;
+                }
+                else
+                {
+                    var trailerBrand = _context.TrailerBrand.Find(model.SelectedTrailerBrandId.Value);
+                    if (trailerBrand != null)
+                    {
+                        trailerBrand.BrandName = model.TrailerBrandName;
+                        itemUpdated = true;
+                    }
+                }
+            }
+
             if (itemUpdated && !duplicateName)
             {
                 _context.SaveChanges();
@@ -2453,7 +2548,10 @@ namespace AlgoaVehicleTraders.Controllers
                 BoatBrands = _context.BoatBrand.ToList(),
                 WaterDepths = _context.WaterDepth.ToList(),
                 CaravanTypes = _context.CaravanType.ToList(),
-                CaravanBrands = _context.CaravanBrand.ToList()
+                CaravanBrands = _context.CaravanBrand.ToList(),
+                TrailerBrands = _context.TrailerBrand.ToList(),
+                AxleTypes = _context.AxleType.ToList(),
+                BrakedAxleTypes = _context.BrakedAxle.ToList()
             };
 
             return View(model);
@@ -2688,6 +2786,62 @@ namespace AlgoaVehicleTraders.Controllers
                     }
                 }
             }
+
+            // Trailer category
+            if (model.SelectedAxleTypeId.HasValue)
+            {
+                if (_context.Trailer.Any(t => t.ID == model.SelectedAxleTypeId))
+                {
+                    itemInUse = true;
+                    TempData["WarningMessage"] = "Axle Type is in use and cannot be deleted.";
+                }
+                else
+                {
+                    var axleType = _context.AxleType.Find(model.SelectedAxleTypeId.Value);
+                    if (axleType != null)
+                    {
+                        _context.AxleType.Remove(axleType);
+                        itemDeleted = true;
+                    }
+                }
+            }
+
+            if (model.SelectedBrakedAxleTypeId.HasValue)
+            {
+                if (_context.Trailer.Any(t => t.ID == model.SelectedBrakedAxleTypeId))
+                {
+                    itemInUse = true;
+                    TempData["WarningMessage"] = "Braked Axle Type is in use and cannot be deleted.";
+                }
+                else
+                {
+                    var brakedAxle = _context.BrakedAxle.Find(model.SelectedBrakedAxleTypeId.Value);
+                    if (brakedAxle != null)
+                    {
+                        _context.BrakedAxle.Remove(brakedAxle);
+                        itemDeleted = true;
+                    }
+                }
+            }
+
+            if (model.SelectedTrailerBrandId.HasValue)
+            {
+                if (_context.Trailer.Any(t => t.ID == model.SelectedTrailerBrandId))
+                {
+                    itemInUse = true;
+                    TempData["WarningMessage"] = "Trailer Brand is in use and cannot be deleted.";
+                }
+                else
+                {
+                    var trailerBrand = _context.TrailerBrand.Find(model.SelectedTrailerBrandId.Value);
+                    if (trailerBrand != null)
+                    {
+                        _context.TrailerBrand.Remove(trailerBrand);
+                        itemDeleted = true;
+                    }
+                }
+            }
+
 
             if (itemDeleted && !itemInUse)
             {

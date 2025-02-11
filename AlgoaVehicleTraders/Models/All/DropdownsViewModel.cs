@@ -44,5 +44,15 @@ namespace AlgoaVehicleTraders.Models.All
 
         [StringLength(100, ErrorMessage = "Brand name cannot be longer than 100 characters.")]
         public string? CaravanBrandName { get; set; }
+
+        //Trailer
+        [StringLength(100, ErrorMessage = "Brand name cannot be longer than 100 characters.")]
+        public string? TrailerBrandName { get; set; }
+
+        [StringLength(100, ErrorMessage = "Type name cannot be longer than 100 characters.")]
+        public string? AxleTypeName { get; set; }
+
+        [StringLength(100, ErrorMessage = "Type name cannot be longer than 100 characters.")]
+        public string? BrakedAxleTypeName { get; set; }
     }
 }

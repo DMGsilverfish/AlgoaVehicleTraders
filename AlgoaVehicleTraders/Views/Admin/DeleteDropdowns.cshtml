@@ -251,6 +251,40 @@
                     </div>
                 </div>
 
+                <h2>Trailer</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="SelectedAxleTypeId">Select Axle Type to Delete</label>
+                        <select asp-for="SelectedAxleTypeId" class="form-control">
+                            <option value="">Select Type</option>
+                            @foreach (var item in Model.AxleTypes)
+                            {
+                                <option value="@item.ID">@item.AxleName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedBrakedAxleTypeId">Select Braked Axle Type to Delete</label>
+                        <select asp-for="SelectedBrakedAxleTypeId" class="form-control">
+                            <option value="">Select Brand</option>
+                            @foreach (var item in Model.BrakedAxleTypes)
+                            {
+                                <option value="@item.ID">@item.BrakedAxleName</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="SelectedTrailerBrandId">Select Brand to Delete</label>
+                        <select asp-for="SelectedTrailerBrandId" class="form-control">
+                            <option value="">Select Brand</option>
+                            @foreach (var item in Model.TrailerBrands)
+                            {
+                                <option value="@item.ID">@item.BrandName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+
                 <div class="form-actions">
                     <button type="button" class="btn btn-danger" onclick="showDeleteModal()">Delete</button>
                 </div>

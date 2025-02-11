@@ -40,6 +40,15 @@ namespace AlgoaVehicleTraders.Models.All
 
         public List<CaravanBrand>? CaravanBrands { get; set; }
         public int? SelectedCaravanBrandId { get; set; }
+
+        public List<AxleType>? AxleTypes { get; set; }
+        public int? SelectedAxleTypeId { get; set; }
+
+        public List<BrakedAxle>? BrakedAxleTypes { get; set; }
+        public int? SelectedBrakedAxleTypeId { get; set; }
+
+        public List<TrailerBrand>? TrailerBrands { get; set; }
+        public int? SelectedTrailerBrandId { get; set; }
     }
         
 }
