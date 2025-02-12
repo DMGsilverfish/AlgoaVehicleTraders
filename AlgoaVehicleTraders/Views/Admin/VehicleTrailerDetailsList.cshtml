@@ -69,24 +69,33 @@
                 <header>
                     <h1>Your Trailer Inventory</h1>
 
-                    <!-- Pagination for Vehicle Types -->
-                    <ul class="pagination justify-content-center" style="margin-top: 20px; margin-bottom: 20px;">
-                        <li class="page-item">
-                            <a asp-action="VehicleDetailsList" asp-controller="Admin" class="page-link">Car</a>
-                        </li>
-                        <li class="page-item">
-                            <a asp-action="VehicleBikeDetailsList" asp-controller="Admin" class="page-link">Bike</a>
-                        </li>
-                        <li class="page-item">
-                            <a asp-action="VehicleBoatDetailsList" asp-controller="Admin" class="page-link">Boat</a>
-                        </li>
-                        <li class="page-item">
-                            <a asp-action="VehicleCaravanDetailsList" asp-controller="Admin" class="page-link">Caravan</a>
-                        </li>
-                        <li class="page-item-active">
-                            <a asp-action="VehicleTrailerDetailsList" asp-controller="Admin" class="page-link">Trailer</a>
-                        </li>
-                    </ul>
+                    <!-- Pagination and Search Bar Container -->
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                        <!-- Pagination -->
+                        <ul class="pagination justify-content-center" style="margin: 0; padding: 0;">
+                            <li class="page-item">
+                                <a asp-action="VehicleDetailsList" asp-controller="Admin" class="page-link">Car</a>
+                            </li>
+                            <li class="page-item">
+                                <a asp-action="VehicleBikeDetailsList" asp-controller="Admin" class="page-link">Bike</a>
+                            </li>
+                            <li class="page-item">
+                                <a asp-action="VehicleBoatDetailsList" asp-controller="Admin" class="page-link">Boat</a>
+                            </li>
+                            <li class="page-item">
+                                <a asp-action="VehicleCaravanDetailsList" asp-controller="Admin" class="page-link">Caravan</a>
+                            </li>
+                            <li class="page-item-active">
+                                <a asp-action="VehicleTrailerDetailsList" asp-controller="Admin" class="page-link">Trailer</a>
+                            </li>
+                        </ul>
+
+                        <!-- Search Bar -->
+                        <input type="text" id="searchInput" placeholder="Search by Brand, Model, or Year" onkeyup="filterVehicles()"
+                               style="padding: 8px; border-radius: 5px; border: 1px solid #ccc; width: 250px;">
+                    </div>
+
+
                 </header>
                 <table>
                     <thead>
@@ -131,4 +140,25 @@
      </div>
 </body>
 </html>
+
+<script>
+        function filterVehicles() {
+        const searchValue = document.getElementById("searchInput").value.toLowerCase();
+        const rows = document.querySelectorAll("tbody tr");
+
+        rows.forEach(row => {
+            const brand = row.cells[0].textContent.toLowerCase();
+            const model = row.cells[1].textContent.toLowerCase();
+            const year = row.cells[2].textContent.toLowerCase();
+
+            // Check if search term matches any of the fields
+            if (brand.includes(searchValue) || model.includes(searchValue) || year.includes(searchValue)) {
+                row.style.display = "";
+            } else {
+                row.style.display = "none";
+            }
+        });
+    }
+
+</script>
 
