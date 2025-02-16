@@ -42,11 +42,11 @@ namespace AlgoaVehicleTraders.Controllers
         public IActionResult AddVehicle()
         {
 
-            var brands = _context.Brand.ToList();
-            var types = _context.Type.ToList();
-            var fuelTypes = _context.FuelType.ToList();
-            var transmission = _context.Transmission.ToList();
-            var drivetrain = _context.DriveTrain.ToList();
+            var brands = _context.Brand.OrderBy(b => b.BrandName).ToList();
+            var types = _context.Type.OrderBy(t => t.TypeName).ToList();
+            var fuelTypes = _context.FuelType.OrderBy(f => f.FuelTypeName).ToList();
+            var transmission = _context.Transmission.OrderBy(t => t.TransmissionName).ToList();
+            var drivetrain = _context.DriveTrain.OrderBy(dt => dt.DriveTrainName).ToList();
 
             var viewModel = new AddVehicleViewModel
             {
@@ -355,11 +355,11 @@ namespace AlgoaVehicleTraders.Controllers
                 }.Where(img => img != null).Select(toBase64).ToArray(),
 
                 // Dropdowns
-                Brands = new SelectList(_context.Brand, "ID", "BrandName"),
-                Types = new SelectList(_context.Type, "ID", "TypeName"),
-                FuelTypes = new SelectList(_context.FuelType, "ID", "FuelTypeName"),
-                Transmissions = new SelectList(_context.Transmission, "ID", "TransmissionName"),
-                DriveTrains = new SelectList(_context.DriveTrain, "ID", "DriveTrainName"),
+                Brands = new SelectList(_context.Brand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.Type.OrderBy(t => t.TypeName), "ID", "TypeName"),
+                FuelTypes = new SelectList(_context.FuelType.OrderBy(f => f.FuelTypeName), "ID", "FuelTypeName"),
+                Transmissions = new SelectList(_context.Transmission.OrderBy(t => t.TransmissionName), "ID", "TransmissionName"),
+                DriveTrains = new SelectList(_context.DriveTrain.OrderBy(dt => dt.DriveTrainName), "ID", "DriveTrainName"),
                 Statuss = new SelectList(_context.Status, "ID", "StatusName")
 
             };
@@ -484,11 +484,11 @@ namespace AlgoaVehicleTraders.Controllers
                 TowBar = carAdditional.TowBar,
                 FullServiceHistory = carAdditional.FullServiceHistory,
 
-                Brands = new SelectList(_context.Brand, "ID", "BrandName"),
-                Types = new SelectList(_context.Type, "ID", "TypeName"),
-                FuelTypes = new SelectList(_context.FuelType, "ID", "FuelTypeName"),
-                Transmissions = new SelectList(_context.Transmission, "ID", "TransmissionName"),
-                DriveTrains = new SelectList(_context.DriveTrain, "ID", "DriveTrainName")
+                Brands = new SelectList(_context.Brand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.Type.OrderBy(t => t.TypeName), "ID", "TypeName"),
+                FuelTypes = new SelectList(_context.FuelType.OrderBy(f => f.FuelTypeName), "ID", "FuelTypeName"),
+                Transmissions = new SelectList(_context.Transmission.OrderBy(t => t.TransmissionName), "ID", "TransmissionName"),
+                DriveTrains = new SelectList(_context.DriveTrain.OrderBy(dt => dt.DriveTrainName), "ID", "DriveTrainName"),
             };
             #endregion
 
@@ -957,10 +957,10 @@ namespace AlgoaVehicleTraders.Controllers
 
         public IActionResult AddVehicleBike()
         {
-            var brands = _context.BikeBrand.ToList();
-            var types = _context.BikeType.ToList();
-            var fuelTypes = _context.FuelType.ToList();
-            var transmission = _context.Transmission.ToList();
+            var brands = _context.BikeBrand.OrderBy(b => b.BrandName).ToList();
+            var types = _context.BikeType.OrderBy(t => t.BikeTypeName).ToList();
+            var fuelTypes = _context.FuelType.OrderBy(f => f.FuelTypeName).ToList();
+            var transmission = _context.Transmission.OrderBy(t => t.TransmissionName).ToList();
 
 
             var viewModel = new AddVehicleBikeViewModel
@@ -1195,10 +1195,10 @@ namespace AlgoaVehicleTraders.Controllers
                 }.Where(img => img != null).Select(toBase64).ToArray(),
 
                 // Dropdowns
-                Brands = new SelectList(_context.BikeBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.BikeType, "ID", "BikeTypeName"),
-                FuelTypes = new SelectList(_context.FuelType, "ID", "FuelTypeName"),
-                Transmissions = new SelectList(_context.Transmission, "ID", "TransmissionName"),
+                Brands = new SelectList(_context.BikeBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.BikeType.OrderBy(t => t.BikeTypeName), "ID", "BikeTypeName"),
+                FuelTypes = new SelectList(_context.FuelType.OrderBy(f => f.FuelTypeName), "ID", "FuelTypeName"),
+                Transmissions = new SelectList(_context.Transmission.OrderBy(t => t.TransmissionName), "ID", "TransmissionName"),
                 Statuss = new SelectList(_context.Status, "ID", "StatusName")
             };
 
@@ -1292,10 +1292,10 @@ namespace AlgoaVehicleTraders.Controllers
                 HeatedGrips = bikeAdditional.HeatedGrips,
                 OffRoadCapable = bikeAdditional.OffRoadCapable,
 
-                Brands = new SelectList(_context.BikeBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.BikeType, "ID", "BikeTypeName"),
-                FuelTypes = new SelectList(_context.FuelType, "ID", "FuelTypeName"),
-                Transmissions = new SelectList(_context.Transmission, "ID", "TransmissionName")
+                Brands = new SelectList(_context.BikeBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.BikeType.OrderBy(t => t.BikeTypeName), "ID", "BikeTypeName"),
+                FuelTypes = new SelectList(_context.FuelType.OrderBy(f => f.FuelTypeName), "ID", "FuelTypeName"),
+                Transmissions = new SelectList(_context.Transmission.OrderBy(t => t.TransmissionName), "ID", "TransmissionName")
             };
 
             return View(viewModel);
@@ -1303,10 +1303,10 @@ namespace AlgoaVehicleTraders.Controllers
 
         public IActionResult AddVehicleBoat()
         {
-            var brands = _context.BoatBrand.ToList();
-            var types = _context.BoatType.ToList();
-            var fuelTypes = _context.FuelType.ToList();
-            var waterDepth = _context.WaterDepth.ToList();
+            var brands = _context.BoatBrand.OrderBy(b => b.BrandName).ToList();
+            var types = _context.BoatType.OrderBy(t => t.BoatTypeName).ToList();
+            var fuelTypes = _context.FuelType.OrderBy(f => f.FuelTypeName).ToList();
+            var waterDepth = _context.WaterDepth.OrderBy(w => w.WaterDepthName).ToList();
 
 
             var viewModel = new AddVehicleBoatViewModel
@@ -1550,11 +1550,11 @@ namespace AlgoaVehicleTraders.Controllers
                 }.Where(img => img != null).Select(toBase64).ToArray(),
 
                 // Dropdowns
-                Brands = new SelectList(_context.BoatBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.BoatType, "ID", "BoatTypeName"),
-                FuelTypes = new SelectList(_context.FuelType, "ID", "FuelTypeName"),
+                Brands = new SelectList(_context.BoatBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.BoatType.OrderBy(t => t.BoatTypeName), "ID", "BoatTypeName"),
+                FuelTypes = new SelectList(_context.FuelType.OrderBy(f => f.FuelTypeName), "ID", "FuelTypeName"),
                 Statuss = new SelectList(_context.Status, "ID", "StatusName"),
-                WaterDepths = new SelectList(_context.WaterDepth, "ID", "WaterDepthName")
+                WaterDepths = new SelectList(_context.WaterDepth.OrderBy(w => w.WaterDepthName), "ID", "WaterDepthName")
             };
 
             return View(viewModel);
@@ -1652,10 +1652,10 @@ namespace AlgoaVehicleTraders.Controllers
                 BuoyancyCertificate = boatAdditional.BuoyancyCertificate,
                 LiveWell = boatAdditional.LiveWell,
 
-                Brands = new SelectList(_context.BoatBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.Type, "ID", "BoatTypeName"),
-                FuelTypes = new SelectList(_context.FuelType, "ID", "FuelTypeName"),
-                Transmissions = new SelectList(_context.Transmission, "ID", "TransmissionName")
+                Brands = new SelectList(_context.BoatBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.Type.OrderBy(t => t.TypeName), "ID", "BoatTypeName"),
+                FuelTypes = new SelectList(_context.FuelType.OrderBy(f => f.FuelTypeName), "ID", "FuelTypeName"),
+                Transmissions = new SelectList(_context.Transmission.OrderBy(t => t.TransmissionName), "ID", "TransmissionName")
 
             };
 
@@ -1664,8 +1664,8 @@ namespace AlgoaVehicleTraders.Controllers
 
         public IActionResult AddVehicleCaravan()
         {
-            var brands = _context.CaravanBrand.ToList();
-            var types = _context.CaravanType.ToList();
+            var brands = _context.CaravanBrand.OrderBy(b => b.BrandName).ToList();
+            var types = _context.CaravanType.OrderBy(t => t.CaravanTypeName).ToList();
 
 
             var viewModel = new AddVehicleCaravanViewModel
@@ -1903,8 +1903,8 @@ namespace AlgoaVehicleTraders.Controllers
                 }.Where(img => img != null).Select(toBase64).ToArray(),
 
                 // Dropdowns
-                Brands = new SelectList(_context.CaravanBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.CaravanType, "ID", "CaravanTypeName"),
+                Brands = new SelectList(_context.CaravanBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.CaravanType.OrderBy(t => t.CaravanTypeName), "ID", "CaravanTypeName"),
                 Statuss = new SelectList(_context.Status, "ID", "StatusName")
             };
 
@@ -2008,8 +2008,8 @@ namespace AlgoaVehicleTraders.Controllers
                 SpareTyre = caravanAdditional.SpareTyre,
                 FullTent = caravanAdditional.FullTent,
 
-                Brands = new SelectList(_context.Brand, "ID", "BrandName"),
-                Types = new SelectList(_context.Type, "ID", "TypeName"),
+                Brands = new SelectList(_context.Brand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.Type.OrderBy(t => t.TypeName), "ID", "TypeName"),
                 Statuss = new SelectList(_context.Status, "ID", "StatusName")
             };
 
@@ -2220,21 +2220,21 @@ namespace AlgoaVehicleTraders.Controllers
         {
             var model = new DropdownsEditViewModel
             {
-                FuelTypes = _context.FuelType.ToList(),
-                Transmissions = _context.Transmission.ToList(),
-                CarTypes = _context.Type.ToList(),
-                CarBrands = _context.Brand.ToList(),
-                DriveTrains = _context.DriveTrain.ToList(),
-                BikeTypes = _context.BikeType.ToList(),
-                BikeBrands = _context.BikeBrand.ToList(),
-                BoatTypes = _context.BoatType.ToList(),
-                BoatBrands = _context.BoatBrand.ToList(),
-                WaterDepths = _context.WaterDepth.ToList(),
-                CaravanTypes = _context.CaravanType.ToList(),
-                CaravanBrands = _context.CaravanBrand.ToList(),
-                TrailerBrands = _context.TrailerBrand.ToList(),
-                AxleTypes = _context.AxleType.ToList(),
-                BrakedAxleTypes = _context.BrakedAxle.ToList()
+                FuelTypes = _context.FuelType.OrderBy(f => f.FuelTypeName).ToList(),
+                Transmissions = _context.Transmission.OrderBy(t => t.TransmissionName).ToList(),
+                CarTypes = _context.Type.OrderBy(t => t.TypeName).ToList(),
+                CarBrands = _context.Brand.OrderBy(b => b.BrandName).ToList(),
+                DriveTrains = _context.DriveTrain.OrderBy(dt => dt.DriveTrainName).ToList(),
+                BikeTypes = _context.BikeType.OrderBy(bt => bt.BikeTypeName).ToList(),
+                BikeBrands = _context.BikeBrand.OrderBy(b => b.BrandName).ToList(),
+                BoatTypes = _context.BoatType.OrderBy(t => t.BoatTypeName).ToList(),
+                BoatBrands = _context.BoatBrand.OrderBy(b => b.BrandName).ToList(),
+                WaterDepths = _context.WaterDepth.OrderBy(w => w.WaterDepthName).ToList(),
+                CaravanTypes = _context.CaravanType.OrderBy(t => t.CaravanTypeName).ToList(),
+                CaravanBrands = _context.CaravanBrand.OrderBy(b => b.BrandName).ToList(),
+                TrailerBrands = _context.TrailerBrand.OrderBy(b => b.BrandName).ToList(),
+                AxleTypes = _context.AxleType.OrderBy(a => a.AxleName).ToList(),
+                BrakedAxleTypes = _context.BrakedAxle.OrderBy(ba => ba.BrakedAxleName).ToList()
             };
 
             return View(model);
@@ -2537,21 +2537,21 @@ namespace AlgoaVehicleTraders.Controllers
         {
             var model = new DropdownsDeleteViewModel
             {
-                FuelTypes = _context.FuelType.ToList(),
-                Transmissions = _context.Transmission.ToList(),
-                CarTypes = _context.Type.ToList(),
-                CarBrands = _context.Brand.ToList(),
-                DriveTrains = _context.DriveTrain.ToList(),
-                BikeTypes = _context.BikeType.ToList(),
-                BikeBrands = _context.BikeBrand.ToList(),
-                BoatTypes = _context.BoatType.ToList(),
-                BoatBrands = _context.BoatBrand.ToList(),
-                WaterDepths = _context.WaterDepth.ToList(),
-                CaravanTypes = _context.CaravanType.ToList(),
-                CaravanBrands = _context.CaravanBrand.ToList(),
-                TrailerBrands = _context.TrailerBrand.ToList(),
-                AxleTypes = _context.AxleType.ToList(),
-                BrakedAxleTypes = _context.BrakedAxle.ToList()
+                FuelTypes = _context.FuelType.OrderBy(f => f.FuelTypeName).ToList(),
+                Transmissions = _context.Transmission.OrderBy(t => t.TransmissionName).ToList(),
+                CarTypes = _context.Type.OrderBy(t => t.TypeName).ToList(),
+                CarBrands = _context.Brand.OrderBy(b => b.BrandName).ToList(),
+                DriveTrains = _context.DriveTrain.OrderBy(dt => dt.DriveTrainName).ToList(),
+                BikeTypes = _context.BikeType.OrderBy(bt => bt.BikeTypeName).ToList(),
+                BikeBrands = _context.BikeBrand.OrderBy(b => b.BrandName).ToList(),
+                BoatTypes = _context.BoatType.OrderBy(t => t.BoatTypeName).ToList(),
+                BoatBrands = _context.BoatBrand.OrderBy(b => b.BrandName).ToList(),
+                WaterDepths = _context.WaterDepth.OrderBy(w => w.WaterDepthName).ToList(),
+                CaravanTypes = _context.CaravanType.OrderBy(t => t.CaravanTypeName).ToList(),
+                CaravanBrands = _context.CaravanBrand.OrderBy(b => b.BrandName).ToList(),
+                TrailerBrands = _context.TrailerBrand.OrderBy(b => b.BrandName).ToList(),
+                AxleTypes = _context.AxleType.OrderBy(a => a.AxleName).ToList(),
+                BrakedAxleTypes = _context.BrakedAxle.OrderBy(ba => ba.BrakedAxleName).ToList()
             };
 
             return View(model);
@@ -2857,10 +2857,10 @@ namespace AlgoaVehicleTraders.Controllers
         {
             var viewModel = new AddVehicleTrailerViewModel
             {
-                Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.TrailerType, "ID", "TypeName"),
-                AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName"),
-                BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName"),
+                Brands = new SelectList(_context.TrailerBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.TrailerType.OrderBy(t => t.TypeName), "ID", "TypeName"),
+                AxleTypes = new SelectList(_context.AxleType.OrderBy(a => a.AxleName), "ID", "AxleName"),
+                BrakedAxles = new SelectList(_context.BrakedAxle.OrderBy(ba => ba.BrakedAxleName), "ID", "BrakedAxleName"),
                 CampTrailer = new CampTrailerViewModel()
             };
 
@@ -2957,10 +2957,10 @@ namespace AlgoaVehicleTraders.Controllers
                 }
             }
 
-            viewModel.Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName", viewModel.Brand);
-            viewModel.Types = new SelectList(_context.TrailerType, "ID", "TypeName", viewModel.Type);
-            viewModel.AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName", viewModel.AxleType);
-            viewModel.BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName", viewModel.BrakedAxle);
+            viewModel.Brands = new SelectList(_context.TrailerBrand.OrderBy(b => b.BrandName), "ID", "BrandName", viewModel.Brand);
+            viewModel.Types = new SelectList(_context.TrailerType.OrderBy(t => t.TypeName), "ID", "TypeName", viewModel.Type);
+            viewModel.AxleTypes = new SelectList(_context.AxleType.OrderBy(a => a.AxleName), "ID", "AxleName", viewModel.AxleType);
+            viewModel.BrakedAxles = new SelectList(_context.BrakedAxle.OrderBy(ba => ba.BrakedAxleName), "ID", "BrakedAxleName", viewModel.BrakedAxle);
             viewModel.Statuss = new SelectList(_context.Status, "ID", "StatusName", viewModel.Status);
 
             // If the model is invalid, return the same view
@@ -3067,10 +3067,10 @@ namespace AlgoaVehicleTraders.Controllers
                 }.Where(img => img != null).Select(toBase64).ToArray(),
 
                 // Dropdowns
-                Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.TrailerType, "ID", "TypeName"),
-                AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName"),
-                BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName"),
+                Brands = new SelectList(_context.TrailerBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.TrailerType.OrderBy(t => t.TypeName), "ID", "TypeName"),
+                AxleTypes = new SelectList(_context.AxleType.OrderBy(a => a.AxleName), "ID", "AxleName"),
+                BrakedAxles = new SelectList(_context.BrakedAxle.OrderBy(ba => ba.BrakedAxleName), "ID", "BrakedAxleName"),
                 Statuss = new SelectList(_context.Status, "ID", "StatusName")
             };
 
@@ -3224,10 +3224,10 @@ namespace AlgoaVehicleTraders.Controllers
                 } : new CampTrailerViewModel(),
 
                 // Dropdowns
-                Brands = new SelectList(_context.TrailerBrand, "ID", "BrandName"),
-                Types = new SelectList(_context.TrailerType, "ID", "TypeName"),
-                AxleTypes = new SelectList(_context.AxleType, "ID", "AxleName"),
-                BrakedAxles = new SelectList(_context.BrakedAxle, "ID", "BrakedAxleName"),
+                Brands = new SelectList(_context.TrailerBrand.OrderBy(b => b.BrandName), "ID", "BrandName"),
+                Types = new SelectList(_context.TrailerType.OrderBy(t => t.TypeName), "ID", "TypeName"),
+                AxleTypes = new SelectList(_context.AxleType.OrderBy(a => a.AxleName), "ID", "AxleName"),
+                BrakedAxles = new SelectList(_context.BrakedAxle.OrderBy(ba => ba.BrakedAxleName), "ID", "BrakedAxleName"),
                 Statuss = new SelectList(_context.Status, "ID", "StatusName")
             };
 
