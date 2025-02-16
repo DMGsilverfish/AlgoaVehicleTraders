@@ -1,0 +1,107 @@
+﻿.vehicle-table-container {
+    margin: 20px auto;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 80%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+    table th, table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    table th {
+        background-color: #e6e6e6;
+        font-weight: bold;
+        color: #333;
+    }
+
+    table td img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+
+.details-btn {
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .details-btn:hover {
+        background-color: #084298;
+    }
+
+
+@media screen and (max-width: 1080px) {
+    .vehicle-table-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+        table th, table td {
+            padding: 8px;
+            font-size: 14px;
+        }
+
+            table td img {
+                width: 40px;
+                height: 40px;
+            }
+
+    .details-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* Stack table columns for very small screens */
+    @media screen and (max-width: 600px) {
+        table, thead, tbody, th, td, tr {
+            display: block;
+        }
+
+        thead {
+            display: none;
+        }
+
+        tbody tr {
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+        }
+
+            tbody tr td {
+                display: flex;
+                justify-content: space-between;
+                padding: 5px;
+                font-size: 14px;
+            }
+
+                tbody tr td::before {
+                    content: attr(data-label);
+                    font-weight: bold;
+                    text-transform: capitalize;
+                }
+    }
+}

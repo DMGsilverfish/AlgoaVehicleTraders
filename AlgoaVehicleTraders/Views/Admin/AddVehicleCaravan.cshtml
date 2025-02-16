@@ -312,18 +312,27 @@
         });
     });
 
-    // Validation for the year input
-    document.getElementById('year').addEventListener('input', function (e) {
+        document.getElementById('year').addEventListener('input', function (e) {
         const input = e.target;
-        const value = input.value;
+        const value = input.value.replace(/\D/g, ''); // Remove non-numeric characters
 
-        // Remove non-numeric characters
-        input.value = value.replace(/\D/g, '');
-
-        // Ensure the value is within the valid range
-        if (input.value < 1900) input.value = 1900;
-        if (input.value > new Date().getFullYear()) input.value = new Date().getFullYear();
+        // Allow typing freely but store valid value
+        input.dataset.prevValue = value;
     });
+
+    document.getElementById('year').addEventListener('blur', function (e) {
+        const input = e.target;
+        let value = parseInt(input.value, 10);
+
+        if (isNaN(value)) {
+            input.value = ""; // Reset if empty
+        } else if (value < 1900) {
+            input.value = 1900;
+        } else if (value > new Date().getFullYear() + 1) {
+            input.value = new Date().getFullYear() + 1;
+        }
+    });
+
 
     // Function to submit all selected images with the form
     function submitForm() {
