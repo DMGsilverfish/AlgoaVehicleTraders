@@ -15,6 +15,7 @@ namespace AlgoaVehicleTraders.Models.All
         public string? TyreSize { get; set; }
         public string? Length { get; set; }
         public int Year { get; set; }
+        public bool TailGate { get; set; }
         public string? Comments { get; set; }
         public int Status { get; set; }
         public DateTime? StatusChangeDate { get; set; }

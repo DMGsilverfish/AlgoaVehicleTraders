@@ -151,6 +151,7 @@
                         <partial name="_CampTrailerFields" model="Model.CampTrailer" />
                     }
                 </div>
+                
 
                 <input type="hidden" name="Status" value="1" />
                 <input type="hidden" name="StatusChangeDate" value="@DateTime.Now" />
@@ -173,7 +174,15 @@
                         .then(html => {
                             container.innerHTML = html;
                         });
-                } else {
+                } 
+                else if (type == "2") {
+                    fetch("/Admin/LoadLuggageTrailerPartial")
+                    .then(response => response.text())
+                    .then(html => {
+                        container.innerHTML = html;
+                    });
+                }
+                else {
                     container.innerHTML = "";
                 }
             }

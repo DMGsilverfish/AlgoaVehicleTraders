@@ -132,6 +132,15 @@
 
             </div>
 
+            <div class="form-grid">
+                <div class="form-group">
+                    <div class="toggle-switch">
+                        <input type="checkbox" asp-for="TailGate" id="TailGate" />
+                        <label for="TailGate">TailGate</label>
+                    </div>
+                </div>
+            </div>
+
             <!-- Image Upload Section -->
             <div class="image-upload-section">
                 <!-- Exterior Images -->
@@ -177,6 +186,8 @@
             {
                 <input type="hidden" name="ExistingOtherImages[@i]" value="@Model.OtherImageBase64[i]" />
             }
+
+            
 
             <!-- Submit and Cancel Buttons -->
             <div class="form-actions">

@@ -2872,6 +2872,10 @@ namespace AlgoaVehicleTraders.Controllers
             return PartialView("_CampTrailerFields", new CampTrailerViewModel());
         }
 
+        public IActionResult LoadLuggageTrailerPartial()
+        {
+            return PartialView("_LuggageTrailerFields", new AddVehicleTrailerViewModel());
+        }
 
 
         [HttpPost]
@@ -2897,7 +2901,8 @@ namespace AlgoaVehicleTraders.Controllers
                         Length = viewModel.Length!,
                         Status = viewModel.Status,
                         StatusChangeDate = viewModel.StatusChangeDate,
-                        Comments = viewModel.Comments
+                        Comments = viewModel.Comments,
+                        TailGate = viewModel.TailGate
                     };
 
                     _context.Trailer.Add(trailer);
@@ -3045,6 +3050,7 @@ namespace AlgoaVehicleTraders.Controllers
                 Comments = vehicle.Comments,
                 Status = vehicle.Status,
                 StatusChangeDate = vehicle.StatusChangeDate,
+                TailGate = vehicle.TailGate,
 
                 // Existing images as base64 strings
                 ExteriorImageBase64 = new[]
@@ -3080,7 +3086,7 @@ namespace AlgoaVehicleTraders.Controllers
 
         [HttpPost]
         public IActionResult VehicleDetailsTrailer(int ID,
-          [Bind("ID,Model,Brand,Type,Price,AxleType,BrakedAxle,NumberAxle,Year,TyreSize,Length,Comments,Status,StatusChangeDate")] Trailer trailer,
+          [Bind("ID,Model,Brand,Type,Price,AxleType,BrakedAxle,NumberAxle,Year,TyreSize,Length,Comments,Status,StatusChangeDate,TailGate")] Trailer trailer,
           int OldStatus,
           IFormFile[]? ExteriorImages, string ExteriorImagesUpdated,
           IFormFile[]? InteriorImages, string InteriorImagesUpdated,
@@ -3117,6 +3123,7 @@ namespace AlgoaVehicleTraders.Controllers
                 existingTrailer.Length = trailer.Length;
                 existingTrailer.Comments = trailer.Comments;
                 existingTrailer.Status = trailer.Status;
+                existingTrailer.TailGate = trailer.TailGate;
 
                 // Update images if new ones were uploaded
                 if (ExteriorImagesUpdated == "true" && ExteriorImages?.Any() == true)
@@ -3182,6 +3189,7 @@ namespace AlgoaVehicleTraders.Controllers
                 Comments = vehicle.trailer.Comments,
                 Status = vehicle.trailer.Status,
                 StatusChangeDate = vehicle.trailer.StatusChangeDate,
+                TailGate = false,
 
                 // Existing images as base64 strings
                 ExteriorImageBase64 = new[]
@@ -3276,6 +3284,7 @@ namespace AlgoaVehicleTraders.Controllers
                 existingTrailer.Length = trailer.Length;
                 existingTrailer.Comments = trailer.Comments;
                 existingTrailer.Status = trailer.Status;
+                existingTrailer.TailGate = false;
 
                 // Update images if new ones were uploaded
                 if (ExteriorImagesUpdated == "true" && ExteriorImages?.Any() == true)

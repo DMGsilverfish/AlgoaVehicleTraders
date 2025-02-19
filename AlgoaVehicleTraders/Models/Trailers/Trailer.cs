@@ -27,6 +27,7 @@ namespace AlgoaVehicleTraders.Models.Trailers
         public required string TyreSize { get; set; }
         [Required]
         public required string Length { get; set; }
+        public bool TailGate { get; set; }
 
         // Exterior images
         public byte[]? Exterior1 { get; set; }
