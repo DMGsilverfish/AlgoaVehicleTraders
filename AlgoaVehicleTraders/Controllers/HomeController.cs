@@ -480,14 +480,85 @@ namespace AlgoaVehicleTraders.Controllers
                 return RedirectToAction("ViewMore", new { id = ID });
         }
 
-        //public IActionResult SellEmail(string fullname, string fromDetails, string reason, string vehicle)
-        //{
-        //    if (string.IsNullOrEmpty(fullname) || string.IsNullOrEmpty(fromDetails) || string.IsNullOrEmpty(vehicle))
-        //    {
-        //        ModelState.AddModelError("", "Fill all required fields");
-        //        return RedirectToAction("ViewMore");
-        //    }
-        //}
+        [HttpPost]
+        public IActionResult SellEmail(string fullName, string contact, string vehicleDetails, string reason, List<IFormFile>? images)
+        {
+            try
+            {
+                string companyEmail = _configuration["Company:Email"]; // Get the company email
+                companyEmail = "danielgibson.pe@gmail.com";
+                string subject = "Sell Car Query";
+
+                // Format the email body
+                string body = $"Full Name: {fullName}\n" +
+                              $"Contact: {contact}\n" +
+                              $"Vehicle Details: {vehicleDetails}\n" +
+                              $"Reason for Selling: {reason}\n";
+
+                var smtpServer = _configuration["Gmail:SmtpServer"];
+                var port = int.Parse(_configuration["Gmail:Port"]!);
+                var fromEmail = _configuration["Gmail:Username"];
+                var password = _configuration["Gmail:Password"];
+
+                using (var client = new SmtpClient(smtpServer, port))
+                {
+                    client.EnableSsl = true;
+                    client.Credentials = new NetworkCredential(fromEmail, password);
+
+                    using (var mailMessage = new MailMessage())
+                    {
+                        mailMessage.From = new MailAddress(fromEmail!);
+                        mailMessage.To.Add(companyEmail);
+                        mailMessage.Subject = subject;
+                        mailMessage.Body = body;
+                        mailMessage.IsBodyHtml = false;
+
+                        mailMessage.Headers.Add("X-Priority", "3"); // Normal priority
+                        mailMessage.Headers.Add("X-MSMail-Priority", "Normal");
+                        mailMessage.Headers.Add("Importance", "Normal");
+
+                        // Attach images if provided
+                        if (images != null)
+                        {
+                            foreach (var file in images)
+                            {
+                                if (file.Length > 0)
+                                {
+                                    using (var ms = new MemoryStream())
+                                    {
+                                        file.CopyTo(ms);
+                                        var fileBytes = ms.ToArray();
+                                        var attachment = new Attachment(new MemoryStream(fileBytes), file.FileName);
+                                        mailMessage.Attachments.Add(attachment);
+                                    }
+                                }
+                            }
+                        }
+
+                        client.Send(mailMessage);
+                    }
+                }
+
+                TempData["Message"] = "Your inquiry has been sent successfully!";
+            }
+            catch (SmtpException ex)
+            {
+                Console.WriteLine("SMTP Error: " + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+                }
+                TempData["Message"] = "Failed to send email. Please try again.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("General Error: " + ex.Message);
+                TempData["Message"] = "An error occurred. Please try again.";
+            }
+
+            return RedirectToAction("Sell");
+        }
+
 
 
 
@@ -516,6 +587,9 @@ namespace AlgoaVehicleTraders.Controllers
                     mailMessage.Headers.Add("X-Priority", "3");          // 3 = Normal priority
                     mailMessage.Headers.Add("X-MSMail-Priority", "Normal");
                     mailMessage.Headers.Add("Importance", "Normal");
+
+
+
 
                     client.Send(mailMessage);
                 }
