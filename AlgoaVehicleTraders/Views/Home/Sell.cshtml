@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sell Your Vehicle</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            display: block; /* Default block layout */
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px; /* Reduced padding to fix previous issue */
+            border-radius: 8px;
+            border: 2px solid #007bff; /* Blue border */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto; /* Centering */
+        }
+
+
+        h2 {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            text-align: left;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 80px;
+            resize: vertical;
+        }
+
+        .file-upload {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .file-label {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .preview-container {
+            margin-top: 10px;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .preview-box {
+            position: relative;
+            display: inline-block;
+        }
+
+            .preview-container img {
+                width: 70px;
+                height: 70px;
+                object-fit: cover;
+                border-radius: 5px;
+                border: 1px solid #ccc;
+            }
+
+        .submit-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+        }
+
+            .submit-btn:hover {
+                background-color: #218838;
+            }
+
+        .close-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: red;
+            color: white;
+            font-size: 14px;
+            width: 18px;
+            height: 18px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2>Sell Your Vehicle</h2>
+        <form method="post" asp-controller="Home" asp-action="SellEmail" enctype="multipart/form-data">
+
+            <label for="fullName">Full Name:</label>
+            <input type="text" id="fullName" name="FullName" required>
+
+            <label for="contact">Email or Phone:</label>
+            <input type="text" id="contact" name="Contact" required>
+
+            <label for="vehicleDetails">Vehicle Details (Brand, Model, Year):</label>
+            <input type="text" id="vehicleDetails" name="VehicleDetails" placeholder="e.g., Toyota Corolla 2018" required>
+
+            <label for="reason">Reason for Selling:</label>
+            <textarea id="reason" name="Reason" required></textarea>
+
+            <!-- Custom File Upload -->
+            <div class="file-upload">
+                <label for="images" class="file-label">Upload Pictures (Max 3)</label>
+                <input type="file" id="images" name="Images" accept="image/*" multiple class="file-input" onchange="previewImages(this)">
+                <div class="preview-container" id="preview"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        function previewImages(input) {
+            const previewContainer = document.getElementById("preview");
+            previewContainer.innerHTML = "";
+
+            if (input.files.length > 3) {
+                alert("You can only upload a maximum of 3 images.");
+                input.value = "";
+                return;
+            }
+
+            Array.from(input.files).forEach((file, index) => {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const previewBox = document.createElement("div");
+                    previewBox.classList.add("preview-box");
+
+                    const img = document.createElement("img");
+                    img.src = e.target.result;
+
+                    const closeBtn = document.createElement("span");
+                    closeBtn.innerHTML = "&#10006;"; // Unicode ❌
+                    closeBtn.classList.add("close-btn");
+                    closeBtn.onclick = function() {
+                        removeImage(index, input);
+                    };
+
+                    previewBox.appendChild(img);
+                    previewBox.appendChild(closeBtn);
+                    previewContainer.appendChild(previewBox);
+                };
+
+                reader.readAsDataURL(file);
+            });
+        }
+
+        function removeImage(index, input) {
+            const fileList = Array.from(input.files);
+            fileList.splice(index, 1); // Remove selected image
+
+            // Create a new FileList object
+            const dataTransfer = new DataTransfer();
+            fileList.forEach(file => dataTransfer.items.add(file));
+
+            input.files = dataTransfer.files; // Update input files
+            previewImages(input); // Re-render previews
+        }
+    </script>
+
+</body>
+</html>

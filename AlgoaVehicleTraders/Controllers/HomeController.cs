@@ -366,7 +366,39 @@ namespace AlgoaVehicleTraders.Controllers
             return View();
         }
 
-        public ActionResult ContactUs()
+        public IActionResult ContactUs(string contactDetails, string userMessage)
+        {
+            if (string.IsNullOrEmpty(userMessage) || string.IsNullOrEmpty(contactDetails))
+            {
+                ModelState.AddModelError("", "Contact details and message cannot be empty");
+                return RedirectToAction("AboutUs");
+            }
+
+            string subject = "Customer general query.";
+            var body = $"Message from customer (general query): {contactDetails}\n" +
+                        $"\n{userMessage}";
+            var companyEmail = (from company in _context.CompanyDetails
+                                select company.CompanyEmail).FirstOrDefault();
+
+            try
+            {
+                if (!string.IsNullOrEmpty(contactDetails))
+                {
+                    SendEmail("danielgibson.pe@gmail.com", subject, body);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error sending email: " + ex.Message);
+            }
+
+            TempData["SuccessMessage"] = "Your inquiry has been sent successfully!";
+
+            return RedirectToAction("AboutUs");
+
+        }
+
+        public IActionResult Sell()
         {
             return View();
         }
@@ -376,6 +408,9 @@ namespace AlgoaVehicleTraders.Controllers
             return View();
         }
         #endregion
+
+
+
 
 
         //Email Code
@@ -445,6 +480,17 @@ namespace AlgoaVehicleTraders.Controllers
                 return RedirectToAction("ViewMore", new { id = ID });
         }
 
+        //public IActionResult SellEmail(string fullname, string fromDetails, string reason, string vehicle)
+        //{
+        //    if (string.IsNullOrEmpty(fullname) || string.IsNullOrEmpty(fromDetails) || string.IsNullOrEmpty(vehicle))
+        //    {
+        //        ModelState.AddModelError("", "Fill all required fields");
+        //        return RedirectToAction("ViewMore");
+        //    }
+        //}
+
+
+
         private void SendEmail(string toEmail, string subject, string body)
         {
             try
@@ -489,6 +535,9 @@ namespace AlgoaVehicleTraders.Controllers
                 Console.WriteLine("General Error: " + ex.Message);
             }
         }
+
+
+        
 
 
     }

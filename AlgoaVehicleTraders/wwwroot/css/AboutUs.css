@@ -1,0 +1,129 @@
+﻿/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* Content Row Layout */
+.content-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 40px;
+}
+
+/* Image Styling */
+.about-img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+    .about-img:hover {
+        transform: scale(1.05);
+    }
+
+/* Text Bubble */
+.text-bubble {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    border: 2px solid blue;
+}
+
+/* Ensuring 3 Items Per Row */
+.content-row > * {
+    flex: 1;
+}
+
+/* Call to Action Section */
+.cta-container {
+    background-color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    border: 2px solid blue;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.sell {
+    background-color: #ff5733;
+    color: white;
+}
+
+.buy {
+    background-color: #28a745;
+    color: white;
+}
+
+.contact {
+    background-color: #007bff;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+/* Full-Screen Image Overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen-img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 764px) {
+    .content-row {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+        .content-row > * {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+}

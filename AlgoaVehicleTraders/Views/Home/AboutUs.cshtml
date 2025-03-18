@@ -1,0 +1,107 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Algoa Vehicle Traders</title>
+    <link rel="stylesheet" href="~/css/AboutUs.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/ViewMore.css" asp-append-version="true" />
+</head>
+<body>
+    <div class="about-container">
+        <!-- First Section -->
+        <div class="content-row">
+            <div class="text-bubble">
+                <p>
+                    At <strong>Algoa Vehicle Traders</strong>, we’re a family-run business with a passion for giving vehicles a second life. Whether it’s cars, bikes, boats, caravans, or trailers, we buy and sell quality secondhand vehicles at fair prices.
+                </p>
+            </div>
+            <img src="~/Pictures/AboutUsImg1.jpg" alt="Algoa Vehicle Traders" class="about-img clickable">
+        </div>
+
+        <!-- Second Section (Image on Left, Text on Right) -->
+        <div class="content-row">
+            <img src="~/Pictures/AboutUsImg2.jpg" alt="Algoa Vehicle Traders" class="about-img clickable">
+            <div class="text-bubble">
+                <p>
+                    We also offer a <strong>Park and Sell</strong> service, where we sell vehicles on behalf of their owners—taking the hassle out of the process while ensuring the best deal. With over <strong>30 years of experience</strong> and a commitment to honesty and great service, we make buying and selling easy, stress-free, and personal.
+                </p>
+            </div>
+        </div>
+
+        <!-- CTA Section with Image -->
+        <div class="content-row">
+            <div class="cta-container">
+                <p>Looking to sell? Looking to buy? Let’s make it happen.</p>
+                <div class="buttons">
+                    <form asp-action="Sell" asp-controller="Home"><button class="sell" type="submit">Sell</button></form>
+                    <form asp-action="Index" asp-controller="Home"><button type="submit" class="buy">Buy</button></form>
+                    <button type="button" class="contact" onclick="showModal()">Contact Us</button>
+                </div>
+            </div>
+            <img src="~/Pictures/AboutUsImg3.jpg" alt="Algoa Vehicle Traders" class="about-img clickable">
+        </div>
+    </div>
+
+    <!-- Modal Section -->
+    <div id="interestModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>Interested in Buying?</h2>
+            <form method="post" asp-controller="Home" asp-action="ContactUs">
+
+                <label for="userEmail">Your Email or Phone Number:</label>
+                <input type="text" id="contactDetails" name="contactDetails" required>
+
+                <label for="userMessage">Message:</label>
+                <textarea id="userMessage" name="userMessage" required style="resize: vertical;"></textarea>
+
+                <button type="submit" class="btn btn-success">Send Inquiry</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Full-Screen Image Overlay -->
+    <div id="fullscreen-overlay" class="overlay">
+        <img id="fullscreen-img" class="fullscreen-img">
+    </div>
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const images = document.querySelectorAll(".clickable");
+            const overlay = document.getElementById("fullscreen-overlay");
+            const fullscreenImg = document.getElementById("fullscreen-img");
+
+            images.forEach(img => {
+                img.addEventListener("click", function () {
+                    fullscreenImg.src = this.src;
+                    overlay.style.display = "flex";
+                });
+            });
+
+            overlay.addEventListener("click", function () {
+                overlay.style.display = "none";
+            });
+        });
+
+
+            //email section
+        function showModal() {
+            document.getElementById('interestModal').style.display = 'block';
+        }
+
+        function closeModal() {
+            document.getElementById('interestModal').style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            var modal = document.getElementById('interestModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+    </script>
+</body>
+</html>
