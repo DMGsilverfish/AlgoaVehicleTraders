@@ -1,0 +1,149 @@
+﻿body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    display: block; /* Default block layout */
+}
+
+.form-container {
+    background: white;
+    padding: 40px; /* Reduced padding to fix previous issue */
+    border-radius: 8px;
+    border: 2px solid #007bff; /* Blue border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto; /* Centering */
+}
+
+
+
+
+h2 {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: left;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+textarea {
+    height: 80px;
+    resize: vertical;
+}
+
+.file-upload {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.file-label {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 16px;
+}
+
+.file-input {
+    display: none;
+}
+
+.preview-container {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.preview-box {
+    position: relative;
+    display: inline-block;
+}
+
+.preview-container img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.submit-btn {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 15px;
+}
+
+    .submit-btn:hover {
+        background-color: #218838;
+    }
+
+.close-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: red;
+    color: white;
+    font-size: 14px;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+@media (max-width: 600px) {
+    .form-container {
+        width: 90%; /* Adjust width for smaller screens */
+        padding: 30px; /* Slightly reduce padding */
+    }
+
+    input, textarea {
+        font-size: 14px; /* Reduce font size slightly for better fit */
+    }
+
+    .file-label, .submit-btn {
+        font-size: 14px; /* Adjust button text size */
+        padding: 8px 12px;
+    }
+
+    .preview-container img {
+        width: 60px; /* Slightly smaller preview images */
+        height: 60px;
+    }
+}
+
+/* Ensure form container remains centered */
+@media (max-height: 700px) {
+    .form-container {
+        margin-top: 5vh; /* Prevent it from getting too close to the top */
+    }
+}
