@@ -8,32 +8,35 @@
 </head>
 <body>
 
-    <div class="form-container">
-        <h2>Sell Your Vehicle</h2>
-        <form method="post" asp-controller="Home" asp-action="SellEmail" enctype="multipart/form-data">
+    <div class="main-content">
+        <div class="form-container">
+            <h2>Sell Your Vehicle</h2>
+            <form method="post" asp-controller="Home" asp-action="SellEmail" enctype="multipart/form-data">
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="FullName" required>
 
-            <label for="fullName">Full Name:</label>
-            <input type="text" id="fullName" name="FullName" required>
+                <label for="contact">Email or Phone:</label>
+                <input type="text" id="contact" name="Contact" required>
 
-            <label for="contact">Email or Phone:</label>
-            <input type="text" id="contact" name="Contact" required>
+                <label for="vehicleDetails">Vehicle Details (Brand, Model, Year):</label>
+                <input type="text" id="vehicleDetails" name="VehicleDetails" placeholder="e.g., Toyota Corolla 2018" required>
 
-            <label for="vehicleDetails">Vehicle Details (Brand, Model, Year):</label>
-            <input type="text" id="vehicleDetails" name="VehicleDetails" placeholder="e.g., Toyota Corolla 2018" required>
+                <label for="reason">Reason for Selling:</label>
+                <textarea id="reason" name="Reason" required></textarea>
 
-            <label for="reason">Reason for Selling:</label>
-            <textarea id="reason" name="Reason" required></textarea>
+                <!-- Custom File Upload -->
+                <div class="file-upload">
+                    <label for="images" class="file-label">Upload Images (Max 3, optional)</label>
+                    <input type="file" id="images" name="Images" accept="image/*" multiple class="file-input" onchange="previewImages(this)">
+                    <div class="preview-container" id="preview"></div>
+                </div>
 
-            <!-- Custom File Upload -->
-            <div class="file-upload">
-                <label for="images" class="file-label">Upload Images (Max 3, optional)</label>
-                <input type="file" id="images" name="Images" accept="image/*" multiple class="file-input" onchange="previewImages(this)">
-                <div class="preview-container" id="preview"></div>
-            </div>
-
-            <button type="submit" class="submit-btn">Submit</button>
-        </form>
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
     </div>
+    
+
 
     <script>
         function previewImages(input) {

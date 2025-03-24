@@ -1,21 +1,34 @@
-﻿body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+﻿html, body {
+    height: 100%;
     margin: 0;
-    display: block; /* Default block layout */
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    background-color: #f4f4f4;
+    font-family: Arial, sans-serif;
+}
+
+.main-content {
+    flex-grow: 1; /* Pushes the footer down */
+    display: flex;
+    align-items: flex-start; /* Keeps the form aligned properly */
+    justify-content: center; /* Centers horizontally */
+    padding-top: 20px; /* Adjust as needed */
+    padding-bottom: 15px;
 }
 
 .form-container {
     background: white;
-    padding: 40px; /* Reduced padding to fix previous issue */
+    padding: 40px;
     border-radius: 8px;
-    border: 2px solid #007bff; /* Blue border */
+    border: 2px solid #007bff;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 400px;
-    margin: 0 auto; /* Centering */
 }
-
 
 
 
@@ -124,6 +137,7 @@ textarea {
     .form-container {
         width: 90%; /* Adjust width for smaller screens */
         padding: 30px; /* Slightly reduce padding */
+        margin: 0 auto;
     }
 
     input, textarea {
@@ -145,5 +159,6 @@ textarea {
 @media (max-height: 700px) {
     .form-container {
         margin-top: 5vh; /* Prevent it from getting too close to the top */
+        margin: 0 auto;
     }
 }
