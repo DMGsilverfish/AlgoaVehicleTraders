@@ -79,6 +79,27 @@
                     <span asp-validation-for="Type" class="text-danger"></span>
                 </div>
                 <div class="form-group">
+                    <label asp-for="AxleType">Axle Type</label>
+                    <select asp-for="AxleType" class="form-control select2" asp-items="Model.AxleTypes">
+                        <option value="">Select Axle Type</option>
+                    </select>
+                    <span asp-validation-for="AxleType" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="BrakedAxle">Braked Axle</label>
+                    <select asp-for="BrakedAxle" class="form-control select2" asp-items="Model.BrakedAxles">
+                        <option value="">Select Braked Axle Type</option>
+                    </select>
+                    <span asp-validation-for="BrakedAxle" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="NumberAxle">Number of Axles</label>
+                    <input asp-for="NumberAxle" class="form-control" type="number" />
+                    <span asp-validation-for="NumberAxle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="Year">Year</label>
                     <input asp-for="Year" class="form-control" type="number" min="1900" max="2099" />
                     <span asp-validation-for="Year" class="text-danger"></span>

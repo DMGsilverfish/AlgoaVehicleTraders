@@ -259,27 +259,39 @@ namespace AlgoaVehicleTraders.Controllers
             var currentDate = DateTime.Now;
             var trailers = from trailer in _context.Trailer
                            where trailer.Status == 1 ||
-                                    (trailer.Status == 3 && trailer.StatusChangeDate.HasValue &&
-                                    EF.Functions.DateDiffDay(trailer.StatusChangeDate.Value, currentDate) <= 7)
+                                 (trailer.Status == 3 && trailer.StatusChangeDate.HasValue &&
+                                  EF.Functions.DateDiffDay(trailer.StatusChangeDate.Value, currentDate) <= 7)
 
-                           join brand in _context.TrailerBrand on trailer.Brand equals brand.ID
-                           join type in _context.TrailerType on trailer.Type equals type.ID
-                           join axle in _context.AxleType on trailer.AxleType equals axle.ID
-                           join braked in _context.BrakedAxle on trailer.BrakedAxle equals braked.ID
+                           join brand in _context.TrailerBrand on trailer.Brand equals brand.ID into brandGroup
+                           from brand in brandGroup.DefaultIfEmpty()
+
+                           join type in _context.TrailerType on trailer.Type equals type.ID into typeGroup
+                           from type in typeGroup.DefaultIfEmpty()
+
+                           join axle in _context.AxleType on trailer.AxleType equals axle.ID into axleGroup
+                           from axle in axleGroup.DefaultIfEmpty()
+
+                           join braked in _context.BrakedAxle on trailer.BrakedAxle equals braked.ID into brakedGroup
+                           from braked in brakedGroup.DefaultIfEmpty()
 
                            join camptrailer in _context.CampTrailer on trailer.ID equals camptrailer.TrailerID into camptrailerGroup
                            from camptrailer in camptrailerGroup.DefaultIfEmpty()
+
                            select new TrailerViewModel
                            {
                                Trailer = trailer,
                                CampTrailer = camptrailer,
-                               Brand = brand.BrandName,
-                               Type = type.TypeName,
-                               AxleType = axle.AxleName,
-                               BrakedAxle = braked.BrakedAxleName
+                               Brand = brand != null ? brand.BrandName : "Unknown",
+                               Type = type != null ? type.TypeName : "Unknown",
+                               AxleType = axle != null ? axle.AxleName : "Unknown",
+                               BrakedAxle = braked != null ? braked.BrakedAxleName : "Unknown"
                            };
 
-            return View(trailers.ToList());
+            var trailersList = trailers.ToList();
+            Console.WriteLine($"Total trailers fetched: {trailersList.Count}");
+
+            return View(trailersList);
+
         }
 
         [HttpGet]
@@ -384,7 +396,9 @@ namespace AlgoaVehicleTraders.Controllers
             {
                 if (!string.IsNullOrEmpty(contactDetails))
                 {
-                    SendEmail("danielgibson.pe@gmail.com", subject, body);
+                    //SendEmail("danielgibson.pe@gmail.com", subject, body);
+                    SendEmail(companyEmail, subject, body);
+
                 }
             }
             catch (Exception ex)
@@ -441,9 +455,9 @@ namespace AlgoaVehicleTraders.Controllers
             {
                 if (!string.IsNullOrEmpty(companyEmail))
                 {
-                    SendEmail("danielgibson.pe@gmail.com", subject, body);
+                    //SendEmail("danielgibson.pe@gmail.com", subject, body);
 
-                    //SendEmail(companyEmail, subject, body);
+                    SendEmail(companyEmail, subject, body);
                 }
             }
             catch (Exception ex)
@@ -485,8 +499,10 @@ namespace AlgoaVehicleTraders.Controllers
         {
             try
             {
-                string companyEmail = _configuration["Company:Email"]; // Get the company email
-                companyEmail = "danielgibson.pe@gmail.com";
+                var companyEmail = (from company in _context.CompanyDetails
+                                    select company.CompanyEmail).FirstOrDefault();
+
+                //companyEmail = "danielgibson.pe@gmail.com";
                 string subject = "Sell Car Query";
 
                 // Format the email body

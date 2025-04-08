@@ -1,4 +1,5 @@
-﻿@using AlgoaVehicleTraders.Models.Cars
+﻿
+@using AlgoaVehicleTraders.Models.Cars
 @using AlgoaVehicleTraders.Models.All
 @model IEnumerable<CarViewModel>
 @{
@@ -98,7 +99,7 @@
     <div class="search-bar">
         <input type="text" placeholder="Search Car Brand, Model, Year..." />
         @* <button type="button" style="background-color: #74b62c">Search</button> *@
-        <button type="button" style="background-color: #74b62c" id="sort-btn">Sort</button>
+        <button type="button" style="background-color: #014094" id="sort-btn">Sort</button>
         <ul class="pagination">
             <li class="page-item-active"><a class="page-link" href="#">Car</a></li>
             <li class="page-item"><a asp-action="BikeIndex" asp-controller="Home" class="page-link">Bike</a></li>
@@ -146,7 +147,7 @@
 
                         <form asp-controller="Home" asp-action="ViewMore" method="get" class="view-more-form">
                             <input type="hidden" name="id" value="@car.ID" />
-                            <button type="submit" class="view-more-btn" style="background: #74b62c; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
+                            <button type="submit" class="view-more-btn" style="background: #014094; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">
                                 View More
                             </button>
                         </form>

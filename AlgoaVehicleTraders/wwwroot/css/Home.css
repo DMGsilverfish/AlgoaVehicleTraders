@@ -6,11 +6,13 @@
 
 /* Styling for the header */
 .header {
-    background: linear-gradient( 45deg, #4CAF50 0%, #4CAF50 8%, /* Green covers the button */
+    background: linear-gradient( 45deg, #a8d638 0%, #a8d638 8%, /* Green covers the button */
     black 8%, black 12%, /* Thin black separator */
-    white 12%, white 38%, /* White for title area */
+    #014094 12%, #014094 16%, /* Blue section after first black separator */
+    white 16%, white 38%, /* White for title area */
     black 38%, black 42%, /* Thin black separator */
-    #4CAF50 42%, #4CAF50 100% /* Rest is green */
+    #014094 42%, #014094 44%, /* Smaller blue section after second black separator */
+    #a8d638 44%, #a8d638 100% /* Rest is green */
     );
     background-size: 200% 200%;
     color: white;
@@ -22,6 +24,7 @@
     border: 2px solid black;
     width: 100vw;
 }
+
 
 /* Styling for the button */
 .toggle-btn {

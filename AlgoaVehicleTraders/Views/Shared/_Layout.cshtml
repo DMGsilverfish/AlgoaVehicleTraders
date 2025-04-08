@@ -44,7 +44,7 @@
                         <li><a href="@Url.Action("Index", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Index" ? "active" : "")">Home</a></li>
                         <li><a href="@Url.Action("AboutUs", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "AboutUs" ? "active" : "")">About Us</a></li>
                         <li><a href="@Url.Action("Sell", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Sell" ? "active" : "")">Sell Vehicle</a></li>
-                        <li><a href="@Url.Action("Services", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Services" ? "active" : "")">Other Services</a></li>
+                        @* <li><a href="@Url.Action("Services", "Home")" class="@(ViewContext.RouteData.Values["action"]?.ToString() == "Services" ? "active" : "")">Other Services</a></li> *@
                     }
 
                     <!-- Show Sign In if not authenticated, otherwise show Admin options -->

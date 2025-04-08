@@ -99,7 +99,7 @@
     padding-top: 10px; /* Add some padding above the image for spacing */
     border-width: 10px; /* Set the border width */
     border-style: solid; /* Set border style to solid */
-    border-image: linear-gradient(to bottom, #74b62c 50%, black 50%) 1; /* Gradient border */
+    border-image: linear-gradient(to bottom, #a8d638 50%, black 50%) 1; /* Gradient border */
     border-image-slice: 1;
 }
 
@@ -116,7 +116,7 @@
 
 /* Green Footer Block with Price */
 .price-footer {
-    background-color: #74b62c;
+    background-color: #014094;
     color: white;
     padding: 10px; /* Add padding to the price block */
     text-align: center;
@@ -137,7 +137,7 @@
     box-sizing: border-box; /* Ensure padding doesn't cause overflow */
     font-weight: bold; /* Make mileage bold */
     background-color: white;
-    border: 2px solid #74b62c; /* Add a border between price and mileage */
+    border: 2px solid #014094; /* Add a border between price and mileage */
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
 }
