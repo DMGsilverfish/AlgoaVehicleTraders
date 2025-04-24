@@ -23,7 +23,7 @@
             <button class="toggle-btn">
                 <span>&#9776;</span>
             </button>
-            <h1>@company.CompanyName</h1>
+            <h1>@company!.CompanyName</h1>
         </div>
     </header>
 
@@ -99,10 +99,11 @@
                 
                     <div style="flex: 1; min-width: 300px;">
                         <h3>Contact Information</h3>
-                        <p><strong>Company Name:</strong> @company.CompanyName</p>
+                        <p><strong>Company Name:</strong> @company!.CompanyName</p>
                         <p><strong>Address:</strong> @company.Address</p>
                         <p><strong>Email:</strong> <a href="mailto:@company.CompanyEmail">@company.CompanyEmail</a></p>
                         <p><strong>Phone:</strong> <a href="tel:@company.CompanyPhone">@company.CompanyPhone</a></p>
+                        <p><strong>Web Developer:</strong> <a href="mailto:@company.DeveloperEmail">@company.DeveloperEmail</a></p>
                         <div class="footer-social-links" style="display: flex; gap: 10px;">
                             <div class="facebook-link">
                                 <a href="@company.FacebookLink" target="_blank">

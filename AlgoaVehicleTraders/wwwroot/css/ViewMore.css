@@ -189,3 +189,32 @@ input, textarea {
 .btn:hover {
     opacity: 0.9;
 }
+
+@media (max-width: 768px) {
+    #mainImage {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+    }
+
+    .thumbnail-gallery {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 8px;
+        scroll-padding-left: 0.5rem;
+        padding-left: 0.5rem;
+    }
+
+        .thumbnail-gallery .thumbnail {
+            flex: 0 0 auto;
+            width: calc(33.33% - 6px);
+            height: auto;
+        }
+}
+
+@media (min-width: 769px) {
+    .thumbnail-gallery .thumbnail {
+        width: 80px;
+    }
+}
