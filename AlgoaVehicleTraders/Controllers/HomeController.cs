@@ -488,7 +488,7 @@ namespace AlgoaVehicleTraders.Controllers
                 return RedirectToAction("CaravanViewMore", new { id = ID });
             else if (category == "Luggage Trailer")
                 return RedirectToAction("LuggageTrailerViewMore", new { id = ID });
-            else if (category == "Luggage Trailer")
+            else if (category == "Camp Trailer")
                 return RedirectToAction("CampTrailerViewMore", new { id = ID });
             else
                 return RedirectToAction("ViewMore", new { id = ID });
