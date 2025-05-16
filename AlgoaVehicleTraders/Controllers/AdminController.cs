@@ -2954,7 +2954,7 @@ namespace AlgoaVehicleTraders.Controllers
                     _context.Trailer.Update(trailer);
                     await _context.SaveChangesAsync();
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     // Handle any exceptions
                     ModelState.AddModelError("", "An error occurred while saving the trailer.");
@@ -2998,7 +2998,7 @@ namespace AlgoaVehicleTraders.Controllers
         public IActionResult TrailerType(int ID)
         {
             var trailer = _context.Trailer.FirstOrDefault(t => t.ID == ID);
-            var trailerType = trailer.Type;
+            var trailerType = trailer?.Type;
 
             if (trailer == null)
             {

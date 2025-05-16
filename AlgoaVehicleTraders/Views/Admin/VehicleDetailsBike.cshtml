@@ -205,15 +205,15 @@
                 }
             </script>
 
-            @for (int i = 0; i < Model.ExteriorImageBase64.Length; i++)
+            @for (int i = 0; i < Model.ExteriorImageBase64?.Length; i++)
             {
                 <input type="hidden" name="ExistingExteriorImages[@i]" value="@Model.ExteriorImageBase64[i]" />
             }
-            @for (int i = 0; i < Model.InteriorImageBase64.Length; i++)
+            @for (int i = 0; i < Model.InteriorImageBase64?.Length; i++)
             {
                 <input type="hidden" name="ExistingInteriorImages[@i]" value="@Model.InteriorImageBase64[i]" />
             }
-            @for (int i = 0; i < Model.OtherImageBase64.Length; i++)
+            @for (int i = 0; i < Model.OtherImageBase64?.Length; i++)
             {
                 <input type="hidden" name="ExistingOtherImages[@i]" value="@Model.OtherImageBase64[i]" />
             }

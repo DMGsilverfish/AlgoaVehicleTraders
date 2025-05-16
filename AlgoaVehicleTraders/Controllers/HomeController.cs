@@ -397,7 +397,7 @@ namespace AlgoaVehicleTraders.Controllers
                 if (!string.IsNullOrEmpty(contactDetails))
                 {
                     //SendEmail("danielgibson.pe@gmail.com", subject, body);
-                    SendEmail(companyEmail, subject, body);
+                    SendEmail(companyEmail!, subject, body);
 
                 }
             }
@@ -524,7 +524,7 @@ namespace AlgoaVehicleTraders.Controllers
                     using (var mailMessage = new MailMessage())
                     {
                         mailMessage.From = new MailAddress(fromEmail!);
-                        mailMessage.To.Add(companyEmail);
+                        mailMessage.To.Add(companyEmail!);
                         mailMessage.Subject = subject;
                         mailMessage.Body = body;
                         mailMessage.IsBodyHtml = false;

@@ -117,7 +117,7 @@
                         <label for="SelectedFuelTypeId">Select Fuel Type to Delete</label>
                         <select asp-for="SelectedFuelTypeId" class="form-control">
                             <option value="">Select Fuel Type</option>
-                            @foreach (var item in Model.FuelTypes)
+                            @foreach (var item in Model.FuelTypes!)
                             {
                                 <option value="@item.ID">@item.FuelTypeName</option>
                             }
@@ -127,7 +127,7 @@
                         <label for="SelectedTransmissionId">Select Transmission to Delete</label>
                         <select asp-for="SelectedTransmissionId" class="form-control">
                             <option value="">Select Transmission</option>
-                            @foreach (var item in Model.Transmissions)
+                            @foreach (var item in Model.Transmissions!)
                             {
                                 <option value="@item.ID">@item.TransmissionName</option>
                             }
@@ -141,7 +141,7 @@
                         <label for="SelectedCarTypeId">Select Type to Delete</label>
                         <select asp-for="SelectedCarTypeId" class="form-control">
                             <option value="">Select Type</option>
-                            @foreach (var item in Model.CarTypes)
+                            @foreach (var item in Model.CarTypes!)
                             {
                                 <option value="@item.ID">@item.TypeName</option>
                             }
@@ -151,7 +151,7 @@
                         <label for="SelectedCarBrandId">Select Brand to Delete</label>
                         <select asp-for="SelectedCarBrandId" class="form-control">
                             <option value="">Select Brand</option>
-                            @foreach (var item in Model.CarBrands)
+                            @foreach (var item in Model.CarBrands!)
                             {
                                 <option value="@item.ID">@item.BrandName</option>
                             }
@@ -161,7 +161,7 @@
                         <label for="SelectedDriveTrainId">Select Drive Train to Delete</label>
                         <select asp-for="SelectedDriveTrainId" class="form-control">
                             <option value="">Select Drive Train</option>
-                            @foreach (var item in Model.DriveTrains)
+                            @foreach (var item in Model.DriveTrains!)
                             {
                                 <option value="@item.ID">@item.DriveTrainName</option>
                             }
@@ -175,7 +175,7 @@
                         <label for="SelectedBikeTypeId">Select Type to Delete</label>
                         <select asp-for="SelectedBikeTypeId" class="form-control">
                             <option value="">Select Type</option>
-                            @foreach (var item in Model.BikeTypes)
+                            @foreach (var item in Model.BikeTypes!)
                             {
                                 <option value="@item.ID">@item.BikeTypeName</option>
                             }
@@ -185,7 +185,7 @@
                         <label for="SelectedBikeBrandId">Select Brand to Delete</label>
                         <select asp-for="SelectedBikeBrandId" class="form-control">
                             <option value="">Select Brand</option>
-                            @foreach (var item in Model.BikeBrands)
+                            @foreach (var item in Model.BikeBrands!)
                             {
                                 <option value="@item.ID">@item.BrandName</option>
                             }
@@ -199,7 +199,7 @@
                         <label for="SelectedBoatTypeId">Select Type to Delete</label>
                         <select asp-for="SelectedBoatTypeId" class="form-control">
                             <option value="">Select Type</option>
-                            @foreach (var item in Model.BoatTypes)
+                            @foreach (var item in Model.BoatTypes!)
                             {
                                 <option value="@item.ID">@item.BoatTypeName</option>
                             }
@@ -209,7 +209,7 @@
                         <label for="SelectedBoatBrandId">Select Brand to Delete</label>
                         <select asp-for="SelectedBoatBrandId" class="form-control">
                             <option value="">Select Brand</option>
-                            @foreach (var item in Model.BoatBrands)
+                            @foreach (var item in Model.BoatBrands!)
                             {
                                 <option value="@item.ID">@item.BrandName</option>
                             }
@@ -219,7 +219,7 @@
                         <label for="SelectedWaterDepthId">Select Water Depth to Delete</label>
                         <select asp-for="SelectedWaterDepthId" class="form-control">
                             <option value="">Select Water Depth</option>
-                            @foreach (var item in Model.WaterDepths)
+                            @foreach (var item in Model.WaterDepths!)
                             {
                                 <option value="@item.ID">@item.WaterDepthName</option>
                             }
@@ -233,7 +233,7 @@
                         <label for="SelectedCaravanTypeId">Select Type to Delete</label>
                         <select asp-for="SelectedCaravanTypeId" class="form-control">
                             <option value="">Select Type</option>
-                            @foreach (var item in Model.CaravanTypes)
+                            @foreach (var item in Model.CaravanTypes!)
                             {
                                 <option value="@item.ID">@item.CaravanTypeName</option>
                             }
@@ -243,7 +243,7 @@
                         <label for="SelectedCaravanBrandId">Select Brand to Delete</label>
                         <select asp-for="SelectedCaravanBrandId" class="form-control">
                             <option value="">Select Brand</option>
-                            @foreach (var item in Model.CaravanBrands)
+                            @foreach (var item in Model.CaravanBrands!)
                             {
                                 <option value="@item.ID">@item.BrandName</option>
                             }
@@ -257,7 +257,7 @@
                         <label for="SelectedAxleTypeId">Select Axle Type to Delete</label>
                         <select asp-for="SelectedAxleTypeId" class="form-control">
                             <option value="">Select Type</option>
-                            @foreach (var item in Model.AxleTypes)
+                            @foreach (var item in Model.AxleTypes!)
                             {
                                 <option value="@item.ID">@item.AxleName</option>
                             }
@@ -267,7 +267,7 @@
                         <label for="SelectedBrakedAxleTypeId">Select Braked Axle Type to Delete</label>
                         <select asp-for="SelectedBrakedAxleTypeId" class="form-control">
                             <option value="">Select Brand</option>
-                            @foreach (var item in Model.BrakedAxleTypes)
+                            @foreach (var item in Model.BrakedAxleTypes!)
                             {
                                 <option value="@item.ID">@item.BrakedAxleName</option>
                             }
@@ -277,7 +277,7 @@
                         <label for="SelectedTrailerBrandId">Select Brand to Delete</label>
                         <select asp-for="SelectedTrailerBrandId" class="form-control">
                             <option value="">Select Brand</option>
-                            @foreach (var item in Model.TrailerBrands)
+                            @foreach (var item in Model.TrailerBrands!)
                             {
                                 <option value="@item.ID">@item.BrandName</option>
                             }
