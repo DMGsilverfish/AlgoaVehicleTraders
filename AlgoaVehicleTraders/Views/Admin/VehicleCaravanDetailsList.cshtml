@@ -125,7 +125,7 @@
                                         <span>No Image</span>
                                     }
                                 </td>
-                                <td>@vehicle.Price.ToString("C")</td>
+                                <td>@vehicle.Price.ToString("C", new System.Globalization.CultureInfo("en-ZA")))</td>
                                 <td>
                                     <a asp-action="VehicleDetailsCaravan" asp-controller="Admin" asp-route-id="@vehicle.ID" class="details-btn">
                                         Edit
