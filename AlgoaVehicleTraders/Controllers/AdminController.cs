@@ -1016,7 +1016,7 @@ namespace AlgoaVehicleTraders.Controllers
                 try
                 {
                     int nextBikeId = 1;
-                    if (_context.Car.Any())
+                    if (_context.Bike.Any())
                     {
                         nextBikeId = _context.Bike.Max(c => c.ID) + 1;
                     }
@@ -1369,7 +1369,7 @@ namespace AlgoaVehicleTraders.Controllers
                 try
                 {
                     int nextBoatId = 1;
-                    if (_context.Car.Any())
+                    if (_context.Boat.Any())
                     {
                         nextBoatId = _context.Boat.Max(c => c.ID) + 1;
                     }
@@ -1726,7 +1726,7 @@ namespace AlgoaVehicleTraders.Controllers
                 try
                 {
                     int nextCaravanId = 1;
-                    if (_context.Car.Any())
+                    if (_context.Caravan.Any())
                     {
                         nextCaravanId = _context.Caravan.Max(c => c.ID) + 1;
                     }
@@ -2958,7 +2958,7 @@ namespace AlgoaVehicleTraders.Controllers
                 try
                 {
                     int nextTrailerId = 1;
-                    if (_context.Car.Any())
+                    if (_context.Trailer.Any())
                     {
                         nextTrailerId = _context.Trailer.Max(c => c.ID) + 1;
                     }
