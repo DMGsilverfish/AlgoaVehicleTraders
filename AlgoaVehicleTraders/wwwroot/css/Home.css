@@ -440,7 +440,7 @@ h1 {
         #4CAF50 10%, #4CAF50 28%, /* Green covers button (extended) */
         white 28%, white 75%, /* White for text (extended) */
         black 75%, black 79%, /* Small black separator (moved further right) */
-        #4CAF50 79%, #4CAF50 100% /* Rest is green */
+        #014094 79%, #014094 100% /* Rest is green */
         );
         width: 100vw; /* Ensure full viewport width */
         max-width: 100%; /* Prevents any unexpected shrinking */

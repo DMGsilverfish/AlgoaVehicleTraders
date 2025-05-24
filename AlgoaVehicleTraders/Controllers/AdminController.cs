@@ -14,6 +14,7 @@ using AlgoaVehicleTraders.Models.Trailers;
 
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AlgoaVehicleTraders.Controllers
 {
@@ -34,11 +35,13 @@ namespace AlgoaVehicleTraders.Controllers
             ConnString = _configuration.GetConnectionString("DefaultConnection");
 
         }
+        [Authorize]
         public IActionResult AdminDashboard()
         {
             return View();
         }
 
+        [Authorize]
         public IActionResult AddVehicle()
         {
 
@@ -81,17 +84,27 @@ namespace AlgoaVehicleTraders.Controllers
             return View(viewModel);
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddVehicle(AddVehicleViewModel viewModel, IFormFile[] exteriorImages, IFormFile[] interiorImages, IFormFile[] otherImages)
         {
             if (ModelState.IsValid)
             {
+                
                 try
                 {
+                    // Generate a manual ID for Car
+                    int nextCarId = 1;
+                    if (_context.Car.Any())
+                    {
+                        nextCarId = _context.Car.Max(c => c.ID) + 1;
+                    }
+
                     // Insert into Car table (as before)
                     var car = new Car
                     {
+                        ID = nextCarId,
                         Model = viewModel.Model!,
                         Brand = viewModel.Brand,
                         Type = viewModel.Type,
@@ -119,6 +132,7 @@ namespace AlgoaVehicleTraders.Controllers
                     // Prepare the CarAdditional object for image data
                     var carAdditional = new CarAdditional
                     {
+                        ID = carId,
                         CarID = carId,
                         LeatherSeats = viewModel.LeatherSeats,
                         TowBar = viewModel.TowBar,
@@ -253,7 +267,7 @@ namespace AlgoaVehicleTraders.Controllers
             return View(viewModel);
         }
 
-
+        [Authorize]
         public IActionResult VehicleDetailsList()
         {
             var vehicles = (from car in _context.Car
@@ -274,7 +288,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(vehicles);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult VehicleDetails(int ID)
 
@@ -367,7 +381,7 @@ namespace AlgoaVehicleTraders.Controllers
             return View(viewModel);
         }
 
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult VehicleDetails(int ID,
@@ -900,7 +914,7 @@ namespace AlgoaVehicleTraders.Controllers
         }
 
 
-
+        [Authorize]
         public IActionResult EditCompanyDetails()
         {
             var companyDetails = _context.CompanyDetails.FirstOrDefault();
@@ -914,6 +928,7 @@ namespace AlgoaVehicleTraders.Controllers
             return View(companyDetails);
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult EditCompanyDetails([Bind("ID,CompanyName,CompanyEmail,CompanyPhone,Address,LocationLink,VATNumber,AccountNumber,FacebookLink,InstagramLink,DeveloperEmail")] CompanyDetails model)
         {
@@ -944,7 +959,7 @@ namespace AlgoaVehicleTraders.Controllers
         }
 
 
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogOut()
@@ -954,7 +969,7 @@ namespace AlgoaVehicleTraders.Controllers
         }
 
 
-
+        [Authorize]
         public IActionResult AddVehicleBike()
         {
             var brands = _context.BikeBrand.OrderBy(b => b.BrandName).ToList();
@@ -990,7 +1005,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddVehicleBike(AddVehicleBikeViewModel viewModel, IFormFile[] exteriorImages, IFormFile[] interiorImages, IFormFile[] otherImages)
@@ -1000,8 +1015,15 @@ namespace AlgoaVehicleTraders.Controllers
             {
                 try
                 {
+                    int nextBikeId = 1;
+                    if (_context.Car.Any())
+                    {
+                        nextBikeId = _context.Bike.Max(c => c.ID) + 1;
+                    }
+
                     var bike = new Bike
                     {
+                        ID = nextBikeId,
                         Brand = viewModel.Brand,
                         Model = viewModel.Model!,
                         Type = viewModel.Type,
@@ -1024,6 +1046,7 @@ namespace AlgoaVehicleTraders.Controllers
                     var bikeID = bike.ID;
                     var bikeAdditional = new BikeAdditional
                     {
+                        ID = bikeID,
                         BikeID = bikeID,
                         CenterStand = viewModel.CenterStand,
                         TopBox = viewModel.TopBox,
@@ -1113,7 +1136,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return RedirectToAction("AddVehicleBike");
         }
-
+        [Authorize]
         public IActionResult VehicleBikeDetailsList()
         {
             var vehicles = (from bike in _context.Bike
@@ -1134,7 +1157,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(vehicles);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult VehicleDetailsBike(int ID)
         {
@@ -1205,7 +1228,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult VehicleDetailsBike(int ID,
@@ -1300,7 +1323,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         public IActionResult AddVehicleBoat()
         {
             var brands = _context.BoatBrand.OrderBy(b => b.BrandName).ToList();
@@ -1336,7 +1359,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddVehicleBoat(AddVehicleBoatViewModel viewModel, IFormFile[] exteriorImages, IFormFile[] interiorImages, IFormFile[] otherImages)
@@ -1345,8 +1368,14 @@ namespace AlgoaVehicleTraders.Controllers
             {
                 try
                 {
+                    int nextBoatId = 1;
+                    if (_context.Car.Any())
+                    {
+                        nextBoatId = _context.Boat.Max(c => c.ID) + 1;
+                    }
                     var boat = new Boat
                     {
+                        ID = nextBoatId,
                         Brand = viewModel.Brand,
                         Model = viewModel.Model!,
                         Type = viewModel.Type,
@@ -1368,6 +1397,7 @@ namespace AlgoaVehicleTraders.Controllers
                     var boatID = boat.ID;
                     var boatAdditional = new BoatAdditional
                     {
+                        ID = boatID,
                         BoatID = boatID,
                         WaterDepth = viewModel.WaterDepth,
                         RegisteredTrailer = viewModel.RegisteredTrailer,
@@ -1461,7 +1491,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return RedirectToAction("AddVehicleBoat");
         }
-
+        [Authorize]
         public IActionResult VehicleBoatDetailsList()
         {
             var vehicles = (from boat in _context.Boat
@@ -1482,7 +1512,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(vehicles);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult VehicleDetailsBoat(int ID)
         {
@@ -1559,7 +1589,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult VehicleDetailsBoat(int ID,
@@ -1661,7 +1691,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         public IActionResult AddVehicleCaravan()
         {
             var brands = _context.CaravanBrand.OrderBy(b => b.BrandName).ToList();
@@ -1686,7 +1716,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddVehicleCaravan(AddVehicleCaravanViewModel viewModel, IFormFile[] exteriorImages, IFormFile[] interiorImages, IFormFile[] otherImages)
@@ -1695,8 +1725,15 @@ namespace AlgoaVehicleTraders.Controllers
             {
                 try
                 {
+                    int nextCaravanId = 1;
+                    if (_context.Car.Any())
+                    {
+                        nextCaravanId = _context.Caravan.Max(c => c.ID) + 1;
+                    }
+
                     var caravan = new Caravan
                     {
+                        ID = nextCaravanId,
                         Brand = viewModel.Brand,
                         Model = viewModel.Model!,
                         Type = viewModel.Type,
@@ -1718,6 +1755,7 @@ namespace AlgoaVehicleTraders.Controllers
                     var caravanID = caravan.ID;
                     var caravanAdditional = new CaravanAdditional
                     {
+                        ID = caravanID,
                         CaravanID = caravanID,
                         Add_A_Room = viewModel.Add_A_Room,
                         CaravanCover = viewModel.CaravanCover,
@@ -1814,7 +1852,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return RedirectToAction("AddVehicleCaravan");
         }
-
+        [Authorize]
         public IActionResult VehicleCaravanDetailsList()
         {
             var vehicles = (from caravan in _context.Caravan
@@ -1834,7 +1872,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(vehicles);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult VehicleDetailsCaravan(int ID)
         {
@@ -1910,7 +1948,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult VehicleDetailsCaravan(
@@ -2017,12 +2055,13 @@ namespace AlgoaVehicleTraders.Controllers
         }
 
         //Adding of items --> Brands, Drive Trains, FuelTypes, Transmissions, WaterDepths, BedTypes, VehicleTypes //
+        [Authorize]
         [HttpGet]
         public IActionResult AddDropdowns()
         {
             return View();
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult AddDropdowns(DropdownsViewModel model)
         {
@@ -2033,7 +2072,8 @@ namespace AlgoaVehicleTraders.Controllers
                 // All category
                 if (!string.IsNullOrEmpty(model.FuelTypeName) && !_context.FuelType.Any(f => f.FuelTypeName == model.FuelTypeName))
                 {
-                    var fuelType = new FuelType { FuelTypeName = model.FuelTypeName };
+                    int newId = (_context.FuelType.Any() ? _context.FuelType.Max(f => f.ID) : 0) + 1;
+                    var fuelType = new FuelType {ID = newId, FuelTypeName = model.FuelTypeName };
                     _context.FuelType.Add(fuelType);
                     itemAdded = true;
                 }
@@ -2044,7 +2084,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.TransmissionName) && !_context.Transmission.Any(t => t.TransmissionName == model.TransmissionName))
                 {
-                    var transmission = new Transmission { TransmissionName = model.TransmissionName };
+                    int newId = (_context.Transmission.Any() ? _context.Transmission.Max(t => t.ID) : 0) + 1;
+                    var transmission = new Transmission { ID = newId, TransmissionName = model.TransmissionName };
+
                     _context.Transmission.Add(transmission);
                     itemAdded = true;
                 }
@@ -2056,7 +2098,9 @@ namespace AlgoaVehicleTraders.Controllers
                 // Car category
                 if (!string.IsNullOrEmpty(model.CarTypeName) && !_context.Type.Any(t => t.TypeName == model.CarTypeName))
                 {
-                    var carType = new AlgoaVehicleTraders.Models.All.Type { TypeName = model.CarTypeName };
+                    int newId = (_context.Type.Any() ? _context.Type.Max(t => t.ID) : 0) + 1;
+                    var carType = new AlgoaVehicleTraders.Models.All.Type { ID = newId, TypeName = model.CarTypeName };
+
                     _context.Type.Add(carType);
                     itemAdded = true;
                 }
@@ -2067,7 +2111,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.CarBrandName) && !_context.Brand.Any(b => b.BrandName == model.CarBrandName))
                 {
-                    var carBrand = new Brand { BrandName = model.CarBrandName };
+                    int newId = (_context.Brand.Any() ? _context.Brand.Max(b => b.ID) : 0) + 1;
+                    var carBrand = new Brand { ID = newId, BrandName = model.CarBrandName };
+
                     _context.Brand.Add(carBrand);
                     itemAdded = true;
                 }
@@ -2078,7 +2124,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.DriveTrainName) && !_context.DriveTrain.Any(d => d.DriveTrainName == model.DriveTrainName))
                 {
-                    var driveTrain = new DriveTrain { DriveTrainName = model.DriveTrainName };
+                    int newId = (_context.DriveTrain.Any() ? _context.DriveTrain.Max(d => d.ID) : 0) + 1;
+                    var driveTrain = new DriveTrain { ID = newId, DriveTrainName = model.DriveTrainName };
+
                     _context.DriveTrain.Add(driveTrain);
                     itemAdded = true;
                 }
@@ -2090,7 +2138,9 @@ namespace AlgoaVehicleTraders.Controllers
                 // Bike category
                 if (!string.IsNullOrEmpty(model.BikeTypeName) && !_context.BikeType.Any(bt => bt.BikeTypeName == model.BikeTypeName))
                 {
-                    var bikeType = new BikeType { BikeTypeName = model.BikeTypeName };
+                    int newId = (_context.BikeType.Any() ? _context.BikeType.Max(bt => bt.ID) : 0) + 1;
+                    var bikeType = new BikeType { ID = newId, BikeTypeName = model.BikeTypeName };
+
                     _context.BikeType.Add(bikeType);
                     itemAdded = true;
                 }
@@ -2101,7 +2151,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.BikeBrandName) && !_context.BikeBrand.Any(bb => bb.BrandName == model.BikeBrandName))
                 {
-                    var bikeBrand = new BikeBrand { BrandName = model.BikeBrandName };
+                    int newId = (_context.BikeBrand.Any() ? _context.BikeBrand.Max(bb => bb.ID) : 0) + 1;
+                    var bikeBrand = new BikeBrand { ID = newId, BrandName = model.BikeBrandName };
+
                     _context.BikeBrand.Add(bikeBrand);
                     itemAdded = true;
                 }
@@ -2113,7 +2165,9 @@ namespace AlgoaVehicleTraders.Controllers
                 // Boat category
                 if (!string.IsNullOrEmpty(model.BoatTypeName) && !_context.BoatType.Any(bt => bt.BoatTypeName == model.BoatTypeName))
                 {
-                    var boatType = new BoatType { BoatTypeName = model.BoatTypeName };
+                    int newId = (_context.BoatType.Any() ? _context.BoatType.Max(bt => bt.ID) : 0) + 1;
+                    var boatType = new BoatType { ID = newId, BoatTypeName = model.BoatTypeName };
+
                     _context.BoatType.Add(boatType);
                     itemAdded = true;
                 }
@@ -2124,7 +2178,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.BoatBrandName) && !_context.BoatBrand.Any(bb => bb.BrandName == model.BoatBrandName))
                 {
-                    var boatBrand = new BoatBrand { BrandName = model.BoatBrandName };
+                    int newId = (_context.BoatBrand.Any() ? _context.BoatBrand.Max(bb => bb.ID) : 0) + 1;
+                    var boatBrand = new BoatBrand { ID = newId, BrandName = model.BoatBrandName };
+
                     _context.BoatBrand.Add(boatBrand);
                     itemAdded = true;
                 }
@@ -2135,7 +2191,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.WaterDepthName) && !_context.WaterDepth.Any(wd => wd.WaterDepthName == model.WaterDepthName))
                 {
-                    var waterDepth = new WaterDepth { WaterDepthName = model.WaterDepthName };
+                    int newId = (_context.WaterDepth.Any() ? _context.WaterDepth.Max(wd => wd.ID) : 0) + 1;
+                    var waterDepth = new WaterDepth { ID = newId, WaterDepthName = model.WaterDepthName };
+
                     _context.WaterDepth.Add(waterDepth);
                     itemAdded = true;
                 }
@@ -2147,7 +2205,9 @@ namespace AlgoaVehicleTraders.Controllers
                 // Caravan category
                 if (!string.IsNullOrEmpty(model.CaravanTypeName) && !_context.CaravanType.Any(ct => ct.CaravanTypeName == model.CaravanTypeName))
                 {
-                    var caravanType = new CaravanType { CaravanTypeName = model.CaravanTypeName };
+                    int newId = (_context.CaravanType.Any() ? _context.CaravanType.Max(ct => ct.ID) : 0) + 1;
+                    var caravanType = new CaravanType { ID = newId, CaravanTypeName = model.CaravanTypeName };
+
                     _context.CaravanType.Add(caravanType);
                     itemAdded = true;
                 }
@@ -2158,7 +2218,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.CaravanBrandName) && !_context.CaravanBrand.Any(cb => cb.BrandName == model.CaravanBrandName))
                 {
-                    var caravanBrand = new CaravanBrand { BrandName = model.CaravanBrandName };
+                    int newId = (_context.CaravanBrand.Any() ? _context.CaravanBrand.Max(cb => cb.ID) : 0) + 1;
+                    var caravanBrand = new CaravanBrand { ID = newId, BrandName = model.CaravanBrandName };
+
                     _context.CaravanBrand.Add(caravanBrand);
                     itemAdded = true;
                 }
@@ -2170,7 +2232,9 @@ namespace AlgoaVehicleTraders.Controllers
                 // Trailer category
                 if (!string.IsNullOrEmpty(model.TrailerBrandName) && !_context.TrailerBrand.Any(tb => tb.BrandName == model.TrailerBrandName))
                 {
-                    var trailerBrand = new TrailerBrand { BrandName = model.TrailerBrandName };
+                    int newId = (_context.TrailerBrand.Any() ? _context.TrailerBrand.Max(tb => tb.ID) : 0) + 1;
+                    var trailerBrand = new TrailerBrand { ID = newId, BrandName = model.TrailerBrandName };
+
                     _context.TrailerBrand.Add(trailerBrand);
                     itemAdded = true;
                 }
@@ -2181,7 +2245,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.AxleTypeName) && !_context.AxleType.Any(at => at.AxleName == model.AxleTypeName))
                 {
-                    var axleType = new AxleType { AxleName = model.AxleTypeName };
+                    int newId = (_context.AxleType.Any() ? _context.AxleType.Max(at => at.ID) : 0) + 1;
+                    var axleType = new AxleType { ID = newId, AxleName = model.AxleTypeName };
+
                     _context.AxleType.Add(axleType);
                     itemAdded = true;
                 }
@@ -2192,7 +2258,9 @@ namespace AlgoaVehicleTraders.Controllers
 
                 if (!string.IsNullOrEmpty(model.BrakedAxleTypeName) && !_context.BrakedAxle.Any(ba => ba.BrakedAxleName == model.BrakedAxleTypeName))
                 {
-                    var brakedAxle = new BrakedAxle { BrakedAxleName = model.BrakedAxleTypeName };
+                    int newId = (_context.BrakedAxle.Any() ? _context.BrakedAxle.Max(ba => ba.ID) : 0) + 1;
+                    var brakedAxle = new BrakedAxle { ID = newId, BrakedAxleName = model.BrakedAxleTypeName };
+
                     _context.BrakedAxle.Add(brakedAxle);
                     itemAdded = true;
                 }
@@ -2215,6 +2283,7 @@ namespace AlgoaVehicleTraders.Controllers
 
 
         //Editing of items --> Brands, Drive Trains, FuelTypes, Transmissions, WaterDepths, BedTypes, VehicleTypes //
+        [Authorize]
         [HttpGet]
         public IActionResult EditDropdowns()
         {
@@ -2239,7 +2308,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(model);
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult EditDropdowns(DropdownsEditViewModel model)
         {
@@ -2532,6 +2601,7 @@ namespace AlgoaVehicleTraders.Controllers
 
 
         //Deleting of items --> Brands, Drive Trains, FuelTypes, Transmissions, WaterDepths, BedTypes, VehicleTypes //
+        [Authorize]
         [HttpGet]
         public IActionResult DeleteDropdowns()
         {
@@ -2556,7 +2626,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(model);
         }
-
+        [Authorize]
         [HttpPost]
         public IActionResult DeleteDropdowns(DropdownsDeleteViewModel model)
         {
@@ -2852,6 +2922,7 @@ namespace AlgoaVehicleTraders.Controllers
         }
 
         //trailer section
+        [Authorize]
         [HttpGet]
         public IActionResult AddVehicleTrailer()
         {
@@ -2877,7 +2948,7 @@ namespace AlgoaVehicleTraders.Controllers
             return PartialView("_LuggageTrailerFields", new AddVehicleTrailerViewModel());
         }
 
-
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddVehicleTrailer(AddVehicleTrailerViewModel viewModel, CampTrailerViewModel campViewModel, IFormFile[] exteriorImages, IFormFile[] interiorImages, IFormFile[] otherImages)
@@ -2886,9 +2957,15 @@ namespace AlgoaVehicleTraders.Controllers
             {
                 try
                 {
+                    int nextTrailerId = 1;
+                    if (_context.Car.Any())
+                    {
+                        nextTrailerId = _context.Trailer.Max(c => c.ID) + 1;
+                    }
                     // Insert into Trailer table
                     var trailer = new Trailer
                     {
+                        ID = nextTrailerId,
                         Model = viewModel.Model!,
                         Brand = viewModel.Brand,
                         Type = viewModel.Type,
@@ -2904,7 +2981,7 @@ namespace AlgoaVehicleTraders.Controllers
                         Comments = viewModel.Comments,
                         TailGate = viewModel.TailGate
                     };
-
+                    int trailerId = trailer.ID;
                     _context.Trailer.Add(trailer);
                     await _context.SaveChangesAsync();
 
@@ -2913,6 +2990,7 @@ namespace AlgoaVehicleTraders.Controllers
                     {
                         var campTrailer = new CampTrailer
                         {
+                            ID = trailerId,
                             TrailerID = trailer.ID, // Link to the Trailer table
                             KitchenHas = campViewModel.KitchenHas!,
                             Sleeper = campViewModel.Sleeper!,
@@ -2974,7 +3052,7 @@ namespace AlgoaVehicleTraders.Controllers
 
 
 
-
+        [Authorize]
         public IActionResult VehicleTrailerDetailsList()
         {
             var vehicles = (from trailer in _context.Trailer
@@ -2993,7 +3071,7 @@ namespace AlgoaVehicleTraders.Controllers
 
             return View(vehicles);
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult TrailerType(int ID)
         {
@@ -3015,7 +3093,7 @@ namespace AlgoaVehicleTraders.Controllers
                 return RedirectToAction("VehicleDetailsTrailer", new { ID });
             }
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult VehicleDetailsTrailer(int ID)
         {
@@ -3083,7 +3161,7 @@ namespace AlgoaVehicleTraders.Controllers
             return View(viewModel);
         }
 
-
+        [Authorize]
         [HttpPost]
         public IActionResult VehicleDetailsTrailer(int ID,
           [Bind("ID,Model,Brand,Type,Price,AxleType,BrakedAxle,NumberAxle,Year,TyreSize,Length,Comments,Status,StatusChangeDate,TailGate")] Trailer trailer,
@@ -3150,7 +3228,7 @@ namespace AlgoaVehicleTraders.Controllers
                 return View(trailer);
             }
         }
-
+        [Authorize]
         [HttpGet]
         public IActionResult VehicleDetailsCampTrailer(int ID)
         {
@@ -3242,7 +3320,7 @@ namespace AlgoaVehicleTraders.Controllers
             return View(viewModel);
         }
 
-
+        [Authorize]
         [HttpPost]
         public IActionResult VehicleDetailsCampTrailer(
             int ID,
